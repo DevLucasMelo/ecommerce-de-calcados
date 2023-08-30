@@ -1,0 +1,227 @@
+﻿@model Cliente
+@{
+    ViewData["Title"] = "Cliente";
+}
+
+<body>
+    <!-- Modal de Sucesso -->
+    <!--<div class="modal modal-success" id="modalSuccess">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sucesso!</h5>
+                    <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Ação realizada com sucesso.
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Modal de Erro -->
+    <!--<div class="modal modal-error" id="modalError">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Erro!</h5>
+                  <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  Houve um erro ao realizar a ação.
+              </div>
+          </div>
+      </div>
+    </div>-->
+    <!--<div class="container mt-4">
+        <h1 class="text-center">Gerenciamento de Clientes</h1>
+        <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#novoClienteModal">
+            Incluir Novo Cliente
+        </button>
+
+
+    </div>-->
+
+    <div class="container mt-4">
+        <h1 class="text-center">Gerenciamento de Clientes</h1>
+        <button class="btn btn-primary mb-3" id="meuBotaocliente">
+            Incluir Novo Cliente
+        </button>
+
+
+    </div>
+    <!--<<button  class="btn-azul btn-azul-pagamento" id="meuBotaocliente">Adicionar cliente</button>-->
+    <div id="clientGrid" class="container mt-4">
+        <h1 class="text-center">Lista de Clientes</h1>
+        <div class="row grid-header">
+            <div class="col">Nome</div>
+            <div class="col">Data de Nascimento</div>
+            <div class="col">Email</div>
+            <div class="col">CPF</div>
+            <div class="col">Gênero</div>
+            <div class="col">Ações</div>
+        </div>
+        @foreach (var cliente in Model.clientes)
+        {
+            <div class="row">
+                <div class="col">@cliente.cli_nome</div>
+                <div class="col">@cliente.cli_dt_nascimento.ToString("dd/MM/yyyy")</div>
+                <div class="col">@cliente.cli_email</div>
+                <div class="col">@cliente.cli_cpf</div>
+                <div class="col">@cliente.cli_genero</div>
+                <div class="col">
+                    <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('@cliente.cli_id')">Editar</button>
+                    <button class="btn btn-danger btn-sm" id ="excluir-cliente"onclick="deleteClient('@cliente.cli_id')">Excluir</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="overlay-cliente" id="overlay-cliente">
+        <div class="popup-cliente" id="popup-cliente">
+            <button id="fechar-cliente" class="close-button"><i class="fas fa-times"></i></button>
+            <h3 class="popup-title">Adicionar Cliente</h3>
+
+            <form>
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <label for="nomeCliente" class="label-blue">Nome do Cliente</label>
+                        <input type="text" id="nomeCliente" class="form-control input-card">
+                    </div>
+                    <div>
+                        <label for="genero" class="label-blue">Genero</label>
+                        <input type="text" id="genero" class="form-control input-card">
+                    </div>
+                </div>
+
+                <input type="hidden" id="clientEditId">
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <label for="dataNascimento" class="label-blue">Data de Nascimento</label>
+                        <input type="date" id="dataNascimento" class="form-control input-card">
+                    </div>
+                    <div>
+                        <label for="telefone" class="label-blue">Telefone/Celular</label>
+                        <input type="text" id="telefone" class="form-control input-card">
+                    </div>
+                </div>
+
+                <label for="emailCliente" class="label-blue">Email do Cliente</label>
+                <input type="email" id="emailCliente" class="form-control input-card">
+
+                <label for="cpfCliente" class="label-blue">CPF</label>
+                <input type="text" id="cpfCliente" class="form-control input-card">
+
+                <h4>Cartões de Crédito</h4>
+                <div id="cartoes-container"></div>
+                <button class="btn btn-secondary" id="botaoModalCartao">Gerenciar Cartões</button>
+            </form>
+
+            <button id="confirmar-cliente" class="btn btn-primary">Confirmar</button>
+        </div>
+    </div>
+
+    <div class="overlay-cartao" id="overlay-cartao">
+        <div class="popup-cartao" id="popup-cartao">
+            <div class="container mt-4">
+                <button id="fechar-cartao" class="close-button"><i class="fas fa-times"></i></button>
+
+                <h3 class="text-center">Gerenciamento de Cartões</h3>
+
+                <form>
+                    <div class="mb-3">
+                        <label for="numero" class="label-blue">Número do Cartão:</label>
+                        <input type="text" class="form-control input-card" id="numeroCartao" placeholder="____.____.____.____">
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <label for="validade" class="label-blue">Validade:</label>
+                            <input type="text" class="form-control input-card" id="validade" placeholder="MM/AA">
+                        </div>
+                        <div>
+                            <label for="cvv" class="label-blue">CVV:</label>
+                            <input type="text" class="form-control input-card" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="titular" class="label-blue">Titular do Cartão:</label>
+                        <input type="text" class="form-control input-card" id="titular" placeholder="Nome Completo">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cpf" class="label-blue">CPF do Titular:</label>
+                        <input type="text" class="form-control input-card" id="cpf" placeholder="___.___.___-__">
+                    </div>
+                    <button id="confirmar-cartao" class="btn btn-primary">Confirmar</button>
+                </form>
+
+                <div id="cartoesGrid" class="container mt-5">
+                    <h1 class="text-center">Lista de Cartões</h1>
+                    <div class="row grid-header">
+                        <div class="col">Número do Cartão</div>
+                        <div class="col">Validade</div>
+                        <div class="col">CVV</div>
+                        <div class="col">Titular do Cartão</div>
+                        <div class="col">CPF do titular</div>
+                        <div class="col">Ações</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="overlay" id="overlay-cliente">
+        <div id="novoClienteModal" class="popup">
+            <div class="modal-content-cliente">
+                <span id="fecharNovoClienteModal" class="close-cliente">&times;</span>
+                <h2>Incluir Novo Cliente</h2>
+                <form>
+                    <label for="nomeCliente">Nome do Cliente</label>
+                    <input type="text" id="nomeCliente" class="form-control" required>
+
+                    <label for="dataNascimento">Data de Nascimento</label>
+                    <input type="date" id="dataNascimento" class="form-control" required>
+
+                    <label for="emailCliente">Email do Cliente</label>
+                    <input type="email" id="emailCliente" class="form-control" required>
+
+                    <label for="cpfCliente">CPF</label>
+                    <input type="text" id="cpfCliente" class="form-control" required>
+
+
+                    <label for="ruaCliente">Rua</label>
+                    <input type="text" id="ruaCliente" class="form-control" required>
+
+                    <label for="bairroCliente">Bairro</label>
+                    <input type="text" id="bairroCliente" class="form-control" required>
+
+                    <label for="cidadeCliente">Cidade</label>
+                    <input type="text" id="cidadeCliente" class="form-control" required>
+
+                    <label for="estadoCliente">Estado</label>
+                    <input type="text" id="estadoCliente" class="form-control" required>
+
+                    <label for="paisCliente">País</label>
+                    <input type="text" id="paisCliente" class="form-control" required>
+
+                    <button type="button" id="confirmar-cliente" class="btn btn-primary">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>-->
+
+
+    <script src="~/scriptCliente.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+</body>
+
+
+
