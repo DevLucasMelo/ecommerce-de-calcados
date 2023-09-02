@@ -113,13 +113,24 @@ namespace EcommerceBack.Data
         public static List<Cliente> ConsultarClientes(string termoPesquisa)
         {
             string conn = config().GetConnectionString("Conn");
+
+
+            if (string.IsNullOrWhiteSpace(termoPesquisa))
+            {
+                // Retorna uma lista vazia se não houver termo de pesquisa
+                return new List<Cliente>();
+            }
+
             string query = $@"SELECT * FROM clientes WHERE cli_nome ILIKE '%{termoPesquisa}%'";
+            //Console.WriteLine("Valor de termoPesquisa: " + termoPesquisa);
+
 
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     var clientes = sqlCon.Query<Cliente>(query).ToList();
+
                     return clientes;
                 }
             }
