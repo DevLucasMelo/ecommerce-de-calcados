@@ -109,5 +109,25 @@ namespace EcommerceBack.Data
                 return new Cliente();
             }
         }
+
+        public static List<Cliente> ConsultarClientes(string termoPesquisa)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT * FROM clientes WHERE cli_nome ILIKE '%{termoPesquisa}%'";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var clientes = sqlCon.Query<Cliente>(query).ToList();
+                    return clientes;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Lide com exceções aqui, se necessário.
+                throw;
+            }
+        }
     }
 }

@@ -44,6 +44,11 @@
 
 
     </div>-->
+    <style>
+        .container-consulta {
+            text-align: right;
+        }
+    </style>
 
     <div class="container mt-4">
         <h1 class="text-center">Gerenciamento de Clientes</h1>
@@ -51,7 +56,11 @@
             Incluir Novo Cliente
         </button>
 
+    </div>
 
+    <div class="container-consulta">
+        <input type="text" id="termoPesquisa" placeholder="Digite aqui...">
+        <button id="consultarClientes">Consultar</button>
     </div>
     <!--<<button  class="btn-azul btn-azul-pagamento" id="meuBotaocliente">Adicionar cliente</button>-->
     <div id="clientGrid" class="container mt-4">
@@ -64,20 +73,9 @@
             <div class="col">Gênero</div>
             <div class="col">Ações</div>
         </div>
-        @foreach (var cliente in Model.clientes)
-        {
-            <div class="row">
-                <div class="col">@cliente.cli_nome</div>
-                <div class="col">@cliente.cli_dt_nascimento.ToString("dd/MM/yyyy")</div>
-                <div class="col">@cliente.cli_email</div>
-                <div class="col">@cliente.cli_cpf</div>
-                <div class="col">@cliente.cli_genero</div>
-                <div class="col">
-                    <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('@cliente.cli_id')">Editar</button>
-                    <button class="btn btn-danger btn-sm" id ="excluir-cliente"onclick="deleteClient('@cliente.cli_id')">Excluir</button>
-                </div>
-            </div>
-        }
+        <div id="resultadoPesquisa">
+            <!-- Os resultados da pesquisa serão preenchidos aqui pelo JavaScript. -->
+        </div>
     </div>
 
     <div class="overlay-cliente" id="overlay-cliente">
@@ -217,9 +215,9 @@
         </div>
     </div>-->
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/scriptCliente.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 </body>
 

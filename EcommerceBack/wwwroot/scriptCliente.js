@@ -424,3 +424,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+document.getElementById('consultarClientes').addEventListener('click', function () {
+    var termoPesquisa = document.getElementById('termoPesquisa').value;
+    console.log("Termo de pesquisa:", termoPesquisa);
+    fetch(`/Cliente/ConsultarClientes?termoPesquisa=${termoPesquisa}`)
+        .then(response => response.json())
+        .then(data => {
+            var resultadoPesquisa = document.getElementById('resultadoPesquisa');
+            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+
+            data.forEach(cliente => {
+                resultadoPesquisa.innerHTML += `
+                    <div class="row">
+                        <div class="col">${cliente.cli_nome}</div>
+                        <div class="col">${cliente.cli_dt_nascimento}</div>
+                        <div class="col">${cliente.cli_email}</div>
+                        <div class="col">${cliente.cli_cpf}</div>
+                        <div class="col">${cliente.cli_genero}</div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" id="excluir-cliente" onclick="deleteClient('${cliente.cli_id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+        });
+});

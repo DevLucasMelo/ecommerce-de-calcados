@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce</title>
+    <link rel="stylesheet" href="estilos/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body onload="carregarValorCarrinho()">
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+    <div class="container">
+      <ul class="navbar-nav">
+        <li class="nav-item nav-item-cart">
+          <a class="nav-link custom-link" style="color: white;" href="index.html" ><i class="fas fa-home"></i> Tela inicial</a>
+        </li>
+        
+        <li class="nav-item nav-item-cart">
+          <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html" >
+            <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+          Carrinho
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar-nav navbar-nav-right">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+      
+    <img width="100%" src="estilos/imagens/banner_home.png" alt="Banner" class="banner">
+
+    <div class="container-titulos">
+      <strong><p class="ofertas">Ofertas especiais</p></strong>
+      <p class="ofertas">Os melhores preços</p>
+    </div>
+    <div class="container-card-image">
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-air-force-1-sneakers-basketball-shoe-nike-air-force-one-white-leather-logo-thumbnail-removebg-preview.png" alt="">
+            <p class="p-index">Air Force 1 Branco</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 699</p>
+            <p class="p-index">10x de R$ 69</p>
+        </div>
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-running-shoe-nike-sneakers-mens-nike-sf-air-force-1-hi-nike-air-force-1-07-lv8-utility-mens-nike-mens-internationalist-mid-running-shoe-discounts-and-allowances-thumbnail-removebg-prev.png" alt="">
+            <p class="p-index">Air Force 1 Preto</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 599</p>
+            <p class="p-index">10x de R$ 59</p>
+        </div>
+        <a style="text-decoration: none;
+        " href="produto.html">
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-air-force-1-sneakers-skate-shoe-nike-air-force-one-blue-white-outdoor-shoe-thumbnail-removebg-preview.png" alt="">
+            <p class="p-index">Air Force 1 Azul</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 499</p>
+            <p class="p-index">10x de R$ 49</p>
+        </div>
+        </a>
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-sneakers-water-shoe-adidas-running-adidas-shoes-thumbnail__1_-removebg-preview.png" alt="">
+            <p class="p-index">Adidas Running</p>
+            <p class="p-index">Esportivo</p>
+            <p class="p-index">R$ 999</p>
+            <p class="p-index">10x de R$ 99</p>
+        </div>
+    </div>
+    <div class="container-card-image">
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-air-force-1-sneakers-basketball-shoe-nike-air-force-one-white-leather-logo-thumbnail-removebg-preview.png" alt="">
+            <p class="p-index">Air Force 1 Branco</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 699</p>
+            <p class="p-index">10x de R$ 69</p>
+        </div>
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-running-shoe-nike-sneakers-mens-nike-sf-air-force-1-hi-nike-air-force-1-07-lv8-utility-mens-nike-mens-internationalist-mid-running-shoe-discounts-and-allowances-thumbnail-removebg-prev.png" alt="">
+            <p class="p-index">Air Force 1 Preto</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 599</p>
+            <p class="p-index">10x de R$ 59</p>
+        </div>
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-air-force-1-sneakers-skate-shoe-nike-air-force-one-blue-white-outdoor-shoe-thumbnail-removebg-preview.png" alt="">
+            <p class="p-index">Air Force 1 Azul</p>
+            <p class="p-index">Casual</p>
+            <p class="p-index">R$ 499</p>
+            <p class="p-index">10x de R$ 49</p>
+        </div>
+        <div class="container-item">
+            <img class="image-index" src="estilos/imagens/png-transparent-sneakers-water-shoe-adidas-running-adidas-shoes-thumbnail__1_-removebg-preview.png" alt="">
+            <p class="p-index">Adidas Running</p>
+            <p class="p-index">Esportivo</p>
+            <p class="p-index">R$ 999</p>
+            <p class="p-index">10x de R$ 99</p>
+        </div>
+    </div>
+    <script src="../controller/script.js"></script>
+
+</body>
+</html>
