@@ -443,6 +443,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${cliente.cli_genero}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="editClient('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
                             <button class="btn btn-danger btn-sm" id="excluir-cliente" onclick="deleteClient('${cliente.cli_id}')">Excluir</button>
