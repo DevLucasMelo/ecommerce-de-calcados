@@ -26,7 +26,7 @@ namespace EcommerceBack.Data
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     cliente.cli_dt_nascimento = cliente.cli_dt_nascimento.ToUniversalTime();
-
+                    Console.WriteLine(cliente.cli_status);
                     var id = sqlCon.Insert(cliente);
                     return id;
                 }
@@ -121,11 +121,13 @@ namespace EcommerceBack.Data
                 return new List<Cliente>();
             }
 
-            string query = $@"SELECT * FROM clientes WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
+            string query = $@"SELECT * FROM clientes JOIN generos ON gen_id = cli_gen_id
+                            JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
+                            WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
                             TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
                             cli_email ILIKE '%{termoPesquisa}%' OR 
                             cli_cpf ILIKE '%{termoPesquisa}%' OR 
-                            cli_genero ILIKE '%{termoPesquisa}%'";
+                            gen_nome ILIKE '%{termoPesquisa}%' OR tip_tel_nome ILIKE '%{termoPesquisa}%'";
 
             try
             {

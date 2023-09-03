@@ -95,6 +95,7 @@ function fillEditModal(id) {
     const cpf = clienteObjeto.cli_cpf;
     const telefone = clienteObjeto.cli_telefone;
     const genero = clienteObjeto.cli_genero;
+    const status_cliente = clienteObjeto.cli_status;
 
     // Preencher os campos do modal de edição
     document.getElementById('clientEditId').value = id;
@@ -102,6 +103,7 @@ function fillEditModal(id) {
     document.getElementById('dataNascimento').value = dataNascimento;
     document.getElementById('emailCliente').value = email;
     document.getElementById('cpfCliente').value = cpf;
+    document.getElementById('statusCliente').checked = status_cliente;
     document.getElementById('genero').value = genero;
     document.getElementById('telefone').value = telefone;
 }
@@ -303,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const dataNascimento = document.getElementById("dataNascimento").value;
         const emailCliente = document.getElementById("emailCliente").value;
         const cpfCliente = parseInt(document.getElementById("cpfCliente").value);
+        const statusCliente = document.getElementById("statusCliente").checked;
         //const ruaCliente = document.getElementById("ruaCliente").value;
         //const bairroCliente = document.getElementById("bairroCliente").value;
         //const cidadeCliente = document.getElementById("cidadeCliente").value;
@@ -317,6 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cli_dt_nascimento: dataNascimento,
             cli_genero: genero,
             cli_cpf: cpfCliente,
+            cli_status: statusCliente,
             cli_telefone: telefone,
             cli_email: emailCliente,
         };
@@ -339,6 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cli_dt_nascimento: dataNascimento,
                     cli_genero: genero,
                     cli_cpf: cpfCliente,
+                    cli_status: statusCliente,
                     cli_telefone: telefone,
                     cli_email: emailCliente,
                 };
@@ -410,6 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("dataNascimento").value = "";
             document.getElementById("emailCliente").value = "";
             document.getElementById("cpfCliente").value = "";
+            document.getElementById("statusCliente").value = "";
             document.getElementById("genero").value = "";
             document.getElementById("telefone").value = "";
             document.getElementById("clientEditId").value = "";
@@ -443,7 +449,8 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${cliente.cli_genero}</div>
-                        <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="editClient('${cliente.cli_id}')">Consultar</button></div>
+                        <div class="col">${cliente.cli_status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
                             <button class="btn btn-danger btn-sm" id="excluir-cliente" onclick="deleteClient('${cliente.cli_id}')">Excluir</button>

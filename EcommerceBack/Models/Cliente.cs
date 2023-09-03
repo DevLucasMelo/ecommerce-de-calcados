@@ -17,6 +17,9 @@ namespace EcommerceBack.Models
         [Column(name:"cli_genero")]
         public string cli_genero { get; set; }
 
+        [Column(name: "cli_status")]
+        public bool cli_status { get; set; }
+
         [Column(name:"cli_dt_nascimento")]
         public DateTime cli_dt_nascimento { get; set; }
 
