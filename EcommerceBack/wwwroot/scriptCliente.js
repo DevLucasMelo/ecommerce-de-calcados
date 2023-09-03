@@ -446,6 +446,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
                             <button class="btn btn-danger btn-sm" id="excluir-cliente" onclick="deleteClient('${cliente.cli_id}')">Excluir</button>
+                            <button class="btn btn-danger btn-sm" id="inativar-cliente" onclick="inativaCliente('${cliente.cli_id}')">Inativar</button>
                         </div>
                     </div>`;
             });

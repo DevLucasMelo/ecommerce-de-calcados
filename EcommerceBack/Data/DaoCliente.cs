@@ -121,9 +121,11 @@ namespace EcommerceBack.Data
                 return new List<Cliente>();
             }
 
-            string query = $@"SELECT * FROM clientes WHERE cli_nome ILIKE '%{termoPesquisa}%'";
-            //Console.WriteLine("Valor de termoPesquisa: " + termoPesquisa);
-
+            string query = $@"SELECT * FROM clientes WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
+                            TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
+                            cli_email ILIKE '%{termoPesquisa}%' OR 
+                            cli_cpf ILIKE '%{termoPesquisa}%' OR 
+                            cli_genero ILIKE '%{termoPesquisa}%'";
 
             try
             {
@@ -136,7 +138,6 @@ namespace EcommerceBack.Data
             }
             catch (Exception ex)
             {
-                // Lide com exceções aqui, se necessário.
                 throw;
             }
         }
