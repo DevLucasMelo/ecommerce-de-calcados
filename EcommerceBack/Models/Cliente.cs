@@ -14,11 +14,11 @@ namespace EcommerceBack.Models
         [Column(name:"cli_nome")]
         public string cli_nome { get; set; }
 
-        [Column(name:"cli_genero")]
-        public string cli_genero { get; set; }
+        [Column(name:"cli_gen_id")]
+        public int? cli_gen_id { get; set; }  = null; // Define o valor como null
 
         [Column(name: "cli_status")]
-        public bool cli_status { get; set; }
+        public string cli_status { get; set; }
 
         [Column(name:"cli_dt_nascimento")]
         public DateTime cli_dt_nascimento { get; set; }
@@ -29,8 +29,8 @@ namespace EcommerceBack.Models
         [Column(name:"cli_telefone")]
         public string cli_telefone { get; set; }
 
-        [Column(name: "cli_tipo_telefoe")]
-        public string cli_tipo_telefoe { get; set; }
+        [Column(name: "cli_tip_tel_id")]
+        public int? cli_tip_tel_id { get; set; } = null; // Define o valor como null
 
         [Column(name:"cli_email")]
         public string cli_email { get; set; }

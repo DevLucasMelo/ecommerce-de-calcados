@@ -86,10 +86,8 @@ namespace EcommerceBack.Controllers
         [HttpGet]
         public IActionResult ConsultarClientes(string termoPesquisa)
         {
-            // Chame o método no DAOCliente que executa a pesquisa e retorna os resultados.
             List<Cliente> clientesEncontrados = DaoCliente.ConsultarClientes(termoPesquisa);
 
-            // Retorne os resultados para a visualização (por exemplo, como JSON).
             return Json(clientesEncontrados);
         }
 
@@ -106,5 +104,20 @@ namespace EcommerceBack.Controllers
                 return BadRequest("Erro ao deletar cliente");
             }
         }
+
+        [HttpPost("/inativar-cliente")]
+        public IActionResult InativarCliente(int id)
+        {
+            try
+            {
+                DaoCliente.UpdateStatus(id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
     }
+    
 }

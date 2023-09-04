@@ -26,7 +26,6 @@ namespace EcommerceBack.Data
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     cliente.cli_dt_nascimento = cliente.cli_dt_nascimento.ToUniversalTime();
-                    Console.WriteLine(cliente.cli_status);
                     var id = sqlCon.Insert(cliente);
                     return id;
                 }
@@ -114,20 +113,20 @@ namespace EcommerceBack.Data
         {
             string conn = config().GetConnectionString("Conn");
 
-
             if (string.IsNullOrWhiteSpace(termoPesquisa))
             {
                 // Retorna uma lista vazia se não houver termo de pesquisa
                 return new List<Cliente>();
             }
 
-            string query = $@"SELECT * FROM clientes JOIN generos ON gen_id = cli_gen_id
-                            JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
-                            WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
-                            TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
-                            cli_email ILIKE '%{termoPesquisa}%' OR 
-                            cli_cpf ILIKE '%{termoPesquisa}%' OR 
-                            gen_nome ILIKE '%{termoPesquisa}%' OR tip_tel_nome ILIKE '%{termoPesquisa}%'";
+            string query = $@"SELECT *, CASE WHEN cli_status = true THEN 'Ativo' ELSE 'Inativo'
+                    END AS cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id
+                    LEFT JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
+                    WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
+                    TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
+                    cli_email ILIKE '%{termoPesquisa}%' OR 
+                    cli_cpf ILIKE '%{termoPesquisa}%' OR 
+                    gen_nome ILIKE '%{termoPesquisa}%' OR tip_tel_nome ILIKE '%{termoPesquisa}%'";
 
             try
             {
@@ -141,6 +140,24 @@ namespace EcommerceBack.Data
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+        public static bool UpdateStatus(int cli_id)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $"update clientes set cli_status = false where cli_id = {cli_id}";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    sqlCon.Execute(query);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

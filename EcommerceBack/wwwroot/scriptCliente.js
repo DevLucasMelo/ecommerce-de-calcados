@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.getElementById('consultarClientes').addEventListener('click', function () {
     var termoPesquisa = document.getElementById('termoPesquisa').value;
-    console.log("Termo de pesquisa:", termoPesquisa);
+
     fetch(`/Cliente/ConsultarClientes?termoPesquisa=${termoPesquisa}`)
         .then(response => response.json())
         .then(data => {
@@ -449,7 +449,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${cliente.cli_genero}</div>
-                        <div class="col">${cliente.cli_status}</div>
+                        <div class="col" id="status-cliente-${cliente.cli_id}">${cliente.cli_status}</div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
@@ -460,3 +460,28 @@ document.getElementById('consultarClientes').addEventListener('click', function 
             });
         });
 });
+
+function inativaCliente(cliId) {
+
+    fetch(`/inativar-cliente?id=${cliId}`, {
+        method: "POST", // Você pode usar POST ou outro método apropriado
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Verifique se a operação foi bem-sucedida no servidor
+            if (data.success) {
+                // Atualize o frontend para exibir "Inativo" no lugar de "Ativo" (ou atualize a lista de clientes)
+                const elementoStatus = document.getElementById(`status-cliente-${cliId}`);
+                if (elementoStatus) {
+                    elementoStatus.textContent = "Inativo";
+                }
+                // Outras atualizações de interface do usuário, se necessário
+            } else {
+                alert("Não foi possível inativar o cliente. Tente novamente mais tarde.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao processar a solicitação:", error);
+        });
+   
+}
