@@ -18,7 +18,7 @@ namespace EcommerceBack.Models
         public int? cli_gen_id { get; set; }  = null; // Define o valor como null
 
         [Column(name: "cli_status")]
-        public string cli_status { get; set; }
+        public bool cli_status { get; set; }
 
         [Column(name:"cli_dt_nascimento")]
         public DateTime cli_dt_nascimento { get; set; }

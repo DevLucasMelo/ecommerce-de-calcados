@@ -483,5 +483,32 @@ function inativaCliente(cliId) {
         .catch(error => {
             console.error("Erro ao processar a solicitação:", error);
         });
-   
+  
 }
+
+function formatarCPF() {
+    // Obtém o valor atual do campo de entrada
+    let cpf = document.getElementById("cpfCliente").value;
+
+    // Remove todos os caracteres não numéricos do CPF
+    cpf = cpf.replace(/\D/g, "");
+
+    // Formata o CPF com pontos e traço
+    if (cpf.length >= 3 && cpf.length < 6) {
+        cpf = cpf.replace(/(\d{3})/, "$1.");
+    } else if (cpf.length >= 6 && cpf.length < 9) {
+        cpf = cpf.replace(/(\d{3})(\d{3})/, "$1.$2.");
+    } else if (cpf.length >= 9) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3-");
+    }
+
+    if (cpf.length > 14) {
+        cpf = cpf.substring(0, 14);
+    }
+
+    // Define o valor formatado de volta no campo de entrada
+    document.getElementById("cpfCliente").value = cpf;
+}
+
+
+document.getElementById("cpfCliente").addEventListener("input", formatarCPF);
