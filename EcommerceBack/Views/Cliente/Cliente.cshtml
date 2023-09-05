@@ -90,15 +90,14 @@
                 <div class="mb-3 d-flex justify-content-between">
                     <div class="col-md-6">
                         <label for="nomeCliente" class="label-blue">Nome do Cliente:</label>
-                        <input type="text" id="nomeCliente" class="form-control input-card" placeholder="Digite o seu nome completo">
+                        <input type="text" id="nomeCliente" class="form-control input-card" required>
                     </div>
-                    <div>
+                    <div class="col-md-6">
                         <label for="genero" class="label-blue">Gênero</label>
-
-                        <select id="genero" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                            <option selected>Selecione</option>
-                            <option value="1">Feminino</option>
-                            <option value="2">Masculino</option>
+                        <select id="genero" class="form-select input-card" required>
+                            <option selected>Selecione...</option>
+                            <option value="1">Masculino</option>
+                            <option value="2">Feminino</option>
                         </select>
                     </div>
                 </div>
@@ -108,31 +107,32 @@
                 <div class="mb-3 d-flex justify-content-between">
                     <div>
                         <label for="telefone" class="label-blue">Telefone/Celular:</label>
-                        <input type="text" id="telefone" class="form-control input-card" placeholder="Digite seu telefone/celular">
+                        <input type="text" id="telefone" class="form-control input-card" required>
                     </div>
                     <div class="col-md-6">
                         <label for="tipoTelefone" class="label-blue">Tipo do Telefone:</label>
-                        <select id="tipoTelefone" class="form-select input-card" placeholder="Selecione o Tipo">
-                            <option value="1">Comercial</option>
-                            <option value="2">Residencial</option>
+                        <select id="tipoTelefone" class="form-select input-card" required>
+                            <option selected>Selecione...</option>
+                            <option value="1">Residencial</option>
+                            <option value="2">Celular</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
                     <label for="dataNascimento" class="label-blue">Data de Nascimento</label>
-                    <input type="date" id="dataNascimento" class="form-control input-card" >
+                    <input type="date" id="dataNascimento" class="form-control input-card" required>
                 </div>
 
                 <label for="emailCliente" class="label-blue">Email do Cliente</label>
-                <input type="email" id="emailCliente" class="form-control input-card" placeholder="Digite o email do cliente">
+                <input type="email" id="emailCliente" class="form-control input-card" placeholder="Digite o email do cliente" required>
 
                 <label for="cpfCliente" class="label-blue">CPF</label>
-                <input type="text" id="cpfCliente" class="form-control input-card" maxlength="11">
+                <input type="text" id="cpfCliente" class="form-control input-card" maxlength="11" required>
 
                 <br>
                 <label for="statusCliente" class="label-blue">Status do Cliente</label>
-                <input type="checkbox" id="statusCliente">
+                <input type="checkbox" id="statusCliente" required>
                 <br>
                 <br>
 
@@ -141,28 +141,28 @@
                 <div id="cartoes-container"></div>
                 <div class="mb-3">
                     <label for="numero" class="label-blue">Número do Cartão:</label>
-                    <input type="text" class="form-control input-card" id="numeroCartao" placeholder="____.____.____.____">
+                    <input type="text" class="form-control input-card" id="numeroCartao" placeholder="____.____.____.____" required>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                     <div>
                         <label for="validade" class="label-blue">Validade:</label>
-                        <input type="text" class="form-control input-card" id="validade" placeholder="MM/AA">
+                        <input type="text" class="form-control input-card" id="validade" placeholder="MM/AA" required>
                     </div>
                     <div>
                         <label for="cvv" class="label-blue">CVV:</label>
-                        <input type="text" class="form-control input-card" id="cvv" placeholder="CVV">
+                        <input type="text" class="form-control input-card" id="cvv" placeholder="CVV" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="titular" class="label-blue">Titular do Cartão:</label>
-                    <input type="text" class="form-control input-card" id="titular" placeholder="Nome Completo do Titular">
+                    <input type="text" class="form-control input-card" id="titular" placeholder="Nome Completo do Titular" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="cpf" class="label-blue">CPF do Titular:</label>
-                    <input type="text" class="form-control input-card" id="cpf" placeholder="___.___.___-__">
+                    <input type="text" class="form-control input-card" id="cpf" placeholder="___.___.___-__" required>
                 </div>
 
                 <br>
@@ -171,38 +171,63 @@
 
                 <div class="mb-3">
                     <label for="ruaCliente" class="label-blue">Rua:</label>
-                    <input type="text" id="ruaCliente" class="form-control input-card" placeholder="Digite sua rua">
+                    <input type="text" id="ruaCliente" class="form-control input-card" placeholder="Digite sua rua" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="cidadeCliente" class="label-blue">Cidade:</label>
-                    <input type="text" id="cidadeCliente" class="form-control input-card" placeholder="Digite sua cidade">
+                    <input type="text" id="cidadeCliente" class="form-control input-card" placeholder="Digite sua cidade" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="bairroCliente" class="label-blue">Bairro:</label>
-                    <input type="text" id="bairroCliente" class="form-control input-card" placeholder="Digite seu bairro">
+                    <input type="text" id="bairroCliente" class="form-control input-card" placeholder="Digite seu bairro" required>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                     <div>
                         <label for="numeroEndereco" class="label-blue">Número:</label>
-                        <input type="text" id="numeroEndereco" class="form-control input-card" placeholder="Digite seu número">
+                        <input type="text" id="numeroEndereco" class="form-control input-card" placeholder="Digite seu número" required>
                     </div>
                     <div>
                         <label for="cep" class="label-blue">CEP:</label>
-                        <input type="text" id="cep" class="form-control input-card" placeholder="Digite seu CEP">
+                        <input type="text" id="cep" class="form-control input-card" placeholder="Digite seu CEP" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="col-md-6">
+                        <label for="tipoResidencia" class="label-blue">Tipo da Residência:</label>
+                        <select id="tipoResidencia" class="form-select input-card" required>
+                            <option selected>Selecione...</option>
+                            <option value="1">Casa</option>
+                            <option value="2">Apartamento</option>
+                            <option value="3">Condomínio</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tipoLogradouro" class="label-blue">Logradouro:</label>
+                        <select id="tipoLogradouro" class="form-select input-card" required>
+                            <option selected>Selecione...</option>
+                            <option value="1">Rua</option>
+                            <option value="2">Avenida</option>
+                            <option value="3">Praça</option>
+                            <option value="4">Estrada</option>
+                            <option value="5">Alameda</option>
+                            <option value="6">Via</option>
+                            <option value="7">Travessa</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                     <div>
                         <label for="estadoCliente" class="label-blue">Estado:</label>
-                        <input type="text" id="estadoCliente" class="form-control input-card" placeholder="Digite seu estado">
+                        <input type="text" id="estadoCliente" class="form-control input-card" placeholder="Digite seu estado" required>
                     </div>
                     <div>
                         <label for="paisCliente" class="label-blue">País:</label>
-                        <input type="text" id="paisCliente" class="form-control input-card" placeholder="Digite seu país">
+                        <input type="text" id="paisCliente" class="form-control input-card" placeholder="Digite seu país" required>
                     </div>
                 </div>
 

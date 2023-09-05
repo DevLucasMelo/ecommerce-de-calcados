@@ -319,6 +319,11 @@ document.addEventListener("DOMContentLoaded", function () {
         //const estadoCliente = document.getElementById("estadoCliente").value;
         //const paisCliente = document.getElementById("paisCliente").value;
         const telefone = parseInt(document.getElementById("telefone").value);
+
+        const selectTipoTelefone = document.getElementById("tipoTelefone");
+        var tipoTelefone = selectTipoTelefone.options[selectTipoTelefone.selectedIndex].value;
+        var tipoTelInt = parseInt(tipoTelefone, 10);
+
         const select = document.getElementById("genero");
         var genero = select.options[select.selectedIndex].value;
         var generoInt = parseInt(genero, 10);
@@ -333,6 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cli_status: statusCliente,
             cli_telefone: telefone,
             cli_email: emailCliente,
+            cli_tip_tel_id: tipoTelInt,
         };
 
         
@@ -380,6 +386,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             else
             {
+                const ruaCliente = document.getElementById("ruaCliente").value;
+                const bairroCliente = document.getElementById("bairroCliente").value;
+                const cidadeCliente = document.getElementById("cidadeCliente").value;
+                const estadoCliente = document.getElementById("estadoCliente").value;
+                const numeroEndereco = document.getElementById("numeroEndereco").value;
+                const paisCliente = document.getElementById("paisCliente").value;
+                const cep = document.getElementById("cep").value;
+
                 closeCupomPopup();
 
                 event.preventDefault();
