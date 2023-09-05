@@ -2,21 +2,12 @@
 using Dapper.Contrib.Extensions;
 using EcommerceBack.Models;
 using Npgsql;
-using System.Data;
 
 namespace EcommerceBack.Data
 {
-    public class DaoCliente
+    public class ClienteDao : BaseDao
     {
-        private static IConfiguration config()
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                        .AddJsonFile("appsettings.json", optional: true)
-                        .Build();
-
-            return configuration;
-        }
-
+        
         public static long InserirCliente(Cliente cliente)
         {
             string conn = config().GetConnectionString("Conn");
@@ -58,7 +49,13 @@ namespace EcommerceBack.Data
         public static void DeleteCliente(int id)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $"delete from clientes where cli_id = {id}";
+            string query = $"DELETE FROM clientes_cartoes WHERE cli_car_cli_id = {id}; \r\n" +
+                $"DELETE FROM clientes_enderecos WHERE cri_end_cli_id = {id}; \r\n" +
+                $"DELETE FROM clientes_enderecos WHERE cri_end_cli_id = {id}; \r\n" +
+                $"DELETE FROM cartoes WHERE car_id NOT IN (SELECT DISTINCT(cli_car_car_id) FROM clientes_cartoes); \r\n" +
+                $"DELETE FROM enderecos WHERE end_id NOT IN (SELECT DISTINCT(cri_end_end_id) FROM clientes_enderecos);\r\n " +
+                $"DELETE FROM clientes WHERE cli_id = {id}; \r\n ";
+
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
@@ -75,7 +72,7 @@ namespace EcommerceBack.Data
         public static List<Cliente> SelecionarClientes()
         {
             string conn = config().GetConnectionString("Conn");
-            string query = "select * from clientes order by cli_id asc";
+            string query = "SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, cli_tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id order by cli_id asc";
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
@@ -108,6 +105,8 @@ namespace EcommerceBack.Data
                 return new Cliente();
             }
         }
+
+
 
         public static List<Cliente> ConsultarClientes(string termoPesquisa)
         {

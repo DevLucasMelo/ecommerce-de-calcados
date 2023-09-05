@@ -23,7 +23,7 @@ namespace EcommerceBack.Controllers
 
             try
             {
-                _list = DaoCliente.SelecionarClientes();
+                _list = ClienteDao.SelecionarClientes();
                 cliente.clientes = _list;
             }
             catch (Exception ex)
@@ -34,20 +34,39 @@ namespace EcommerceBack.Controllers
             return View(cliente);
         }
 
+        [HttpGet]
+        public IActionResult ConsultarTodosClientes()
+        {
+            Cliente cliente = new Cliente();
+
+            try
+            {
+                _list = ClienteDao.SelecionarClientes();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+            return Json(_list);
+        }
+
+
         [HttpPost]
         public IActionResult PostCliente(Cliente cliente)
         {
             long id = 0;
             try
             {
-                id = DaoCliente.InserirCliente(cliente);
+                id = ClienteDao.InserirCliente(cliente);
             }
             catch(Exception ex) 
             {
 
             }
 
-            return RedirectToAction("Cliente");
+            return Ok(id);
         }
 
         [HttpPut]
@@ -55,7 +74,7 @@ namespace EcommerceBack.Controllers
         {
             try
             {
-                bool result = DaoCliente.UpdateCliente(cliente);
+                bool result = ClienteDao.UpdateCliente(cliente);
                 return Ok();
             }
             catch(Exception ex)
@@ -73,7 +92,7 @@ namespace EcommerceBack.Controllers
             string json;
             try
             {
-                cliente = DaoCliente.SelecionarClienteId(id);
+                cliente = ClienteDao.SelecionarClienteId(id);
                 json = JsonConvert.SerializeObject(cliente);
                 return Ok(json);
             }
@@ -86,7 +105,7 @@ namespace EcommerceBack.Controllers
         [HttpGet]
         public IActionResult ConsultarClientes(string termoPesquisa)
         {
-            List<Cliente> clientesEncontrados = DaoCliente.ConsultarClientes(termoPesquisa);
+            List<Cliente> clientesEncontrados = ClienteDao.ConsultarClientes(termoPesquisa);
 
             return Json(clientesEncontrados);
         }
@@ -96,7 +115,7 @@ namespace EcommerceBack.Controllers
         {
             try
             {
-                DaoCliente.DeleteCliente(id);
+                ClienteDao.DeleteCliente(id);
                 return Ok();
             }
             catch
@@ -110,7 +129,7 @@ namespace EcommerceBack.Controllers
         {
             try
             {
-                DaoCliente.UpdateStatus(id);
+                ClienteDao.UpdateStatus(id);
                 return Json(new { success = true });
             }
             catch (Exception ex)
