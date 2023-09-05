@@ -93,8 +93,13 @@
                         <input type="text" id="nomeCliente" class="form-control input-card">
                     </div>
                     <div>
-                        <label for="genero" class="label-blue">Genero</label>
-                        <input type="text" id="genero" class="form-control input-card">
+                        <label for="genero" class="label-blue">Gênero</label>
+
+                        <select id="genero" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option selected>Selecione</option>
+                            <option value="1">Feminino</option>
+                            <option value="2">Masculino</option>
+                        </select>
                     </div>
                 </div>
 
@@ -115,7 +120,7 @@
                 <input type="email" id="emailCliente" class="form-control input-card">
 
                 <label for="cpfCliente" class="label-blue">CPF</label>
-                <input type="text" id="cpfCliente" class="form-control input-card">
+                <input type="text" id="cpfCliente" class="form-control input-card" maxlength="11">
 
                 <label for="statusCliente" class="label-blue">Status</label>
                 <input type="checkbox" id="statusCliente">

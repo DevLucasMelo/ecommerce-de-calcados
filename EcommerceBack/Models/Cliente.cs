@@ -15,7 +15,7 @@ namespace EcommerceBack.Models
         public string cli_nome { get; set; }
 
         [Column(name:"cli_gen_id")]
-        public int? cli_gen_id { get; set; }  = null; // Define o valor como null
+        public int? cli_gen_id { get; set; } 
 
         [Column(name: "cli_status")]
         public bool cli_status { get; set; }
@@ -30,7 +30,7 @@ namespace EcommerceBack.Models
         public string cli_telefone { get; set; }
 
         [Column(name: "cli_tip_tel_id")]
-        public int? cli_tip_tel_id { get; set; } = null; // Define o valor como null
+        public int? cli_tip_tel_id { get; set; }
 
         [Column(name:"cli_email")]
         public string cli_email { get; set; }

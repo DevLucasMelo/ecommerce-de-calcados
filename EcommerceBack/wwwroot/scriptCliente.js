@@ -94,8 +94,10 @@ function fillEditModal(id) {
     const email = clienteObjeto.cli_email;
     const cpf = clienteObjeto.cli_cpf;
     const telefone = clienteObjeto.cli_telefone;
-    const genero = clienteObjeto.cli_genero;
+    const genero = clienteObjeto.cli_gen_id;
     const status_cliente = clienteObjeto.cli_status;
+
+    const selectElement = document.getElementById('genero');
 
     // Preencher os campos do modal de edição
     document.getElementById('clientEditId').value = id;
@@ -104,7 +106,12 @@ function fillEditModal(id) {
     document.getElementById('emailCliente').value = email;
     document.getElementById('cpfCliente').value = cpf;
     document.getElementById('statusCliente').checked = status_cliente;
-    document.getElementById('genero').value = genero;
+    if (genero === 1) {
+        selectElement.value = "1"; 
+    } else if (genero === 2) {
+        selectElement.value = "2";
+    } 
+
     document.getElementById('telefone').value = telefone;
 }
 
@@ -312,13 +319,16 @@ document.addEventListener("DOMContentLoaded", function () {
         //const estadoCliente = document.getElementById("estadoCliente").value;
         //const paisCliente = document.getElementById("paisCliente").value;
         const telefone = parseInt(document.getElementById("telefone").value);
-        const genero = document.getElementById("genero").value;
+        const select = document.getElementById("genero");
+        var genero = select.options[select.selectedIndex].value;
+        var generoInt = parseInt(genero, 10);
+
         var id;
 
         var cliente = {
             cli_nome: nomeCliente,
             cli_dt_nascimento: dataNascimento,
-            cli_genero: genero,
+            cli_gen_id: generoInt,
             cli_cpf: cpfCliente,
             cli_status: statusCliente,
             cli_telefone: telefone,
@@ -341,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cli_id: id,
                     cli_nome: nomeCliente,
                     cli_dt_nascimento: dataNascimento,
-                    cli_genero: genero,
+                    cli_gen_id: generoInt,
                     cli_cpf: cpfCliente,
                     cli_status: statusCliente,
                     cli_telefone: telefone,
@@ -442,14 +452,21 @@ document.getElementById('consultarClientes').addEventListener('click', function 
             resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
 
             data.forEach(cliente => {
+                const status = cliente.cli_status ? "Ativo" : "Inativo";
+                if (cliente.cli_gen_id === 1) {
+                    genero = "Feminino";
+                } else if (cliente.cli_gen_id === 2) {
+                    genero = "Masculino";
+                }
+                
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${cliente.cli_nome}</div>
                         <div class="col">${cliente.cli_dt_nascimento}</div>
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
-                        <div class="col">${cliente.cli_genero}</div>
-                        <div class="col" id="status-cliente-${cliente.cli_id}">${cliente.cli_status}</div>
+                        <div class="col">${genero}</div>
+                        <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
@@ -462,7 +479,6 @@ document.getElementById('consultarClientes').addEventListener('click', function 
 });
 
 function inativaCliente(cliId) {
-
     fetch(`/inativar-cliente?id=${cliId}`, {
         method: "POST", // Você pode usar POST ou outro método apropriado
     })
@@ -472,6 +488,7 @@ function inativaCliente(cliId) {
             if (data.success) {
                 // Atualize o frontend para exibir "Inativo" no lugar de "Ativo" (ou atualize a lista de clientes)
                 const elementoStatus = document.getElementById(`status-cliente-${cliId}`);
+
                 if (elementoStatus) {
                     elementoStatus.textContent = "Inativo";
                 }
@@ -493,22 +510,8 @@ function formatarCPF() {
     // Remove todos os caracteres não numéricos do CPF
     cpf = cpf.replace(/\D/g, "");
 
-    // Formata o CPF com pontos e traço
-    if (cpf.length >= 3 && cpf.length < 6) {
-        cpf = cpf.replace(/(\d{3})/, "$1.");
-    } else if (cpf.length >= 6 && cpf.length < 9) {
-        cpf = cpf.replace(/(\d{3})(\d{3})/, "$1.$2.");
-    } else if (cpf.length >= 9) {
-        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3-");
-    }
-
-    if (cpf.length > 14) {
-        cpf = cpf.substring(0, 14);
-    }
-
     // Define o valor formatado de volta no campo de entrada
     document.getElementById("cpfCliente").value = cpf;
 }
 
-
-document.getElementById("cpfCliente").addEventListener("input", formatarCPF);
+document.getElementById("cpfCliente").addEventListener("blur", formatarCPF);
