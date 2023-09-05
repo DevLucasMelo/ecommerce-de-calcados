@@ -190,7 +190,6 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(3000);
 
-
     }
 
     static void Main(string[] args)

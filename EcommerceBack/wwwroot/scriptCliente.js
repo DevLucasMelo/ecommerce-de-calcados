@@ -685,7 +685,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
 });
 
 function inativaCliente(cliId) {
-    fetch(`/Cliente/inativar-cliente?id=${cliId}`, {
+    fetch(`/inativar-cliente?id=${cliId}`, {
         method: "POST",
     })
         .then(response => response.json())
