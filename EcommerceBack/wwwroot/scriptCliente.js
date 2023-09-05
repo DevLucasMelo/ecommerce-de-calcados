@@ -463,7 +463,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
         .then(response => response.json())
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisa');
-            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+            resultadoPesquisa.innerHTML = ''; 
 
             data.forEach(cliente => {
                 const status = cliente.cli_status ? "Ativo" : "Inativo";
@@ -493,20 +493,18 @@ document.getElementById('consultarClientes').addEventListener('click', function 
 });
 
 function inativaCliente(cliId) {
-    fetch(`/inativar-cliente?id=${cliId}`, {
-        method: "POST", // Você pode usar POST ou outro método apropriado
+    fetch(`/Cliente/inativar-cliente?id=${cliId}`, {
+        method: "POST",
     })
         .then(response => response.json())
         .then(data => {
-            // Verifique se a operação foi bem-sucedida no servidor
             if (data.success) {
-                // Atualize o frontend para exibir "Inativo" no lugar de "Ativo" (ou atualize a lista de clientes)
                 const elementoStatus = document.getElementById(`status-cliente-${cliId}`);
 
                 if (elementoStatus) {
                     elementoStatus.textContent = "Inativo";
                 }
-                // Outras atualizações de interface do usuário, se necessário
+
             } else {
                 alert("Não foi possível inativar o cliente. Tente novamente mais tarde.");
             }
@@ -516,16 +514,3 @@ function inativaCliente(cliId) {
         });
   
 }
-
-function formatarCPF() {
-    // Obtém o valor atual do campo de entrada
-    let cpf = document.getElementById("cpfCliente").value;
-
-    // Remove todos os caracteres não numéricos do CPF
-    cpf = cpf.replace(/\D/g, "");
-
-    // Define o valor formatado de volta no campo de entrada
-    document.getElementById("cpfCliente").value = cpf;
-}
-
-document.getElementById("cpfCliente").addEventListener("blur", formatarCPF);
