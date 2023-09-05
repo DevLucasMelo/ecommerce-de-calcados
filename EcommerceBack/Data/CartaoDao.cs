@@ -43,6 +43,24 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void UpdateCartao(Cartao cartao)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var id = sqlCon.Update(cartao);
+                    var band = sqlCon.Update(cartao.Bandeira);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static void InserirCartaoCliente(long CartaoId, int ClienteId)
         {
             string conn = config().GetConnectionString("Conn");
