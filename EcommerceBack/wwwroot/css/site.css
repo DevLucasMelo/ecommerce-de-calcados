@@ -751,6 +751,7 @@ h1, h2 {
     background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
     justify-content: center;
+    overflow: auto;
 }
 
 .popup-cliente {
@@ -758,7 +759,8 @@ h1, h2 {
     border-radius: 8px;
     padding: 44px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    position: absolute;
+    max-height: 95%;
+    overflow-y: auto;
 }
 
 .close-button {

@@ -147,7 +147,7 @@ function generateCartaoId() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const addClienteCartao = document.getElementById("botaoModalCartao");
+    const addClienteCartao = document.getElementById("meuBotaocliente");
     const closeButtonCartao = document.getElementById("fechar-cartao");
     const overlay = document.getElementById("overlay-cartao");
     const popup = document.getElementById("popup-cartao");
