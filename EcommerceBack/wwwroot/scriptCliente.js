@@ -1,5 +1,9 @@
+$(document).ready(function () {
+    selecionarClientes();
+});
 
 
+const divInclusao = document.getElementById("inclusaoDiv");
 const overlayCupom = document.getElementById("overlay-cliente");
 const popupCupom = document.getElementById("popup-cliente");
 const closeButtonCupom = document.getElementById("fechar-cliente");
@@ -8,8 +12,46 @@ const confirmarBotao = document.getElementById("confirmar-cliente");
 const modalSuccess = document.getElementById("modalSuccess");
 const modalError = document.getElementById("modalError");
 
+function gerenciarCartao() {
+
+}
+
 function recarregarPagina() {
     Location.reload();
+}
+
+function selecionarClientes() {
+    fetch(`/Cliente/ConsultarTodosClientes`)
+        .then(response => response.json())
+        .then(data => {
+            var resultadoPesquisa = document.getElementById('resultadoPesquisa');
+            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+
+            data.forEach(cliente => {
+                const status = cliente.cli_status ? "Ativo" : "Inativo";
+                if (cliente.cli_gen_id === 1) {
+                    genero = "Feminino";
+                } else if (cliente.cli_gen_id === 2) {
+                    genero = "Masculino";
+                }
+
+                resultadoPesquisa.innerHTML += `
+                    <div class="row">
+                        <div class="col">${cliente.cli_nome}</div>
+                        <div class="col">${cliente.cli_dt_nascimento}</div>
+                        <div class="col">${cliente.cli_email}</div>
+                        <div class="col">${cliente.cli_cpf}</div>
+                        <div class="col">${genero}</div>
+                        <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" id="excluir-cliente" onclick="deleteClient('${cliente.cli_id}')">Excluir</button>
+                            <button class="btn btn-danger btn-sm" id="inativar-cliente" onclick="inativaCliente('${cliente.cli_id}')">Inativar</button>
+                        </div>
+                    </div>`;
+            });
+        });
 }
 
 function editCartao(cartaoId) {
@@ -43,8 +85,7 @@ function fillEditModalCartao(cartao) {
 function editClient(clientId) {
     fillEditModal(clientId);
     
-    openCupomPopup(); // Abrir o modal de edição
-
+    openClienteEditarPopup(); // Abrir o modal de edição
 
 
     var clienteId = clientId.toString();
@@ -66,10 +107,10 @@ function deleteClient(clientId) {
             
         },
         error: function (status) {
-            console.log(status)
+            
         }
     });
-    location.reload();
+    selecionarClientes();
 }
 
 function fillEditModal(id) {
@@ -94,10 +135,12 @@ function fillEditModal(id) {
     const email = clienteObjeto.cli_email;
     const cpf = clienteObjeto.cli_cpf;
     const telefone = clienteObjeto.cli_telefone;
+    const tipoTelefone = clienteObjeto.cli_tip_tel_id;
     const genero = clienteObjeto.cli_gen_id;
     const status_cliente = clienteObjeto.cli_status;
 
-    const selectElement = document.getElementById('genero');
+    var selectElementGenero = document.getElementById('genero');
+    var selectElementTipoTelefone = document.getElementById('tipoTelefone');
 
     // Preencher os campos do modal de edição
     document.getElementById('clientEditId').value = id;
@@ -106,19 +149,23 @@ function fillEditModal(id) {
     document.getElementById('emailCliente').value = email;
     document.getElementById('cpfCliente').value = cpf;
     document.getElementById('statusCliente').checked = status_cliente;
-    if (genero === 1) {
-        selectElement.value = "1"; 
-    } else if (genero === 2) {
-        selectElement.value = "2";
-    } 
-
     document.getElementById('telefone').value = telefone;
+
+    selectElementGenero.value = genero.toString();
+    selectElementTipoTelefone.value = tipoTelefone.toString();
+
 }
 
 // Função para abrir o modal de cupom
 function openCupomPopup() {
     overlayCupom.style.display = "flex";
     popupCupom.style.display = "block";
+}
+
+function openClienteEditarPopup() {
+    overlayCupom.style.display = "flex";
+    popupCupom.style.display = "block";
+    divInclusao.style.display = "none";
 }
 
 // Função para fechar o modal de cupom
@@ -191,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Fechar o modal de cupom ao clicar no botão Fechar
-    closeButtonCartao.addEventListener("click", closeCartaoPopup);
+    //closeButtonCartao.addEventListener("click", closeCartaoPopup);
 
     const closeButtonCartao1 = document.querySelectorAll(".modal .close-button-cartao");
     closeButtonCartao1.forEach(function (button) {
@@ -342,7 +389,8 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         
-        if (nomeCliente === "" || dataNascimento === "" || emailCliente === "" || cpfCliente === "" || telefone === "" || genero === "") {
+        if (nomeCliente === "" || dataNascimento === "" || emailCliente === "" ||
+            cpfCliente === "" || telefone === "" || genero === "") {
             // Exibir modal de erro
             modalError.style.display = "block";
         } else {
@@ -354,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 closeCupomPopup();
 
                 var cliente = {
-                    cli_id: id,
+                    cli_id: parseInt(id),
                     cli_nome: nomeCliente,
                     cli_dt_nascimento: dataNascimento,
                     cli_gen_id: generoInt,
@@ -362,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cli_status: statusCliente,
                     cli_telefone: telefone,
                     cli_email: emailCliente,
+                    cli_tip_tel_id: tipoTelInt,
                 };
 
                 $.ajax({
@@ -378,25 +427,66 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
-                $.ajax({
-                    type: "GET",
-                    url: "/Cliente/Cliente",
-                });
+                selecionarClientes();
                 
             }
             else
             {
-                const ruaCliente = document.getElementById("ruaCliente").value;
                 const bairroCliente = document.getElementById("bairroCliente").value;
                 const cidadeCliente = document.getElementById("cidadeCliente").value;
                 const estadoCliente = document.getElementById("estadoCliente").value;
                 const numeroEndereco = document.getElementById("numeroEndereco").value;
                 const paisCliente = document.getElementById("paisCliente").value;
                 const cep = document.getElementById("cep").value;
+                const logradouro = document.getElementById("logradouro").value;
 
-                closeCupomPopup();
+                const selectTipoResidencia = document.getElementById("tipoResidencia");
+                var tipoResidencia = selectTipoResidencia.options[selectTipoResidencia.selectedIndex].value;
+                var tipoResInt = parseInt(tipoResidencia, 10);
+
+                const selectTipoLogradouro = document.getElementById("tipoLogradouro");
+                var tipoLogradouro = selectTipoLogradouro.options[selectTipoLogradouro.selectedIndex].value;
+                var tipoLogInt = parseInt(tipoLogradouro, 10);
+
+                const numeroCartao = document.getElementById("numeroCartao").value;
+                const cvv = document.getElementById("cvv").value;
+                const titular = document.getElementById("titular").value;
+                const bandeira = document.getElementById("bandeira").value;
+
+
+
+                var endereco = {
+                    end_logradouro: logradouro,
+                    end_numero: numeroEndereco,
+                    end_bairro: bairroCliente,
+                    end_cep: cep,
+                    end_tip_res_id: tipoResInt,
+                    end_tip_log_id: tipoLogInt,
+                    cidade: {
+                        cid_nome: cidadeCliente
+                    },
+                    estado: {
+                        est_nome: estadoCliente
+                    },
+                    pais: {
+                        pais_nome: paisCliente
+                    }
+                };
+
+
+                
 
                 event.preventDefault();
+
+                var cartao = {
+                    car_num: numeroCartao,
+                    car_nome: titular,
+                    car_cod_seguranca: cvv,
+                    Bandeira: {
+                        ban_nome: bandeira
+                    }
+                };
+
 
                 id;
 
@@ -407,11 +497,47 @@ document.addEventListener("DOMContentLoaded", function () {
                     data: cliente,
                     async: false,
                     success: function (result) {
+
+                        id = parseInt(result);
+
+                        endereco.ClienteId = id;
+                        cartao.ClienteId = id;
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Endereco/PostEndereco",
+                            dataType: "json",
+                            data: endereco,
+                            async: false,
+                            success: function (result) {
+                                
+                            },
+                            error: function (status) {
+                                alert(status.toString());
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Cartao/PostCartao",
+                            dataType: "json",
+                            data: cartao,
+                            async: false,
+                            success: function (result) {
+
+                            },
+                            error: function (status) {
+                                alert(status.toString());
+                            }
+                        });
                     },
                     error: function (status) {
-                        console.log(status)
+                        alert(status.toString());
                     }
                 });
+
+                closeCupomPopup();
+
             }
             
 
@@ -481,6 +607,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
                         <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-cartoes" onclick="gerenciarCartoes('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
