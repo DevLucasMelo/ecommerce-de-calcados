@@ -11,13 +11,60 @@ const addCupomButton = document.getElementById("meuBotaocliente");
 const confirmarBotao = document.getElementById("confirmar-cliente");
 const modalSuccess = document.getElementById("modalSuccess");
 const modalError = document.getElementById("modalError");
+const overlayCartao = document.getElementById("overlay-cartao");
+const popupCartao = document.getElementById("popup-cartao");
+const closeButtonCartao = document.getElementById("fechar-cartao");
 
-function gerenciarCartao() {
 
+
+addCupomButton.addEventListener("click", openCupomPopup);
+
+closeButtonCartao.addEventListener("click", closeCartaoPopup);
+
+function openCartaoPopup() {
+    overlayCartao.style.display = "flex";
+    popupCartao.style.display = "block";
+}
+
+function closeCartaoPopup() {
+    overlayCartao.style.display = "none";
+    popupCartao.style.display = "none";
+}
+
+
+function gerenciarCartoes(clienteId) {
+    openCartaoPopup();
+    selecionarCartao(clienteId);
+    var clienteId = clienteId.toString();
+
+    document.getElementById('clientCartaoId').value = clienteId;
 }
 
 function recarregarPagina() {
     Location.reload();
+}
+
+function selecionarCartao(clienteId) {
+    fetch(`/Cartao/SelecionarCartaoPoriD?clienteId=${clienteId}`, { async: false })
+        .then(response => response.json())
+        .then(data => {
+            var resultadoPesquisa = document.getElementById('resultadoPesquisaCartao');
+            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+
+            data.forEach(cartao => {
+
+                resultadoPesquisa.innerHTML += `
+                    <div class="row">
+                        <div class="col">${cartao.car_num}</div>
+                        <div class="col">${cartao.car_cod_seguranca}</div>
+                        <div class="col">${cartao.car_nome}</div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" id="editar-cartao" onclick="editCartao('${cartao.car_id}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" id="excluir-cartao" onclick="deletCartao('${cartao.car_id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+        });
 }
 
 function selecionarClientes() {
@@ -43,6 +90,7 @@ function selecionarClientes() {
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
                         <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-cartoes" onclick="gerenciarCartoes('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
                             <button class="btn btn-primary btn-sm" id="editar-cliente" onclick="editClient('${cliente.cli_id}')">Editar</button>
@@ -55,10 +103,7 @@ function selecionarClientes() {
 }
 
 function editCartao(cartaoId) {
-    const clientRow = document.getElementById(`cartaoRow_${cartaoId}`);
-    fillEditModal(clientRow);
-    clientRow.remove();
-    openCupomPopup(); // Abrir o modal de edição
+    fillEditModalCartao(cartaoId); // Abrir o modal de edição
 }
 
 function deleteCartao(cartaoId) {
@@ -66,20 +111,30 @@ function deleteCartao(cartaoId) {
     cartaoRow.remove(); // Remove a linha do cliente do grid
 }
 
-function fillEditModalCartao(cartao) {
-    const cols = cartao.querySelectorAll('.col');
-    const numero = cols[0].textContent;
-    const validade = cols[1].textContent;
-    const cvv = cols[2].textContent;
-    const titular = cols[3].textContent;
-    const cpf = cols[4].textContent;
+function fillEditModalCartao(cartaoId) {
+    var cartaoObjeto;
+    var jsonC;
+    $.ajax({
+        type: "GET",
+        url: "/Cartao/ConsultarSomenteCartaoPoriD",
+        dataType: "json",
+        data: { cartaoId: parseInt(cartaoId) },
+        async: false,
+        success: function (jsonResult) {
+            cartaoObjeto = jsonResult;
+        },
+        error: function (status) {
+            console.log(status)
+        }
+    });
 
     // Preencher os campos do modal de edição
-    document.getElementById('numeroCartao').value = numero;
-    document.getElementById('validade').value = validade;
-    document.getElementById('cvv').value = cvv;
-    document.getElementById('titular').value = titular;
-    document.getElementById('cpf').value = cpf;
+    document.getElementById('bandeiraCartaoId').value = cartaoObjeto.car_id;
+    document.getElementById('clientCartaoId').value = cartaoObjeto.bandeira.ban_id;
+    document.getElementById('numeroCartao1').value = cartaoObjeto.car_num;
+    document.getElementById('cvv1').value = cartaoObjeto.car_cod_seguranca;
+    document.getElementById('titular1').value = cartaoObjeto.car_nome;
+    document.getElementById('bandeira1').value = cartaoObjeto.bandeira.ban_nome;
 }
 
 function editClient(clientId) {
@@ -201,15 +256,15 @@ function generateCartaoId() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const addClienteCartao = document.getElementById("meuBotaocliente");
+    const cartoes = document.getElementById("gerenciar-cartoes");
     const closeButtonCartao = document.getElementById("fechar-cartao");
     const overlay = document.getElementById("overlay-cartao");
     const popup = document.getElementById("popup-cartao");
     const closeButton = document.getElementById("fechar");
-    const confirmarCatao = document.getElementById("confirmar-cartao");
+    const confirmarCartao = document.getElementById("confirmar-cartao");
     const overlayCupom = document.getElementById("overlay-cliente");
     const popupCupom = document.getElementById("popup-cliente");
-
+    var addClienteCartao = document.getElementById("gerenciar-cartoes");
 
     // Função para abrir o modal de cupom
     function openCartaoPopup() {
@@ -231,6 +286,11 @@ document.addEventListener("DOMContentLoaded", function () {
         event.stopPropagation();
     });*/
 
+    addClienteCartao.addEventListener("click", openCupomPopup);
+
+    // Fechar o modal de cupom ao clicar no botão Fechar
+    closeButtonCartao.addEventListener("click", closeCupomPopup);
+
     // Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
     addClienteCartao.addEventListener("click", function (event) {
         openCartaoPopup();
@@ -240,21 +300,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fechar o modal de cupom ao clicar no botão Fechar
     //closeButtonCartao.addEventListener("click", closeCartaoPopup);
 
-    const closeButtonCartao1 = document.querySelectorAll(".modal .close-button-cartao");
-    closeButtonCartao1.forEach(function (button) {
-        button.addEventListener("click", function () {
-            modalSuccess.style.display = "none";
-            modalError.style.display = "none";
-        });
-    });
 
-    confirmarCatao.addEventListener("click", function (event) {
+    confirmarCartao.addEventListener("click", function (event) {
         event.preventDefault();
-        const numeroCartao = document.getElementById("numeroCartao").value;
-        const validade = document.getElementById("validade").value;
-        const cvv = document.getElementById("cvv").value;
-        const titular = document.getElementById("titular").value;
-        const cpfTitular = document.getElementById("cpf").value;
+        var bandeiraId = document.getElementById("bandeiraCartaoId").value;
+        var clienteId = document.getElementById("clientEditId").value;
+        const numeroCartao = document.getElementById("numeroCartao1").value;
+        const cvv = document.getElementById("cvv1").value;
+        const titular = document.getElementById("titular1").value;
+        const bandeira = document.getElementById("bandeira1").value;
 
 
         event.preventDefault();
@@ -263,37 +317,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (numeroCartao === "" || validade === "" || cvv === "" || titular === "" || cpfTitular === "" || telefone === "") {
             // Exibir modal de erro
-            modalError.style.display = "block";
+            
         } else {
-            // Exibir modal de sucesso
-            //modalSuccess.style.display = "block";
-            //closeCupomPopup();
-            event.preventDefault();
-            // Adicionar o cliente ao grid
-            const cartaoGrid = document.getElementById("cartoesGrid");
-            const newRow = document.createElement("div");
-            const cartaoId = generateCartaoId(); // Função para gerar um ID único
-            newRow.setAttribute("id", `cartaoRow_${cartaoId}`); // Definir o ID da linha
-            newRow.classList.add("row");
-            newRow.innerHTML = `
-                <div class="col">${numeroCartao}</div>
-                <div class="col">${validade}</div>
-                <div class="col">${cvv}</div>
-                <div class="col">${titular}</div>
-                <div class="col">${cpfTitular}</div>
-                <div class="col">
-                    <button class="btn btn-primary btn-sm" onclick="editCartao('${cartaoId}')">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteCartao('${cartaoId}')">Excluir</button>
-                </div>
-            `;
-            cartaoGrid.appendChild(newRow);
 
+            if (Number.isInteger(parseInt(clienteId))) {
+
+                var cartao = {
+                    car_num: numeroCartao,
+                    car_nome: titular,
+                    car_cod_seguranca: cvv,
+                    Bandeira: {
+                        ban_id: parseInt(bandeiraId),
+                        ban_nome: bandeira
+                    }
+                };
+
+                cartao.ClienteId = parseInt(clienteId);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Cartao/PutCartao",
+                    dataType: "json",
+                    data: cartao,
+                    async: false,
+                    success: function (result) {
+
+                    },
+                    error: function (status) {
+                        alert(status.toString());
+                    }
+                });
+
+                selecionarCartao(parseInt(clienteId));
+            }
+
+
+            event.preventDefault();
+            
             // Limpar os campos do formulário
             document.getElementById("numeroCartao").value = "";
-            document.getElementById("validade").value = "";
             document.getElementById("cvv").value = "";
             document.getElementById("titular").value = "";
-            document.getElementById("cpf").value = "";
         }
     });
 

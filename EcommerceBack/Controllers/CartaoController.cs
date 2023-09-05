@@ -30,5 +30,49 @@ namespace EcommerceBack.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public IActionResult SelecionarCartaoPoriD(int clienteId)
+        {
+            try
+            {
+                var aqui = CartaoDao.SelecionarCartaoIdCliente(clienteId);
+
+                return Json(aqui);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ConsultarSomenteCartaoPoriD(int cartaoId)
+        {
+            try
+            {
+                var cartao = CartaoDao.ConsultarSomenteCartaoPoriD(cartaoId);
+
+                return Json(cartao);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult PutCartao(Cartao cartao)
+        {
+            try
+            {
+                var cartao = CartaoDao.ConsultarSomenteCartaoPoriD(cartaoId);
+
+                return Json(cartao);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
     }
 }

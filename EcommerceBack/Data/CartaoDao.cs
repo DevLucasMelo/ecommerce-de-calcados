@@ -63,5 +63,55 @@ namespace EcommerceBack.Data
 
         }
 
+        public static List<Cartao> SelecionarCartaoIdCliente(int ClienteId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT c.car_id, c.car_num, c.car_nome, c.car_cod_seguranca
+                                FROM cartoes c
+                                INNER JOIN clientes_cartoes cc ON c.car_id = cc.cli_car_car_id
+                                WHERE cc.cli_car_cli_id = {ClienteId} ;";
+                
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Cartao>(query).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static Cartao ConsultarSomenteCartaoPoriD(int cartao)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT c.car_id, c.car_num, c.car_nome, c.car_cod_seguranca
+                                FROM cartoes c
+                                WHERE c.car_id = {cartao} ;";
+
+            string query2 = $@"SELECT b.ban_id, b.ban_nome
+                                FROM cartoes c
+                                JOIN bandeiras b ON c.car_ban_id = b.ban_id
+                                WHERE c.car_id = {cartao} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var cartao1 = sqlCon.Query<Cartao>(query).FirstOrDefault();
+                    var bandeira = sqlCon.Query<Bandeira>(query2).FirstOrDefault();
+                    cartao1.Bandeira = bandeira;
+
+                    return cartao1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

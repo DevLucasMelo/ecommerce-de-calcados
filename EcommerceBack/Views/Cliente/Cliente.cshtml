@@ -247,41 +247,46 @@
                 <h3 class="text-center">Gerenciamento de Cartões</h3>
 
                 <form>
+                    <input type="hidden" id="clientCartaoId">
+                    <input type="hidden" id="bandeiraCartaoId">
+
                     <div id="cartoes-container"></div>
                     <div class="mb-3">
                         <label for="numero" class="label-blue">Número do Cartão:</label>
-                        <input type="text" class="form-control input-card" id="numeroCartao" placeholder="____.____.____.____" required>
+                        <input type="text" class="form-control input-card" id="numeroCartao1" placeholder="____.____.____.____" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="titular" class="label-blue">Titular do Cartão:</label>
-                        <input type="text" class="form-control input-card" id="titular" placeholder="Nome Impresso no Cartão" required>
+                        <input type="text" class="form-control input-card" id="titular1" placeholder="Nome Impresso no Cartão" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="bandeira" class="label-blue">Bandeira:</label>
-                        <input type="text" class="form-control input-card" id="bandeira" required>
+                        <input type="text" class="form-control input-card" id="bandeira1" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="cvv" class="label-blue">CVV:</label>
-                        <input type="text" class="form-control input-card" id="cvv" placeholder="CVV" required>
+                        <input type="text" class="form-control input-card" id="cvv1" placeholder="CVV" required>
                     </div>
+
+                    <button id="confirmar-cartao" class="btn btn-primary">Confirmar</button>
                 </form>
 
                 <div id="cartoesGrid" class="container mt-5">
                     <h1 class="text-center">Lista de Cartões</h1>
                     <div class="row grid-header">
                         <div class="col">Número do Cartão</div>
-                        <div class="col">Validade</div>
                         <div class="col">CVV</div>
                         <div class="col">Titular do Cartão</div>
-                        <div class="col">CPF do titular</div>
                         <div class="col">Ações</div>
+                    </div>
+                    <div id="resultadoPesquisaCartao">
+                        
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 

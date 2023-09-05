@@ -731,14 +731,17 @@ h1, h2 {
     background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
     justify-content: center;
+    overflow: auto;
 }
 
 .popup-cartao {
+    display: none;
     background-color: white;
     border-radius: 8px;
-    padding: 20px;
+    padding: 44px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    position: relative;
+    max-height: 95%;
+    overflow-y: auto;
 }
 
 .overlay-cliente {
