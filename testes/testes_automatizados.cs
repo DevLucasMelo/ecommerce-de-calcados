@@ -64,13 +64,12 @@ class TestesAutomatizados
 
         driver.FindElement(By.Id("numeroCartao")).SendKeys("1234.5678.9012.3456");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("validade")).SendKeys("12/25");
-        System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("cvv")).SendKeys("123");
-        System.Threading.Thread.Sleep(1000);
         driver.FindElement(By.Id("titular")).SendKeys("Paulo S de Oliveira");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("cpf")).SendKeys("12345678900");
+        driver.FindElement(By.Id("bandeira")).SendKeys("12/25");
+        System.Threading.Thread.Sleep(1000);
+        driver.FindElement(By.Id("cvv")).SendKeys("123");
+        
         
         System.Threading.Thread.Sleep(1000);
 
@@ -78,10 +77,13 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(1000);
 
-        driver.FindElement(By.Id("cidadeCliente")).SendKeys("Cidade da Amostra");
+        driver.FindElement(By.Id("logradouro")).SendKeys("Antonio Gonçalves Vieira");
         System.Threading.Thread.Sleep(1000);
 
-        driver.FindElement(By.Id("bairroCliente")).SendKeys("Bairro da Amostra");
+        driver.FindElement(By.Id("cidadeCliente")).SendKeys("Mogi das Cruzes");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("bairroCliente")).SendKeys("Mogilar");
         System.Threading.Thread.Sleep(1000);
 
         driver.FindElement(By.Id("numeroEndereco")).SendKeys("123");
@@ -97,7 +99,7 @@ class TestesAutomatizados
         IWebElement optionResidencia = driver.FindElement(By.CssSelector("#tipoResidencia option[value='2']"));
 
         optionResidencia.Click();
-
+        
         System.Threading.Thread.Sleep(1000);
 
         IWebElement tipoLogradouroSelect = driver.FindElement(By.Id("tipoLogradouro"));
@@ -110,11 +112,11 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(1000);
 
-        driver.FindElement(By.Id("estadoCliente")).SendKeys("Estado da Amostra");
+        driver.FindElement(By.Id("estadoCliente")).SendKeys("São Paulo");
 
         System.Threading.Thread.Sleep(1000);
 
-        driver.FindElement(By.Id("paisCliente")).SendKeys("País da Amostra");
+        driver.FindElement(By.Id("paisCliente")).SendKeys("Brasil");
 
         System.Threading.Thread.Sleep(1000);
 
@@ -130,7 +132,18 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(3000);
 
+        driver.FindElement(By.Id("emailCliente")).Clear();
+
+        System.Threading.Thread.Sleep(2000);
+
         driver.FindElement(By.Id("emailCliente")).SendKeys("outroemail@gmail.com");
+        
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("telefone")).Clear();
+
+        System.Threading.Thread.Sleep(2000);
+
         driver.FindElement(By.Id("telefone")).SendKeys("11958324313");
         
         System.Threading.Thread.Sleep(2000);
@@ -154,7 +167,6 @@ class TestesAutomatizados
         termoPesquisaInput.SendKeys("Paulo");
 
         driver.FindElement(By.Id("consultarClientes")).Click();
-
 
         System.Threading.Thread.Sleep(3000);
 
@@ -196,10 +208,11 @@ class TestesAutomatizados
         
         var testes = new TestesAutomatizados(); 
 
-        testes.Insercao(driver); 
+        //testes.Insercao(driver); 
         //testes.Alteracao(driver);
-        //testes.Exclusao(driver);
         testes.Consulta(driver);
+        //testes.Exclusao(driver);
+
 
     }
 }
