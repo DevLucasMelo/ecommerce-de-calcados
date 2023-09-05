@@ -119,8 +119,7 @@ namespace EcommerceBack.Data
                 return new List<Cliente>();
             }
 
-            string query = $@"SELECT *, CASE WHEN cli_status = true THEN 'Ativo' ELSE 'Inativo'
-                    END AS cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id
+            string query = $@"SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id
                     LEFT JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
                     WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
                     TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
