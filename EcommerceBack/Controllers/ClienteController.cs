@@ -124,17 +124,18 @@ namespace EcommerceBack.Controllers
             }
         }
 
-        [HttpPost("/inativar-cliente")]
+        [HttpPost]
         public IActionResult InativarCliente(int id)
         {
+
             try
             {
-                ClienteDao.UpdateStatus(id);
-                return Json(new { success = true });
+                DaoCliente.UpdateStatus(id);
+                return Ok();
             }
-            catch (Exception ex)
+            catch
             {
-                return Json(new { success = false, error = ex.Message });
+                return BadRequest("Erro ao inativar cliente");
             }
         }
     }

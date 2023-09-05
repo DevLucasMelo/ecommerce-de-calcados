@@ -114,17 +114,20 @@ namespace EcommerceBack.Data
 
             if (string.IsNullOrWhiteSpace(termoPesquisa))
             {
-                // Retorna uma lista vazia se não houver termo de pesquisa
                 return new List<Cliente>();
             }
-
-            string query = $@"SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id
-                    LEFT JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
-                    WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
-                    TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
-                    cli_email ILIKE '%{termoPesquisa}%' OR 
-                    cli_cpf ILIKE '%{termoPesquisa}%' OR 
-                    gen_nome ILIKE '%{termoPesquisa}%' OR tip_tel_nome ILIKE '%{termoPesquisa}%'";
+            string query = $@"SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, tip_tel_id, cli_status 
+                  FROM clientes 
+                  LEFT JOIN generos ON gen_id = cli_gen_id
+                  LEFT JOIN tipos_telefones ON tip_tel_id = cli_tip_tel_id
+                  WHERE cli_nome ILIKE '%{termoPesquisa}%' OR 
+                  TO_CHAR(cli_dt_nascimento, 'YYYY-MM-DD') ILIKE '%{termoPesquisa}%' OR 
+                  cli_email ILIKE '%{termoPesquisa}%' OR 
+                  cli_cpf ILIKE '%{termoPesquisa}%' OR 
+                  gen_nome ILIKE '%{termoPesquisa}%' OR 
+                  tip_tel_nome ILIKE '%{termoPesquisa}%' OR 
+                  (cli_status = true AND '{termoPesquisa}' ILIKE 'Ativo') OR 
+                  (cli_status = false AND '{termoPesquisa}' ILIKE 'Inativo')";
 
             try
             {
