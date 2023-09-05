@@ -65,9 +65,8 @@ namespace EcommerceBack.Controllers
         {
             try
             {
-                var cartao = CartaoDao.ConsultarSomenteCartaoPoriD(cartaoId);
-
-                return Json(cartao);
+                CartaoDao.UpdateCartao(cartao);
+                return Ok();
             }
             catch
             {

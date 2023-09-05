@@ -130,7 +130,7 @@ namespace EcommerceBack.Controllers
 
             try
             {
-                DaoCliente.UpdateStatus(id);
+                ClienteDao.UpdateStatus(id);
                 return Ok();
             }
             catch

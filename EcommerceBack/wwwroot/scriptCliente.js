@@ -326,6 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     car_num: numeroCartao,
                     car_nome: titular,
                     car_cod_seguranca: cvv,
+                    car_ban_id: parseInt(bandeiraId),
                     Bandeira: {
                         ban_id: parseInt(bandeiraId),
                         ban_nome: bandeira
