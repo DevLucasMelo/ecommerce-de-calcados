@@ -351,14 +351,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 selecionarCartao(parseInt(clienteId));
             }
+            else
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/Cartao/PostCartao",
+                    dataType: "json",
+                    data: cartao,
+                    async: false,
+                    success: function (result) {
+
+                    },
+                    error: function (status) {
+                        alert(status.toString());
+                    }
+                });
+                selecionarCartao(parseInt(clienteId));
+            }
 
 
             event.preventDefault();
             
             // Limpar os campos do formulário
-            document.getElementById("numeroCartao").value = "";
-            document.getElementById("cvv").value = "";
-            document.getElementById("titular").value = "";
+            document.getElementById("bandeiraCartaoId").value = "";
+            document.getElementById("clientEditId").value = "";
+            document.getElementById("numeroCartao1").value = "";
+            document.getElementById("cvv1").value = "";
+            document.getElementById("titular1").value = "";
+            document.getElementById("bandeira1").value = "";
         }
     });
 
