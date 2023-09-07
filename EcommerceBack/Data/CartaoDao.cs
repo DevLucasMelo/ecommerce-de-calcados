@@ -131,5 +131,25 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void DeleteCartao(int cartaoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"delete from clientes_cartoes where cli_car_car_id = {cartaoId}";
+            string query2 = $@"delete from cartoes where car_id = {cartaoId}";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var delete = sqlCon.Execute(query);
+                    var delete2 = sqlCon.Execute(query2);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

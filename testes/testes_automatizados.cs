@@ -128,13 +128,16 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(1000);
 
-        driver.FindElement(By.Id("numeroCartao")).SendKeys("1234.5678.9012.3456");
+        driver.FindElement(By.Id("numeroCartao1")).SendKeys("1234.5678.9012.3456");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("titular")).SendKeys("Paulo S de Oliveira");
+        driver.FindElement(By.Id("titular1")).SendKeys("Paulo S de Oliveira");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("bandeira")).SendKeys("12/25");
+        driver.FindElement(By.Id("bandeira1")).SendKeys("12/25");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("cvv")).SendKeys("123");
+        driver.FindElement(By.Id("cvv1")).SendKeys("123");
+
+        driver.FindElement(By.Id("confirmar-cartao")).Click();
+
 
     }
 
@@ -165,37 +168,8 @@ class TestesAutomatizados
 
         driver.FindElement(By.Id("confirmar-cliente")).Click();
 
-        driver.FindElement(By.Id("fechar")).Click();
+        driver.FindElement(By.Id("fechar-cliente")).Click();
 
-        driver.FindElement(By.Id("gerenciar-cartoes")).Click();
-
-        System.Threading.Thread.Sleep(1000);
-        
-        driver.FindElement(By.Id("gerenciar-cartoes")).Click();
-
-        System.Threading.Thread.Sleep(1000);
-
-        driver.FindElement(By.Id("editar-cartao")).Click();
-
-        driver.FindElement(By.Id("numeroCartao")).Clear();
-
-        driver.FindElement(By.Id("titular")).Clear();
-
-        driver.FindElement(By.Id("bandeira")).Clear();
-
-        driver.FindElement(By.Id("cvv")).Clear();
-
-        
-        driver.FindElement(By.Id("numeroCartao")).SendKeys("1234.5678.9012.3456");
-        System.Threading.Thread.Sleep(1000);
-        
-        driver.FindElement(By.Id("titular")).SendKeys("Paulo S de Oliveira");
-        System.Threading.Thread.Sleep(1000);
-        
-        driver.FindElement(By.Id("bandeira")).SendKeys("12/25");
-       
-        System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("cvv")).SendKeys("123");
     }
 
     void Exclusao(IWebDriver driver)
@@ -239,7 +213,7 @@ class TestesAutomatizados
 
     static void Main(string[] args)
     {
-        string chromedriverPath = @"C:\Users\lucas\OneDrive\Área de Trabalho\ecommerce full\testes\chromedriver-win64\chromedriver.exe"; 
+        string chromedriverPath = @"C:\EcommerceBack2\EcommerceBack\testes\chromedriver-win64\chromedriver.exe"; 
 
         var chromeOptions = new ChromeOptions();
         chromeOptions.AddArgument("--start-maximized"); 
@@ -252,10 +226,10 @@ class TestesAutomatizados
         
         var testes = new TestesAutomatizados(); 
 
-        testes.Insercao(driver); 
+        //testes.Insercao(driver); 
         //testes.Alteracao(driver);
-        //testes.Consulta(driver);
-        //testes.Exclusao(driver);
+        testes.Consulta(driver);
+        testes.Exclusao(driver);
 
 
     }

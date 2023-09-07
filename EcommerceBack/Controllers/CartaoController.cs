@@ -73,5 +73,19 @@ namespace EcommerceBack.Controllers
                 return BadRequest("Erro");
             }
         }
+
+        [HttpDelete]
+        public IActionResult DeleteCartao(int cartaoId)
+        {
+            try
+            {
+                CartaoDao.DeleteCartao(cartaoId);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
     }
 }

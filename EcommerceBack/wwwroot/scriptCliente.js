@@ -21,6 +21,18 @@ addCupomButton.addEventListener("click", openCupomPopup);
 
 closeButtonCartao.addEventListener("click", closeCartaoPopup);
 
+function verificarExecucaoEdicao(cartaoId) {
+    var resposta = window.confirm("Tem certeza que deseja editar?");
+
+    if (resposta) {
+        // Código a ser executado se o usuário clicar em "Sim"
+        alert("Você escolheu 'Sim'!");
+    } else {
+        // Código a ser executado se o usuário clicar em "Não"
+        alert("Você escolheu 'Não' ou fechou o diálogo.");
+    }
+}
+
 function openCartaoPopup() {
     overlayCartao.style.display = "flex";
     popupCartao.style.display = "block";
@@ -34,10 +46,11 @@ function closeCartaoPopup() {
 
 function gerenciarCartoes(clienteId) {
     openCartaoPopup();
+    document.getElementById('clientCartaoId').value = clienteId;
     selecionarCartao(clienteId);
     var clienteId = clienteId.toString();
 
-    document.getElementById('clientCartaoId').value = clienteId;
+    
 }
 
 function recarregarPagina() {
@@ -104,11 +117,53 @@ function selecionarClientes() {
 
 function editCartao(cartaoId) {
     fillEditModalCartao(cartaoId); // Abrir o modal de edição
+    preencherCartaoEditar(cartaoId);
+
 }
 
-function deleteCartao(cartaoId) {
-    const cartaoRow = document.getElementById(`clientRow_${cartaoId}`);
-    cartaoRow.remove(); // Remove a linha do cliente do grid
+function excluirCartaoEditar() {
+    var divEditarCartoes = document.getElementById("editar-cartoes-container");
+
+    // Seleciona o elemento h2 dentro da div (supondo que seja o único h2)
+    var h2Element = divEditarCartoes.querySelector("h4");
+
+    // Verifica se o h2 foi encontrado antes de tentar removê-lo
+    if (h2Element) {
+        // Remove o h2 da div
+        divEditarCartoes.removeChild(h2Element);
+    }
+}
+
+function preencherCartaoEditar(cartaoId) {
+    var divEditarCartoes = document.getElementById("editar-cartoes-container");
+
+    // Cria um elemento h2
+    var h2Element = document.createElement("h4");
+
+    
+    h2Element.innerText = "Editando Cartão: " + cartaoId.toString();
+
+
+    
+    divEditarCartoes.appendChild(h2Element);
+}
+
+function deletCartao(cartaoId) {
+    $.ajax({
+        type: "DELETE",
+        url: "/Cartao/DeleteCartao",
+        dataType: "json",
+        data: { cartaoId: parseInt(cartaoId) },
+        async: false,
+        success: function (jsonResult) {
+            
+        },
+        error: function (status) {
+            console.log(status)
+        }
+    });
+    var clienteId = document.getElementById("clientCartaoId").value;
+    selecionarCartao(clienteId);
 }
 
 function fillEditModalCartao(cartaoId) {
@@ -129,8 +184,8 @@ function fillEditModalCartao(cartaoId) {
     });
 
     // Preencher os campos do modal de edição
-    document.getElementById('bandeiraCartaoId').value = cartaoObjeto.car_id;
-    document.getElementById('clientCartaoId').value = cartaoObjeto.bandeira.ban_id;
+    document.getElementById('bandeiraCartaoId').value = cartaoObjeto.bandeira.ban_id;
+    document.getElementById('CartaoId').value = cartaoObjeto.car_id;
     document.getElementById('numeroCartao1').value = cartaoObjeto.car_num;
     document.getElementById('cvv1').value = cartaoObjeto.car_cod_seguranca;
     document.getElementById('titular1').value = cartaoObjeto.car_nome;
@@ -264,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmarCartao = document.getElementById("confirmar-cartao");
     const overlayCupom = document.getElementById("overlay-cliente");
     const popupCupom = document.getElementById("popup-cliente");
-    var addClienteCartao = document.getElementById("gerenciar-cartoes");
+    //var addClienteCartao = document.getElementById("gerenciar-cartoes");
 
     // Função para abrir o modal de cupom
     function openCartaoPopup() {
@@ -278,24 +333,17 @@ document.addEventListener("DOMContentLoaded", function () {
         popup.style.display = "none";
     }
 
-    /*popupCupom.addEventListener("click", function(event) {
-        event.stopPropagation();
-    });
 
-    popup.addEventListener("click", function(event) {
-        event.stopPropagation();
-    });*/
-
-    addClienteCartao.addEventListener("click", openCupomPopup);
+    //addClienteCartao.addEventListener("click", openCupomPopup);
 
     // Fechar o modal de cupom ao clicar no botão Fechar
     closeButtonCartao.addEventListener("click", closeCupomPopup);
 
     // Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
-    addClienteCartao.addEventListener("click", function (event) {
-        openCartaoPopup();
-        event.preventDefault();
-    });
+    //addClienteCartao.addEventListener("click", function (event) {
+    //    openCartaoPopup();
+    //    event.preventDefault();
+    //});
 
     // Fechar o modal de cupom ao clicar no botão Fechar
     //closeButtonCartao.addEventListener("click", closeCartaoPopup);
@@ -303,8 +351,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     confirmarCartao.addEventListener("click", function (event) {
         event.preventDefault();
+        const cartaoId = document.getElementById("CartaoId").value;
+
         var bandeiraId = document.getElementById("bandeiraCartaoId").value;
-        var clienteId = document.getElementById("clientEditId").value;
+        var clienteId = document.getElementById("clientCartaoId").value;
         const numeroCartao = document.getElementById("numeroCartao1").value;
         const cvv = document.getElementById("cvv1").value;
         const titular = document.getElementById("titular1").value;
@@ -315,14 +365,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-        if (numeroCartao === "" || validade === "" || cvv === "" || titular === "" || cpfTitular === "" || telefone === "") {
+        if (numeroCartao === "" || cvv === "" || titular === "") {
             // Exibir modal de erro
             
         } else {
 
-            if (Number.isInteger(parseInt(clienteId))) {
+            if (Number.isInteger(parseInt(cartaoId))) {
 
                 var cartao = {
+                    car_id: cartaoId,
                     car_num: numeroCartao,
                     car_nome: titular,
                     car_cod_seguranca: cvv,
@@ -345,14 +396,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     },
                     error: function (status) {
-                        alert(status.toString());
+                        
                     }
                 });
-
+                excluirCartaoEditar();
                 selecionarCartao(parseInt(clienteId));
             }
             else
             {
+                var cartao = {
+                    ClienteId: clienteId,
+                    car_num: numeroCartao,
+                    car_nome: titular,
+                    car_cod_seguranca: cvv,
+                    Bandeira: {
+                        ban_nome: bandeira
+                    }
+                };
+
+
                 $.ajax({
                     type: "POST",
                     url: "/Cartao/PostCartao",
@@ -363,9 +425,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     },
                     error: function (status) {
-                        alert(status.toString());
+                        
                     }
                 });
+                
                 selecionarCartao(parseInt(clienteId));
             }
 
@@ -374,7 +437,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             // Limpar os campos do formulário
             document.getElementById("bandeiraCartaoId").value = "";
-            document.getElementById("clientEditId").value = "";
+            document.getElementById("CartaoId").value = "";
             document.getElementById("numeroCartao1").value = "";
             document.getElementById("cvv1").value = "";
             document.getElementById("titular1").value = "";
@@ -598,7 +661,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 
                             },
                             error: function (status) {
-                                alert(status.toString());
+                                //alert(status.toString());
                             }
                         });
 
@@ -612,12 +675,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             },
                             error: function (status) {
-                                alert(status.toString());
+                                //alert(status.toString());
                             }
                         });
                     },
                     error: function (status) {
-                        alert(status.toString());
+                        //alert(status.toString());
                     }
                 });
 
