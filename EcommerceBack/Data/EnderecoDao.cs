@@ -43,6 +43,28 @@ namespace EcommerceBack.Data
             }
         }
 
+        public long InserirCidades(List<Cidade> cidades)
+        {
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(connectionString))
+                {
+                    sqlCon.Open();
+
+                    foreach (var cidade in cidades)
+                    {
+                        // Inserir a cidade no banco de dados
+                        var id = sqlCon.Insert(cidade);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Trate qualquer exceção aqui
+                return 0;
+            }
+        }
+
         public static long InserirEstado(Estado estado)
         {
             string conn = config().GetConnectionString("Conn");
