@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "PaginaInicial";
+}
+
+
+<body onload="carregarValorCarrinho()">
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+    <div class="container">
+      <ul class="navbar-nav">
+        <li class="nav-item nav-item-cart">
+          <a class="nav-link custom-link" style="color: white;" href="index.html" ><i class="fas fa-home"></i> Tela inicial</a>
+        </li>
+        
+        <li class="nav-item nav-item-cart">
+          <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html" >
+            <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+          Carrinho
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar-nav navbar-nav-right">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+      
+    <img width="100%" src="estilos/imagens/banner_home.png" alt="Banner" class="banner">
+
+    <div class="container-titulos">
+      <strong><p class="ofertas">Ofertas especiais</p></strong>
+      <p class="ofertas">Os melhores preços</p>
+    </div>
+    
+    @model List<Calcados> 
+
+    <div class="container-card-image">
+        @foreach (var calcado in Model.Take(4))
+        {
+            <div class="container-item">
+                <img class="image-index" src="~/imag" alt="">
+                <p class="p-index">@calcado.cal_marca @calcado.cal_modelo</p>
+                <p class="p-index">@calcado.cal_titulo</p>
+                <p class="p-index">R$ @calcado.cal_valor.ToString("0.00")</p>
+                <p class="p-index">10x de R$ @(calcado.cal_valor / 10).ToString("0.00")</p>
+            </div>
+        }
+    </div>
+
+    <div class="container-card-image">
+        @foreach (var calcado in Model.Skip(4).Take(4)) <!-- Exibe a segunda fileira de produtos -->
+        {
+            <div class="container-item">
+                <img class="image-index" src="caminho_para_imagem" alt="">
+                <p class="p-index">@calcado.cal_marca @calcado.cal_modelo</p>
+                <p class="p-index">@calcado.cal_titulo</p>
+                <p class="p-index">R$ @calcado.cal_valor.ToString("0.00")</p>
+                <p class="p-index">10x de R$ @(calcado.cal_valor / 10).ToString("0.00")</p>
+            </div>
+        }
+    </div>
+
+    <script src="../controller/script.js"></script>
+
+</body>
+</html>
