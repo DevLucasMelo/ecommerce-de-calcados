@@ -35,5 +35,35 @@ namespace EcommerceBack.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public IActionResult SelecionarEnderecoPoriD(int clienteId)
+        {
+            try
+            {
+                var aqui = EnderecoDao.SelecionarEnderecoIdCliente(clienteId);
+
+                return Json(aqui);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ConsultarSomenteEnderecoPoriD(int enderecoId)
+        {
+            try
+            {
+                var cartao = CartaoDao.ConsultarSomenteCartaoPoriD(enderecoId);
+
+                return Json(cartao);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
     }
 }
