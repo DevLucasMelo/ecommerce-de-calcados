@@ -9,21 +9,21 @@ namespace EcommerceBack.Data
     public class CalcadosDao : BaseDao
     {
      
-        public static List<Cliente> SelecionarClientes()
+        public static List<Calcados> SelecionarCalcados()
         {
             string conn = config().GetConnectionString("Conn");
-            string query = "SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, cli_tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id order by cli_id asc";
+            string query = "SELECT * FROM calcados";
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
-                    var clientes = sqlCon.Query<Cliente>(query).ToList();
-                    return clientes;
+                    var calcados = sqlCon.Query<Calcados>(query).ToList();
+                    return calcados;
                 }
             }
             catch (Exception ex)
             {
-                return new List<Cliente>();
+                return new List<Calcados>();
             }
         }
 

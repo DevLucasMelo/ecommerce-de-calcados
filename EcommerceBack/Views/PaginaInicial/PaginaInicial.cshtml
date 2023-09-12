@@ -1,3 +1,5 @@
+﻿@model List<Calcados>
+
 @{
     ViewData["Title"] = "PaginaInicial";
 }
@@ -36,42 +38,44 @@
     </div>
   </nav>
       
-    <img width="100%" src="estilos/imagens/banner_home.png" alt="Banner" class="banner">
+    <img width="100%" src="~/imagens/banner_home.png" alt="Banner" class="banner">
 
     <div class="container-titulos">
       <strong><p class="ofertas">Ofertas especiais</p></strong>
       <p class="ofertas">Os melhores preços</p>
     </div>
     
-    @model List<Calcados> 
 
     <div class="container-card-image">
-        @foreach (var calcado in Model.Take(4))
+        @foreach (var calcados in Model.Take(4))
         {
             <div class="container-item">
-                <img class="image-index" src="~/imag" alt="">
-                <p class="p-index">@calcado.cal_marca @calcado.cal_modelo</p>
-                <p class="p-index">@calcado.cal_titulo</p>
-                <p class="p-index">R$ @calcado.cal_valor.ToString("0.00")</p>
-                <p class="p-index">10x de R$ @(calcado.cal_valor / 10).ToString("0.00")</p>
+                <input type="hidden" id="@calcados.cal_id">
+                <img class="image-index" src="~/imagens/png-transparent-air-force-1-sneakers-basketball-shoe-nike-air-force-one-white-leather-logo-thumbnail-removebg-preview" alt="">
+                <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
+                <p class="p-index">@calcados.cal_titulo</p>
+                <p class="p-index">R$ @calcados.cal_valor.ToString("0.00")</p>
+                <p class="p-index">10x de R$ @(calcados.cal_valor / 10).ToString("0.00")</p>
             </div>
         }
     </div>
 
     <div class="container-card-image">
-        @foreach (var calcado in Model.Skip(4).Take(4)) <!-- Exibe a segunda fileira de produtos -->
+        @foreach (var calcados in Model.Skip(4).Take(4)) 
         {
             <div class="container-item">
-                <img class="image-index" src="caminho_para_imagem" alt="">
-                <p class="p-index">@calcado.cal_marca @calcado.cal_modelo</p>
-                <p class="p-index">@calcado.cal_titulo</p>
-                <p class="p-index">R$ @calcado.cal_valor.ToString("0.00")</p>
-                <p class="p-index">10x de R$ @(calcado.cal_valor / 10).ToString("0.00")</p>
+                <input type="hidden" id="@calcados.cal_id">
+                <img class="image-index" src="~/imagens/png-transparent-air-force-1-sneakers-basketball-shoe-nike-air-force-one-white-leather-logo-thumbnail-removebg-preview" alt="">
+                <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
+                <p class="p-index">@calcados.cal_titulo</p>
+                <p class="p-index">R$ @calcados.cal_valor.ToString("0.00")</p>
+                <p class="p-index">10x de R$ @(calcados.cal_valor / 10).ToString("0.00")</p>
             </div>
         }
     </div>
 
-    <script src="../controller/script.js"></script>
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <script src="~/js/script.js"></script>
 
 </body>
-</html>

@@ -10,54 +10,58 @@ namespace EcommerceBack.Models
         public int cal_id { get; set; }
 
         [Column("cal_marca")]
-        public string Marca { get; set; }
+        public string cal_marca { get; set; }
 
         [Column("cal_modelo")]
-        public string Modelo { get; set; }
+        public string cal_modelo { get; set; }
 
         [Column("cal_valor", TypeName = "decimal(10, 2)")]
-        public decimal Valor { get; set; }
+        public decimal cal_valor { get; set; }
 
         [Column("cal_dt_fabric")]
-        public DateTime DataFabricacao { get; set; }
+        public DateTime cal_dt_fabric { get; set; }
 
         [Column("cal_titulo")]
-        public string Titulo { get; set; }
+        public string cal_titulo { get; set; }
 
         [Column("cal_cor")]
-        public string Cor { get; set; }
+        public string cal_cor { get; set; }
 
         [Column("cal_tamanho")]
-        public string Tamanho { get; set; }
+        public string cal_tamanho { get; set; }
 
         [Column("cal_peso")]
-        public string Peso { get; set; }
+        public string cal_peso { get; set; }
 
         [Column("cal_comprimento")]
-        public string Comprimento { get; set; }
+        public string cal_comprimento { get; set; }
 
         [Column("cal_largura")]
-        public string Largura { get; set; }
+        public string cal_largura { get; set; }
 
         [Column("cal_grup_precifi")]
-        public string GrupoPrecificacao { get; set; }
+        public string cal_grup_precifi { get; set; }
 
         [Column("cal_cod_barras")]
-        public string CodigoBarras { get; set; }
+        public string cal_cod_barras { get; set; }
 
         [Column("cal_status_motivo")]
-        public string StatusMotivo { get; set; }
+        public string cal_status_motivo { get; set; }
 
         [Column("cal_gru_pre_id")]
-        public int GrupoPrecificacaoId { get; set; }
+        public int cal_gru_pre_id { get; set; }
 
         [Column("cal_sta_pro_id")]
-        public int StatusProdutoId { get; set; }
+        public int cal_sta_pro_id { get; set; }
 
         [Column("cal_autorizacao_margem")]
-        public bool AutorizacaoMargem { get; set; }
+        public bool cal_autorizacao_margem { get; set; }
 
         [Column("cal_gen_id")]
-        public int GeneroId { get; set; }
+        public int cal_gen_id { get; set; }
+
+        [Computed]
+        public List<Calcados> calcados { get; set; }
+
     }
 }
