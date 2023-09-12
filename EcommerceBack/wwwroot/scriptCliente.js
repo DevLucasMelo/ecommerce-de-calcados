@@ -11,28 +11,34 @@ const addCupomButton = document.getElementById("meuBotaocliente");
 const confirmarBotao = document.getElementById("confirmar-cliente");
 const modalSuccess = document.getElementById("modalSuccess");
 const modalError = document.getElementById("modalError");
+
+//Cartão
 const overlayCartao = document.getElementById("overlay-cartao");
 const popupCartao = document.getElementById("popup-cartao");
 const closeButtonCartao = document.getElementById("fechar-cartao");
 
+//Endereço
+const overlayEndereco = document.getElementById("overlay-endereco");
+const popupEndereco = document.getElementById("popup-endereco");
+const closeButtonEndereco = document.getElementById("fechar-endereco");
 
 
 addCupomButton.addEventListener("click", openCupomPopup);
 
 closeButtonCartao.addEventListener("click", closeCartaoPopup);
 
-function verificarExecucaoEdicao(cartaoId) {
-    var resposta = window.confirm("Tem certeza que deseja editar?");
-
-    if (resposta) {
-        // Código a ser executado se o usuário clicar em "Sim"
-        alert("Você escolheu 'Sim'!");
-    } else {
-        // Código a ser executado se o usuário clicar em "Não"
-        alert("Você escolheu 'Não' ou fechou o diálogo.");
-    }
+//Endereço
+function openEnderecoPopup() {
+    overlayEndereco.style.display = "flex";
+    popupEndereco.style.display = "block";
 }
 
+function closeEnderecoPopup() {
+    overlayEndereco.style.display = "none";
+    popupEndereco.style.display = "none";
+}
+
+//Cartão
 function openCartaoPopup() {
     overlayCartao.style.display = "flex";
     popupCartao.style.display = "block";
@@ -43,18 +49,43 @@ function closeCartaoPopup() {
     popupCartao.style.display = "none";
 }
 
+function gerenciarEnderecos(clienteId) {
+    openEnderecoPopup();
+    document.getElementById('clientEnderecoId').value = clienteId;
+    selecionarEndereco(clienteId);
+}
 
 function gerenciarCartoes(clienteId) {
     openCartaoPopup();
     document.getElementById('clientCartaoId').value = clienteId;
     selecionarCartao(clienteId);
-    var clienteId = clienteId.toString();
-
-    
 }
 
 function recarregarPagina() {
     Location.reload();
+}
+
+function selecionarEndereco(clienteId) {
+    fetch(`/Endereco/SelecionarEnderecoPoriD?clienteId=${clienteId}`, { async: false })
+        .then(response => response.json())
+        .then(data => {
+            var resultadoPesquisa = document.getElementById('resultadoPesquisaEndereco');
+            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+
+            data.forEach(endereco => {
+
+                resultadoPesquisa.innerHTML += `
+                    <div class="row">
+                        <div class="col">${endereco.end_logradouro}</div>
+                        <div class="col">${endereco.end_cep}</div>
+                        <div class="col">${endereco.end_bairro}</div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-sm" id="editar-endereco" onclick="editEndereco('${endereco.end_id}')">Editar</button>
+                            <button class="btn btn-danger btn-sm" id="excluir-endereco" onclick="deletEndereco('${endereco.end_id}')">Excluir</button>
+                        </div>
+                    </div>`;
+            });
+        });
 }
 
 function selecionarCartao(clienteId) {
@@ -103,6 +134,7 @@ function selecionarClientes() {
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
                         <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-enderecos" onclick="gerenciarEnderecos('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-cartoes" onclick="gerenciarCartoes('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">
@@ -191,6 +223,12 @@ function fillEditModalCartao(cartaoId) {
     document.getElementById('titular1').value = cartaoObjeto.car_nome;
     document.getElementById('bandeira1').value = cartaoObjeto.bandeira.ban_nome;
 }
+
+
+function editEndereco(enderecoId) {
+
+}
+
 
 function editClient(clientId) {
     fillEditModal(clientId);
@@ -755,6 +793,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
                         <div class="col" id="status-cliente-${cliente.cli_id}">${status}</div>
+                        <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-enderecos" onclick="gerenciarEnderecos('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="gerenciar-cartoes" onclick="gerenciarCartoes('${cliente.cli_id}')">Gerenciar</button></div>
                         <div class="col"><button class="btn btn-primary btn-sm" id="consult-transacoes" onclick="consulTrans('${cliente.cli_id}')">Consultar</button></div>
                         <div class="col">

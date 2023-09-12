@@ -99,5 +99,55 @@ namespace EcommerceBack.Data
 
         }
 
+        public static List<Endereco> SelecionarEnderecoIdCliente(int ClienteId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT e.end_logradouro, e.end_cep, e.end_bairro, e.end_id
+                                FROM enderecos e
+                                INNER JOIN clientes_enderecos ce ON e.end_id = ce.cri_end_end_id
+                                WHERE ce.cri_end_end_id = {ClienteId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Endereco>(query).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static Cartao ConsultarSomenteEnderecoPoriD(int cartao)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT c.car_id, c.car_num, c.car_nome, c.car_cod_seguranca
+                                FROM cartoes c
+                                WHERE c.car_id = {cartao} ;";
+
+            string query2 = $@"SELECT b.ban_id, b.ban_nome
+                                FROM cartoes c
+                                JOIN bandeiras b ON c.car_ban_id = b.ban_id
+                                WHERE c.car_id = {cartao} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var cartao1 = sqlCon.Query<Cartao>(query).FirstOrDefault();
+                    var bandeira = sqlCon.Query<Bandeira>(query2).FirstOrDefault();
+                    cartao1.Bandeira = bandeira;
+
+                    return cartao1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

@@ -73,6 +73,7 @@
             <div class="col">CPF</div>
             <div class="col">Gênero</div>
             <div class="col">Status</div>
+            <div class="col">Endereços</div>
             <div class="col">Cartões</div>
             <div class="col">Transações</div>
             <div class="col">Ações</div>
@@ -290,6 +291,96 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+
+    <div class="overlay-endereco" id="overlay-endereco">
+        <div class="popup-endereco" id="popup-endereco">
+            <div class="container mt-4">
+                <button id="fechar-endereco" class="close-button"><i class="fas fa-times"></i></button>
+                <h3 class="text-center">Gerenciamento de Endereços</h3>
+
+                <form>
+                    <input type="hidden" id="clientEnderecoId">
+                    @*<input type="hidden" id="bandeiraCartaoId">*@
+                    <input type="hidden" id="EnderecoId">
+                    <div class="mb-3">
+                        <label for="logradouro1" class="label-blue">Logradouro:</label>
+                        <input type="text" id="logradouro1" class="form-control input-card" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cidadeCliente1" class="label-blue">Cidade:</label>
+                        <input type="text" id="cidadeCliente1" class="form-control input-card" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="bairroCliente1" class="label-blue">Bairro:</label>
+                        <input type="text" id="bairroCliente1" class="form-control input-card" required>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <label for="numeroEndereco1" class="label-blue">Número:</label>
+                            <input type="text" id="numeroEndereco1" class="form-control input-card" required>
+                        </div>
+                        <div>
+                            <label for="cep1" class="label-blue">CEP:</label>
+                            <input type="text" id="cep1" class="form-control input-card" required>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div class="col-md-6">
+                            <label for="tipoResidencia1" class="label-blue">Tipo da Residência:</label>
+                            <select id="tipoResidencia1" class="form-select input-card" required>
+                                <option selected>Selecione...</option>
+                                <option value="1">Casa</option>
+                                <option value="2">Apartamento</option>
+                                <option value="3">Condomínio</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tipoLogradouro1" class="label-blue">Tipo Logradouro:</label>
+                            <select id="tipoLogradouro1" class="form-select input-card" required>
+                                <option selected>Selecione...</option>
+                                <option value="1">Rua</option>
+                                <option value="2">Avenida</option>
+                                <option value="3">Praça</option>
+                                <option value="4">Estrada</option>
+                                <option value="5">Alameda</option>
+                                <option value="6">Via</option>
+                                <option value="7">Travessa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <label for="estadoCliente1" class="label-blue">Estado:</label>
+                            <input type="text" id="estadoCliente1" class="form-control input-card" required>
+                        </div>
+                        <div>
+                            <label for="paisCliente1" class="label-blue">País:</label>
+                            <input type="text" id="paisCliente1" class="form-control input-card" required>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="enderecosGrid" class="container mt-5">
+                    <h1 class="text-center">Lista de Endereços</h1>
+                    <div class="row grid-header">
+                        <div class="col">Logradouro</div>
+                        <div class="col">CEP</div>
+                        <div class="col">Bairro</div>
+                        <div class="col">Ações</div>
+                    </div>
+                    <div id="resultadoPesquisaEndereco">
+                    </div>
+                </div>
+            </div>               
         </div>
     </div>
 
