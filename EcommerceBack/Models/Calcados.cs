@@ -7,7 +7,7 @@ namespace EcommerceBack.Models
     public class Calcados
     {
         [Key]
-        public int cal_id { get; set; }
+        public int? cal_id { get; set; }
 
         [Column("cal_marca")]
         public string cal_marca { get; set; }
@@ -49,19 +49,26 @@ namespace EcommerceBack.Models
         public string cal_status_motivo { get; set; }
 
         [Column("cal_gru_pre_id")]
-        public int cal_gru_pre_id { get; set; }
+        public int? cal_gru_pre_id { get; set; }
 
         [Column("cal_sta_pro_id")]
-        public int cal_sta_pro_id { get; set; }
+        public int? cal_sta_pro_id { get; set; }
 
         [Column("cal_autorizacao_margem")]
         public bool cal_autorizacao_margem { get; set; }
 
         [Column("cal_gen_id")]
-        public int cal_gen_id { get; set; }
+        public int? cal_gen_id { get; set; }
+
+        [Column("cal_cat_id")]
+        public int? cal_cat_id { get; set; }
 
         [Computed]
         public List<Calcados> calcados { get; set; }
+
+        [Computed]
+        [Write(false)]
+        public Categorias Categoria { get; set; }
 
     }
 }

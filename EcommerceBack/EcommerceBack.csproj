@@ -7,13 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Npgsql" Version="7.0.4" />
+    <Compile Remove="Controllers\PaginaInicialController - Cópia.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\imagens\" />
+    <Content Remove="Views\Produto\produto.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Produto\Produto.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
   
 </Project>
