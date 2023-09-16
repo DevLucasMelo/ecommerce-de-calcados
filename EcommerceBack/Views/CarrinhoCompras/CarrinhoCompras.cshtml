@@ -1,0 +1,177 @@
+﻿@model List<Calcados>
+
+@{
+    ViewData["Title"] = "CarrinhoCompras";
+}
+
+
+<body onload="carregarValorCarrinho()">
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="header">
+        <h2 style="color: #15368A;"><i style="color: #15368A;" class="fas fa-shopping-cart cart-icon"></i>Carrinho de Compras</h2>
+    </div>
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="container-geral">
+            <img width="166px" height="107px" src="~/imagens/@(Model[0].cal_marca.Replace(" ", "").ToLower())@(Model[0].cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+            <div class="product-info">
+                <p class="descricao-produto">@Model[0].cal_marca @Model[0].cal_modelo</p>
+                <p class="descricao-produto" id="produto2">R$ @Model[0].cal_valor</p>
+                <p class="valores-produto"><strong>R$ @Model[0].cal_valor</strong> à vista</p>
+                @{
+                    decimal valorTotal = Model[0].cal_valor;
+                    int numeroParcelas = 10;
+                    decimal valorParcela = valorTotal / numeroParcelas;
+                }
+                <p class="parcela-produto">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
+                <p class="parcela-produto">sem juros</p>
+            </div>
+            <div class="quantidade">
+                <div class="top-element">
+                    <p>Quantidade</p>
+                </div>
+                <div class="center-element">
+                    <select class="select-input" id="select-quantidade" onchange="calcularValorTotal()" name="pedido">
+                        <option class="Option" value="1">1</option>
+                        <option class="Option" value="2">2</option>
+                        <option class="Option" value="3">3</option>
+                        <option class="Option" value="4">4</option>
+                        <option class="Option" value="5">5</option>
+                        <option class="Option" value="6">6</option>
+                    </select>
+                </div>
+                <div class="bottom-element">
+                    <a href="#" class="btn-remove" onclick="removerProduto(this)">Remover</a>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="linha-horizontal"></div>
+
+            <div class="container-geral">
+            <a style="text-decoration: none;" asp-controller="PaginaInicial" asp-action="PaginaInicial"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
+            </div>
+
+
+            <div class="linha-horizontal"></div>
+
+            <div class="container-geral">
+
+                <div class="container-frete">
+                    <p class="cor-azul">Calcular Frete</p>
+
+                    <div class="linha-horizontal-frete"></div>
+                    <br>
+                    <button class="btn-endereco-cadastrado" onclick="selecionarBtn(this)">
+                        <div id="icone">
+                            <i style="color: #15368A;" class="fas fa-home"></i>
+                        </div>
+
+                        <div id="receber-em-casa">
+                            <table>
+                                <tr>
+                                    <td id="td-esquerda">Receber em casa</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="delivery-time">5 dias úteis</span></td>
+                                </tr>
+                            </table>
+                            <div id="preço-frete p">
+                                <p>R$ 10,00</p>
+                            </div>
+                        </div>
+                        <br>
+
+                    </button>
+                    <br>
+                    <br>
+
+                    <button class="btn-add-endereco">
+                        <div id="icone">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div id="adicionar-endereco">
+                            <p>Adicionar novo endereço</p>
+                        </div>
+
+
+                    </button>
+                </div>
+
+                <div class="container-resumo">
+                    <p class="cor-azul"><strong>Resumo</strong></p>
+                    <table>
+                        <tr>
+                            <td class="td-esquerda">Valor dos produtos</td>
+                            <td class="td-direita" id="valorProdutos">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="td-esquerda">Valor do Frete</td>
+                            <td class="td-direita" id="valorFrete">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="td-esquerda"><strong>Total</strong></td>
+                            <td class="td-direita" id="valorTotal"><strong>R$ 0,00</strong></td>
+
+                        </tr>
+                    </table>
+                    <br>
+
+                    <a href=""><button class="btn-azul" onclick="addValorFrete(this)">Ir para o pagamento</button></a>
+                </div>
+
+        </div>
+        <br>
+        }
+        else
+        {
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div>
+                    <p>Nenhum item no carrinho.</p>
+                </div>
+
+                <!-- Se não houver produtos no carrinho -->
+                <div>
+                <a style="text-decoration: none;" asp-controller="PaginaInicial" asp-action="PaginaInicial"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
+                </div>
+            </div>
+        }
+    
+    <link rel="stylesheet" href="~/css/style.css">
+    <script href="~/js/script.js"></script>
+</body>

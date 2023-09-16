@@ -27,27 +27,25 @@ namespace EcommerceBack.Data
             }
         }
 
-        public static Cliente SelecionarClienteId(int id)
+        public static List<Calcados> SelecionarCalcadosId(int id)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $"select * from clientes where cli_id = {id}";
+
+            string query = $"SELECT * FROM calcados where cal_id = {id}";
 
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
-                    var cliente = sqlCon.Query<Cliente>(query).FirstOrDefault();
-                    return cliente;
+                    var calcados = sqlCon.Query<Calcados>(query).ToList();
+                    return calcados;
                 }
             }
             catch (Exception ex)
             {
-                return new Cliente();
+                return new List<Calcados>();
             }
         }
-
-
-
         public List<Calcados> ConsultarCalcados(string termoPesquisa)
         {
             string conn = config().GetConnectionString("Conn");

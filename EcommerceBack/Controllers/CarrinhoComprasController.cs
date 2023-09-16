@@ -4,32 +4,36 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceBack.Controllers
 {
-
-    public class PaginaInicialController : Controller
+    public class CarrinhoComprasController : Controller
     {
-        private readonly ILogger<PaginaInicialController> _logger;
+
+        private readonly ILogger<CarrinhoComprasController> _logger;
 
         List<Calcados> _list;
 
-        public PaginaInicialController(ILogger<PaginaInicialController> logger)
+        public CarrinhoComprasController(ILogger<CarrinhoComprasController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult PaginaInicial()
+        public IActionResult CarrinhoCompras(int cal_id)
         {
+
             List<Calcados> listaDeCalcados;
 
             try
             {
-                listaDeCalcados = CalcadosDao.SelecionarCalcados();
+                listaDeCalcados = CalcadosDao.SelecionarCalcadosId(cal_id);
+
             }
             catch (Exception ex)
             {
-                listaDeCalcados = new List<Calcados>(); 
+                listaDeCalcados = new List<Calcados>();
             }
 
             return View(listaDeCalcados);
         }
+
     }
 }
+

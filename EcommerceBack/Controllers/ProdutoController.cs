@@ -1,14 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EcommerceBack.Data;
+using EcommerceBack.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceBack.Controllers
 {
     public class ProdutoController : Controller
     {
 
-        public IActionResult Produto()
+        private readonly ILogger<ProdutoController> _logger;
+
+        List<Calcados> _list;
+
+        public ProdutoController(ILogger<ProdutoController> logger)
+        {
+            _logger = logger;
+        }
+
+        public IActionResult Produto(int cal_id)
         {
 
-            return View();
+            List<Calcados> listaDeCalcados;
+
+            try
+            {
+                listaDeCalcados = CalcadosDao.SelecionarCalcadosId(cal_id);
+
+            }
+            catch (Exception ex)
+            {
+                listaDeCalcados = new List<Calcados>();
+            }
+
+            return View(listaDeCalcados);
         }
+
     }
 }
+
