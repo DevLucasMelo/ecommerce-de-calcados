@@ -1,5 +1,7 @@
-﻿@model List<Calcados>
-
+﻿@{
+    var calcados = ViewData["Calcados"] as List<Calcados>;
+    var estoque = ViewData["Estoque"] as List<Estoque>;
+}
 @{
     ViewData["Title"] = "Produto";
 }
@@ -34,7 +36,7 @@
         </div>
     </nav>
 
-    <h1 class="tit-produto">@Model[0].cal_titulo</h1>
+    <h1 class="tit-produto">@calcados[0].cal_titulo</h1>
 
     <div class="container-externo">
         <div class="container-mini-product">
@@ -47,7 +49,7 @@
 
         <div class="container-product">
             <div class="main-product-image">
-                <img width="400px" height="248px" src="~/imagens/@(Model[0].cal_marca.Replace(" ", "").ToLower())@(Model[0].cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+                <img width="400px" height="248px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
             </div>
             <div class="circles-container">
                 <svg xmlns="http://www.w3.org/2000/svg" width="43" height="7" viewBox="0 0 43 7" fill="none">
@@ -100,32 +102,19 @@
             <div class="size">
                 <p class="tamanho">Tamanho</p>
                 <div class="numeracoes-container">
-                    <div class="numeracoes" id="numeracao" onclick="alternarSelecaoElemento(this)">34</div>
-                    <div class="numeracoes" id="numeracao2" onclick="alternarSelecaoElemento(this)">35</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">36</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">37</div>
+                    @foreach (var estoqueItem in estoque)
+                    {
+                        var tamanho = estoqueItem.estq_tamanho;
+                        var quantidadeEmEstoque = estoqueItem.estq_quantidade;
+
+                        var classeCSS = quantidadeEmEstoque == 0 ? "sem-estoque" : "sem-hover";
+
+                        <div class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this)">@tamanho</div>
+                    }
                 </div>
-                <div class="numeracoes-container">
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">38</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">39</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">40</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">41</div>
-                </div>
-                <div class="numeracoes-container">
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">42</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">43</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">44</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">45</div>
-                </div>
-                <div class="numeracoes-container">
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">46</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">47</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">48</div>
-                    <div class="numeracoes" onclick="alternarSelecaoElemento(this)">49</div>
-                </div>
-                <p class="valores-produto"><strong>R$ @Model[0].cal_valor</strong> à vista</p>
+                <p class="valores-produto"><strong>R$ @calcados[0].cal_valor</strong> à vista</p>
                 @{
-                    decimal valorTotal = Model[0].cal_valor;
+                    decimal valorTotal = calcados[0].cal_valor;
                     int numeroParcelas = 10;
                     decimal valorParcela = valorTotal / numeroParcelas;
                 }
@@ -134,7 +123,7 @@
             </div>
 
             <div class="comprar-adicionar">
-                <a asp-controller="CarrinhoCompras" asp-action="CarrinhoCompras" asp-route-cal_id="@Model[0].cal_id">
+                <a asp-controller="CarrinhoCompras" asp-action="CarrinhoCompras" asp-route-cal_id="@calcados[0].cal_id">
                     <button class="btn-azul" id="btn-comprar">Comprar</button>
                 </a>
                 <button class="btn-branco" onclick="addItemCart(this)" id="btn-add-carrinho">Adicionar ao carrinho</button>

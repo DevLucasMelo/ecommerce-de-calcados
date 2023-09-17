@@ -72,41 +72,41 @@ function valorFrete() {
         valorTotalElement.textContent = "R$ " + valorTotalFrete.toFixed(2);
         valorFreteElement.textContent = novoValorFrete;
         freteAdicionado = true;
-    }    
+    }
 }
 
 function calcularValorTotal() {
     console.log('entrou')
     var valorElemento1 = parseFloat(document.querySelector("#produto1").textContent.replace("R$", "").trim());
     var valorElemento2 = parseFloat(document.querySelector("#produto2").textContent.replace("R$", "").trim());
-    
+
     var quantidadeProduto1 = document.getElementById('select-quantidade');
     var quantidadeProduto1 = parseInt(quantidadeProduto1.value);
 
     var valorTotal = (valorElemento1 * quantidadeProduto1) + valorElemento2;
 
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  
+
     document.querySelector("#valorProdutos").textContent = valorFormatado;
     document.querySelector("#valorTotal").textContent = valorFormatado;
     localStorage.setItem("valorProdutos", valorTotal);
-  
-  }
+
+}
 
 document.addEventListener("DOMContentLoaded", calcularValorTotal);
 
 
-function validaDevolucao(){
+function validaDevolucao() {
     var devolucao = document.getElementById("nome").value;
-    
+
     if (devolucao.trim() == "") {
-        alert("Ã‰ necessÃ¡rio preencher o campo de motivo antes de solicitar a devoluÃ§Ã£o.");
+        alert("É necessário preencher o campo de motivo antes de solicitar a devolução.");
     } else {
-        alert("SolicitaÃ§Ã£o de devoluÃ§Ã£o realizada com sucesso!");
+        alert("Solicitação de devolução realizada com sucesso!");
     }
 }
 
-function alteraStatusPedido(){
+function alteraStatusPedido() {
     var selectElement = document.getElementById("pedido");
     var selectedValue = selectElement.value;
     console.log(selectedValue)
@@ -115,9 +115,9 @@ function alteraStatusPedido(){
     var elipse2 = document.querySelector('#elipse-2')
     var elipse3 = document.querySelector('#elipse-3')
     var elipse4 = document.querySelector('#elipse-4')
-    var elipse5 =  document.querySelector('#elipse-5')
+    var elipse5 = document.querySelector('#elipse-5')
 
-        // Acessar e alterar o valor do atributo y2 baseado na opÃ§Ã£o selecionada
+    // Acessar e alterar o valor do atributo y2 baseado na opção selecionada
     switch (selectedValue) {
         case 'fase1':
             elipse1.setAttribute('fill', '#15368A');
@@ -161,24 +161,24 @@ function alteraStatusPedido(){
         default:
     }
 
-        /* if (lineElement) {
-            // Acessar e alterar o valor do atributo y2
-            lineElement.setAttribute('y2', '300'); // Alterando para 300
-            lineElement.setAttribute('y2', '300'); // Alterando para 300
-        } else {
-            console.log('Elemento nÃ£o encontrado.');
-        } */
-        
+    /* if (lineElement) {
+        // Acessar e alterar o valor do atributo y2
+        lineElement.setAttribute('y2', '300'); // Alterando para 300
+        lineElement.setAttribute('y2', '300'); // Alterando para 300
+    } else {
+        console.log('Elemento não encontrado.');
+    } */
+
 }
 
-function addItemCart(){
+function addItemCart() {
     let valorAtual = parseInt(document.querySelector("#quantidade-item-cart").textContent);
     let novoValor = valorAtual + 1;
     document.querySelector("#quantidade-item-cart").textContent = novoValor
     localStorage.setItem("carrinhoQuantidade", novoValor);
 }
 
-// Carregar o valor do carrinho do Local Storage ao carregar a pÃ¡gina
+// Carregar o valor do carrinho do Local Storage ao carregar a página
 function carregarValorCarrinho() {
     let valorCarrinho = localStorage.getItem("carrinhoQuantidade");
     if (valorCarrinho !== null) {
@@ -186,37 +186,37 @@ function carregarValorCarrinho() {
     }
 }
 
-  const miniProductImages = document.querySelectorAll('.mini-product-image');
-  const circles = document.querySelectorAll('.circle');
+const miniProductImages = document.querySelectorAll('.mini-product-image');
+const circles = document.querySelectorAll('.circle');
 
-  miniProductImages.forEach((image, index) => {
+miniProductImages.forEach((image, index) => {
     image.addEventListener('click', () => {
-      // Remover destaque de todos os cÃ­rculos
-      circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
-      
-      // Destacar o cÃ­rculo correspondente Ã  imagem selecionada
-      circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que vocÃª deseja
+        // Remover destaque de todos os círculos
+        circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
+
+        // Destacar o círculo correspondente à imagem selecionada
+        circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que você deseja
     });
-  });
+});
 
-  const miniProductImage = document.querySelectorAll('.mini-product-image');
-  const mainProductImage = document.querySelector('.main-product-image img');
-  const circle = document.querySelectorAll('.circle');
+const miniProductImage = document.querySelectorAll('.mini-product-image');
+const mainProductImage = document.querySelector('.main-product-image img');
+const circle = document.querySelectorAll('.circle');
 
-  miniProductImages.forEach((image, index) => {
+miniProductImages.forEach((image, index) => {
     image.addEventListener('click', () => {
-      // Remover destaque de todos os cÃ­rculos
-      circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
+        // Remover destaque de todos os círculos
+        circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
 
-      // Destacar o cÃ­rculo correspondente Ã  imagem selecionada
-      circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que vocÃª deseja
-      
-      // Atualizar a imagem principal com a imagem correspondente
-      mainProductImage.setAttribute('src', image.getAttribute('src'));
+        // Destacar o círculo correspondente à imagem selecionada
+        circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que você deseja
+
+        // Atualizar a imagem principal com a imagem correspondente
+        mainProductImage.setAttribute('src', image.getAttribute('src'));
     });
-  });
+});
 
-  function addValorFrete(){
+function addValorFrete() {
     let valorFrete = parseInt(document.querySelector("#valorFrete").textContent.replace("R$", "").trim());
     localStorage.setItem("valorFrete", valorFrete);
 
@@ -252,6 +252,6 @@ function calcularValorTotalFormaPagamento() {
 
     var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  
+
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
-  }
+}

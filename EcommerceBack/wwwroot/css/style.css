@@ -979,3 +979,13 @@ nav#menu a:hover {
     padding: 2px 4px; /* Ajuste o padding conforme necessário para controlar o tamanho */
     font-size: 12px; /* Ajuste o tamanho da fonte conforme necessário */
 }
+
+.sem-estoque {
+    cursor: not-allowed; /* Define o cursor como não permitido quando o estoque estiver vazio */
+    background-color: #ccc; /* Define a cor de fundo quando o estoque estiver vazio */
+    /* Outros estilos que você deseja aplicar quando o estoque estiver vazio */
+}
+
+.sem-hover:hover {
+    /* Estilos que você deseja aplicar quando o mouse estiver sobre o elemento */
+}
