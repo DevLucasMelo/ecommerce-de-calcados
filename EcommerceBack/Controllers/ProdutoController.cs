@@ -1,6 +1,7 @@
 ﻿using EcommerceBack.Data;
 using EcommerceBack.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EcommerceBack.Controllers
 {
@@ -40,6 +41,33 @@ namespace EcommerceBack.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult SelecionarProdutoId(int cal_id)
+        {
+            cal_id = 1;
+
+            Console.WriteLine(cal_id);
+            try
+            {
+                var calcado = CalcadosDao.SelecionarCalcadosIdComoJson(cal_id);
+
+                if (calcado != null)
+                {
+                    return Ok(calcado);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Lida com erros e retorna um código de status 500 Internal Server Error se ocorrer um erro
+                return StatusCode(500, "Ocorreu um erro ao buscar o calcado.");
+            }
+        }
+
 
     }
 }

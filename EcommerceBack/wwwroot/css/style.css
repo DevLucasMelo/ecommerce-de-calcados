@@ -507,10 +507,24 @@ svg:hover circle {
 
 .container-geral {
     display: flex;
+    justify-content: center;
     flex-direction: column;
 }
 
-.container-frete{
+.container-geral-resumo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.item-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.container-frete {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -975,17 +989,20 @@ nav#menu a:hover {
     border-radius: 100%;
     background-color: rgb(158, 113, 30);
     color: white;
-    border-radius: 50%; /* Isso cria um formato redondo */
-    padding: 2px 4px; /* Ajuste o padding conforme necessário para controlar o tamanho */
-    font-size: 12px; /* Ajuste o tamanho da fonte conforme necessário */
+    border-radius: 50%; 
+    padding: 2px 4px; 
+    font-size: 10px; 
 }
 
-.sem-estoque {
-    cursor: not-allowed; /* Define o cursor como não permitido quando o estoque estiver vazio */
-    background-color: #ccc; /* Define a cor de fundo quando o estoque estiver vazio */
-    /* Outros estilos que você deseja aplicar quando o estoque estiver vazio */
+.numeracoes.sem-estoque {
+    text-decoration: line-through;
+    color: blue;
+    cursor: default !important; /* Remove o efeito de "hover" */
 }
 
-.sem-hover:hover {
-    /* Estilos que você deseja aplicar quando o mouse estiver sobre o elemento */
-}
+
+
+
+
+
+

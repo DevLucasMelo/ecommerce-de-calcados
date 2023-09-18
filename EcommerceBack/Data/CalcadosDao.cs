@@ -2,6 +2,7 @@
 using Dapper.Contrib.Extensions;
 using EcommerceBack.Models;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Npgsql;
 
 namespace EcommerceBack.Data
@@ -46,6 +47,31 @@ namespace EcommerceBack.Data
                 return new List<Calcados>();
             }
         }
+
+        public static string SelecionarCalcadosIdComoJson(int cal_id)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            string query = $"SELECT * FROM calcados where cal_id = {cal_id}";
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var calcados = sqlCon.Query<Calcados>(query).ToList();
+                    Console.Write(calcados);
+
+                    var dataObject = new { dados = calcados };
+
+                    return JsonConvert.SerializeObject(dataObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Lida com exceções aqui, se necessário
+                return JsonConvert.SerializeObject(new List<Calcados>());
+            }
+        }
+
         public List<Calcados> ConsultarCalcados(string termoPesquisa)
         {
             string conn = config().GetConnectionString("Conn");

@@ -10,10 +10,11 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item nav-item-cart">
-                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("PaginaInicial", "PaginaInicial")"><i class="fas fa-home"></i> Tela inicial</a>
                 </li>
+
                 <li class="nav-item nav-item-cart">
-                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("CarrinhoCompras", "CarrinhoCompras")">
                         <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
                         Carrinho
                     </a>
@@ -41,53 +42,20 @@
         <h2 style="color: #15368A;"><i style="color: #15368A;" class="fas fa-shopping-cart cart-icon"></i>Carrinho de Compras</h2>
     </div>
 
-        @if (Model != null && Model.Count > 0)
-        {
             <div class="container-geral">
-            <img width="166px" height="107px" src="~/imagens/@(Model[0].cal_marca.Replace(" ", "").ToLower())@(Model[0].cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
-            <div class="product-info">
-                <p class="descricao-produto">@Model[0].cal_marca @Model[0].cal_modelo</p>
-                <p class="descricao-produto" id="produto2">R$ @Model[0].cal_valor</p>
-                <p class="valores-produto"><strong>R$ @Model[0].cal_valor</strong> à vista</p>
-                @{
-                    decimal valorTotal = Model[0].cal_valor;
-                    int numeroParcelas = 10;
-                    decimal valorParcela = valorTotal / numeroParcelas;
-                }
-                <p class="parcela-produto">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
-                <p class="parcela-produto">sem juros</p>
-            </div>
-            <div class="quantidade">
-                <div class="top-element">
-                    <p>Quantidade</p>
-                </div>
-                <div class="center-element">
-                    <select class="select-input" id="select-quantidade" onchange="calcularValorTotal()" name="pedido">
-                        <option class="Option" value="1">1</option>
-                        <option class="Option" value="2">2</option>
-                        <option class="Option" value="3">3</option>
-                        <option class="Option" value="4">4</option>
-                        <option class="Option" value="5">5</option>
-                        <option class="Option" value="6">6</option>
-                    </select>
-                </div>
-                <div class="bottom-element">
-                    <a href="#" class="btn-remove" onclick="removerProduto(this)">Remover</a>
-                </div>
-            </div>
-        </div>
 
-
-            <div class="linha-horizontal"></div>
-
-            <div class="container-geral">
-            <a style="text-decoration: none;" asp-controller="PaginaInicial" asp-action="PaginaInicial"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
             </div>
 
 
             <div class="linha-horizontal"></div>
 
-            <div class="container-geral">
+            <div class="container-geral-resumo">
+            <a style="text-decoration: none;"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
+            </div>
+
+            <div class="linha-horizontal"></div>
+
+        <div class="container-geral-resumo">
 
                 <div class="container-frete">
                     <p class="cor-azul">Calcular Frete</p>
@@ -108,7 +76,7 @@
                                     <td><span class="delivery-time">5 dias úteis</span></td>
                                 </tr>
                             </table>
-                            <div id="preço-frete p">
+                            <div id="preco-frete">
                                 <p>R$ 10,00</p>
                             </div>
                         </div>
@@ -157,21 +125,39 @@
 
         </div>
         <br>
-        }
+        <!-- }
         else
-        {
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+         {-->
+        <!--  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div>
                     <p>Nenhum item no carrinho.</p>
                 </div>
 
-                <!-- Se não houver produtos no carrinho -->
+                 
                 <div>
-                <a style="text-decoration: none;" asp-controller="PaginaInicial" asp-action="PaginaInicial"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
+                 <a style="text-decoration: none;" asp-controller="PaginaInicial" asp-action="PaginaInicial"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
                 </div>
-            </div>
-        }
+        </div>
+        } -->
     
     <link rel="stylesheet" href="~/css/style.css">
-    <script href="~/js/script.js"></script>
+    <script src="~/js/script.js"></script>
+
+    <script>
+        // Aguarde até que o DOM da página seja totalmente carregado
+        document.addEventListener("DOMContentLoaded", function () {
+            // Recupere o item do carrinho do localStorage
+            var itemDoCarrinho = JSON.parse(localStorage.getItem("carrinho"));
+
+            // Verifique se o item do carrinho foi encontrado no localStorage
+            if (itemDoCarrinho) {
+                console.log("entrou");
+                console.log(itemDoCarrinho);
+
+
+                // Chame a função para preencher o item na página
+                preencherItemDiv(itemDoCarrinho);
+            }
+        });
+    </script>
 </body>

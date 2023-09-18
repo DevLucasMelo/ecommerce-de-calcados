@@ -1,25 +1,3 @@
-
-
-/* function addQuantidade(button) {
-    let elementoContador = button.parentElement.querySelector('.contador');
-    let valorAtual = parseInt(elementoContador.textContent);
-    let novoValor = valorAtual + 1;
-    elementoContador.textContent = novoValor;
-
-    calcularValorTotal();
-}
-
-function subQuantidade(button) {
-    let elementoContador = button.parentElement.querySelector('.contador');
-    let valorAtual = parseInt(elementoContador.textContent);
-    if (valorAtual > 1) {
-        let novoValor = valorAtual - 1;
-        elementoContador.textContent = novoValor;
-    }
-
-    calcularValorTotal();
-} */
-
 var circuloSelecionado = null;
 
 function alternarSelecao(circulo) {
@@ -58,13 +36,13 @@ function selecionarBtn(button) {
 var freteAdicionado = false;
 
 function valorFrete() {
-    var precoFreteElement = document.querySelector("#preco-frete p");
+    var precoFreteElement = document.querySelector("#preco-frete");
     var valorFreteElement = document.querySelector("#valorFrete");
     var valorTotalElement = document.querySelector("#valorTotal");
 
     var precoFreteTexto = precoFreteElement.textContent;
     var novoValorFrete = precoFreteTexto;
-    var valorFrete = parseFloat(document.querySelector("#preco-frete p").textContent.replace("R$", "").trim());
+    var valorFrete = parseFloat(document.querySelector("#preco-frete").textContent.replace("R$", "").trim());
     var valorTotal = parseFloat(valorTotalElement.textContent.replace("R$", "").trim());
 
     if (!freteAdicionado) {
@@ -72,29 +50,37 @@ function valorFrete() {
         valorTotalElement.textContent = "R$ " + valorTotalFrete.toFixed(2);
         valorFreteElement.textContent = novoValorFrete;
         freteAdicionado = true;
+        addValorFrete();
     }
 }
 
 function calcularValorTotal() {
-    console.log('entrou')
-    var valorElemento1 = parseFloat(document.querySelector("#produto1").textContent.replace("R$", "").trim());
-    var valorElemento2 = parseFloat(document.querySelector("#produto2").textContent.replace("R$", "").trim());
+    var carrinhoItens = JSON.parse(localStorage.getItem("carrinho")) || [];
+    var valorTotal = 0;
 
-    var quantidadeProduto1 = document.getElementById('select-quantidade');
-    var quantidadeProduto1 = parseInt(quantidadeProduto1.value);
+    carrinhoItens.forEach(function (item) {
+        if (item && item.dados && item.dados.length > 0) {
+            var valorProduto = parseFloat(item.dados[0].cal_valor);
+            var quantidadeProduto = parseInt(item.quantidade || 1); // Suponhamos que a quantidade padrão seja 1
 
-    var valorTotal = (valorElemento1 * quantidadeProduto1) + valorElemento2;
+            valorTotal += valorProduto * quantidadeProduto;
+        }
+    });
 
-    var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    var valorFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     document.querySelector("#valorProdutos").textContent = valorFormatado;
     document.querySelector("#valorTotal").textContent = valorFormatado;
     localStorage.setItem("valorProdutos", valorTotal);
-
 }
 
-document.addEventListener("DOMContentLoaded", calcularValorTotal);
 
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    calcularValorTotal();
+});
 
 function validaDevolucao() {
     var devolucao = document.getElementById("nome").value;
@@ -109,7 +95,6 @@ function validaDevolucao() {
 function alteraStatusPedido() {
     var selectElement = document.getElementById("pedido");
     var selectedValue = selectElement.value;
-    console.log(selectedValue)
     var lineElement = document.querySelector('#linha-status');
     var elipse1 = document.querySelector('#elipse-1')
     var elipse2 = document.querySelector('#elipse-2')
@@ -117,7 +102,6 @@ function alteraStatusPedido() {
     var elipse4 = document.querySelector('#elipse-4')
     var elipse5 = document.querySelector('#elipse-5')
 
-    // Acessar e alterar o valor do atributo y2 baseado na opção selecionada
     switch (selectedValue) {
         case 'fase1':
             elipse1.setAttribute('fill', '#15368A');
@@ -171,7 +155,7 @@ function alteraStatusPedido() {
 
 }
 
-function addItemCart() {
+function addItemCarrinho() {
     let valorAtual = parseInt(document.querySelector("#quantidade-item-cart").textContent);
     let novoValor = valorAtual + 1;
     document.querySelector("#quantidade-item-cart").textContent = novoValor
@@ -255,3 +239,155 @@ function calcularValorTotalFormaPagamento() {
 
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
 }
+
+function adicionarItemAoCarrinho(cal_id) {
+    var cal_id = parseInt(cal_id, 10);
+    addItemCarrinho();
+    encontrarItemPorId(cal_id, function (item) {
+
+        if (item) {
+            var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+            carrinho.push(item);
+
+            localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+            window.location.href = "/CarrinhoCompras/CarrinhoCompras"; 
+
+        }
+    });
+}
+
+
+
+
+function encontrarItemPorId(cal_id, callback) {
+    $.ajax({
+        url: '/Produto/SelecionarProdutoId/' + cal_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data) {
+                if (typeof callback === 'function') {
+                    callback(data);
+                }
+            } else {
+                console.log('Produto não encontrado.');
+                if (typeof callback === 'function') {
+                    callback(null); 
+                }
+            }
+        },
+        error: function () {
+            console.error('Ocorreu um erro ao buscar o produto.');
+            if (typeof callback === 'function') {
+                callback(null); 
+            }
+        }
+    });
+}
+
+function preencherItemDiv(itens) {
+    var divItem = document.querySelector(".container-geral"); 
+    var contadorIdProduto = 1; 
+
+    if (divItem && itens && itens.length > 0) {
+        divItem.innerHTML = "";
+
+        itens.forEach(function (item) {
+            if (item && item.dados && item.dados.length > 0) {
+
+                var itemContainer = document.createElement("div");
+                itemContainer.classList.add("item-container");
+
+                var img = document.createElement("img");
+                img.width = "166";
+                img.height = "107";
+                img.alt = "";
+                img.src = "/imagens/" + item.dados[0].cal_marca.replace(/\s/g, "").toLowerCase() + item.dados[0].cal_modelo.replace(/\s/g, "").toLowerCase() + "-1.png";
+
+                var productInfo = document.createElement("div");
+                productInfo.classList.add("product-info");
+
+                var descricaoProduto = document.createElement("p");
+                descricaoProduto.classList.add("descricao-produto");
+                descricaoProduto.textContent = item.dados[0].cal_marca + " " + item.dados[0].cal_modelo;
+
+                var precoProduto = document.createElement("p");
+                precoProduto.classList.add("descricao-produto");
+                precoProduto.textContent = "R$ " + item.dados[0].cal_valor;
+
+                precoProduto.id = "produto" + contadorIdProduto; // Define o ID único
+
+                var valoresProduto = document.createElement("p");
+                valoresProduto.classList.add("valores-produto");
+
+                contadorIdProduto++;
+
+                var parcelaProduto = document.createElement("p");
+                parcelaProduto.classList.add("parcela-produto");
+                parcelaProduto.textContent = "10x R$ " + (item.dados[0].cal_valor / 10).toFixed(2);
+
+                var semJuros = document.createElement("p");
+                semJuros.classList.add("parcela-produto");
+                semJuros.textContent = "sem juros";
+
+                productInfo.appendChild(descricaoProduto);
+                productInfo.appendChild(precoProduto);
+                productInfo.appendChild(valoresProduto);
+                productInfo.appendChild(parcelaProduto);
+                productInfo.appendChild(semJuros);
+
+                var quantidadeDiv = document.createElement("div");
+                quantidadeDiv.classList.add("quantidade");
+
+                var topElement = document.createElement("div");
+                topElement.classList.add("top-element");
+                var pQuantidade = document.createElement("p");
+                pQuantidade.textContent = "Quantidade";
+
+                var centerElement = document.createElement("div");
+                centerElement.classList.add("center-element");
+                var selectQuantidade = document.createElement("select");
+                selectQuantidade.classList.add("select-input");
+                selectQuantidade.id = "select-quantidade" + contadorIdProduto;
+                selectQuantidade.setAttribute("onchange", "calcularValorTotal()");
+                selectQuantidade.name = "pedido";
+
+                contadorIdProduto++;
+
+                for (var i = 1; i <= 6; i++) {
+                    var option = document.createElement("option");
+                    option.classList.add("Option");
+                    option.value = i;
+                    option.textContent = i;
+                    selectQuantidade.appendChild(option);
+                }
+
+                var bottomElement = document.createElement("div");
+                bottomElement.classList.add("bottom-element");
+                var aRemover = document.createElement("a");
+                aRemover.href = "#";
+                aRemover.classList.add("btn-remove");
+                aRemover.textContent = "Remover";
+                aRemover.setAttribute("onclick", "removerProduto(this)");
+
+                topElement.appendChild(pQuantidade);
+                centerElement.appendChild(selectQuantidade);
+                bottomElement.appendChild(aRemover);
+
+                quantidadeDiv.appendChild(topElement);
+                quantidadeDiv.appendChild(centerElement);
+                quantidadeDiv.appendChild(bottomElement);
+
+                itemContainer.appendChild(img);
+                itemContainer.appendChild(productInfo);
+                itemContainer.appendChild(quantidadeDiv);
+
+                divItem.appendChild(itemContainer);
+            }
+        });
+    }
+}
+
+
+
