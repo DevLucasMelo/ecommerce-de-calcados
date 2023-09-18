@@ -507,7 +507,7 @@ svg:hover circle {
 
 .container-geral {
     display: flex;
-    justify-content:center; 
+    flex-direction: column;
 }
 
 .container-frete{
