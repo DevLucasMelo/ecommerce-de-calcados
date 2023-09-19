@@ -35,7 +35,6 @@ namespace EcommerceBack.Controllers
                 listaEstoque = new List<Estoque>();
             }
 
-            // Passe ambas as listas diretamente para a view
             ViewData["Calcados"] = listaDeCalcados;
             ViewData["Estoque"] = listaEstoque;
 
@@ -61,7 +60,6 @@ namespace EcommerceBack.Controllers
             }
             catch (Exception ex)
             {
-                // Lida com erros e retorna um código de status 500 Internal Server Error se ocorrer um erro
                 return StatusCode(500, "Ocorreu um erro ao buscar o calcado.");
             }
         }

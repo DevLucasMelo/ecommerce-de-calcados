@@ -43,13 +43,25 @@ function calcularValorFrete() {
     var precoFreteTexto = precoFreteElement.textContent;
     var novoValorFrete = precoFreteTexto;
     var valorFrete = parseFloat(document.querySelector("#preco-frete").textContent.replace("R$", "").trim());
-    var valorTotal = parseFloat(valorTotalElement.textContent.replace("R$", "").trim());
+
+    var valorText = valorTotalElement.textContent.trim(); 
+    valorText = valorText.replace("R$", ""); 
+
+    var textoSemPontosEVirgulas = valorText.replace(/[.,]/g, '');
+
+    var parteInteira = textoSemPontosEVirgulas.slice(0, -2);
+    var parteDecimal = textoSemPontosEVirgulas.slice(-2);
+
+    var valorTotal = parteInteira + "." + parteDecimal;
+
+    valorTotal = parseFloat(valorTotal)
+
+ 
+    console.log(valorTotal)
 
     var valorFreteLocalStorage = parseInt(localStorage.getItem("valorFrete"));
 
     if (!freteAdicionado && isNaN(valorFreteLocalStorage)) {
-        //console.log(valorFrete)
-        //console.log(valorTotal)
         var valorTotalFrete = valorTotal + valorFrete;
         console.log(valorTotalFrete)
         valorTotalElement.textContent = "R$ " + valorTotalFrete.toFixed(2);
