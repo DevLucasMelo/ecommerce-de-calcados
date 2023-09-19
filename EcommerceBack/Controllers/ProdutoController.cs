@@ -45,8 +45,6 @@ namespace EcommerceBack.Controllers
         [HttpGet]
         public IActionResult SelecionarProdutoId(int cal_id)
         {
-            cal_id = 1;
-
             Console.WriteLine(cal_id);
             try
             {

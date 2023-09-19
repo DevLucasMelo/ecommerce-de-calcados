@@ -30,12 +30,12 @@ function removerProduto(button) {
 
 function selecionarBtn(button) {
     button.classList.toggle("selected");
-    valorFrete()
+    calcularValorFrete()
 }
 
 var freteAdicionado = false;
 
-function valorFrete() {
+function calcularValorFrete() {
     var precoFreteElement = document.querySelector("#preco-frete");
     var valorFreteElement = document.querySelector("#valorFrete");
     var valorTotalElement = document.querySelector("#valorTotal");
@@ -45,8 +45,13 @@ function valorFrete() {
     var valorFrete = parseFloat(document.querySelector("#preco-frete").textContent.replace("R$", "").trim());
     var valorTotal = parseFloat(valorTotalElement.textContent.replace("R$", "").trim());
 
-    if (!freteAdicionado) {
+    var valorFreteLocalStorage = parseInt(localStorage.getItem("valorFrete"));
+
+    if (!freteAdicionado && isNaN(valorFreteLocalStorage)) {
+        //console.log(valorFrete)
+        //console.log(valorTotal)
         var valorTotalFrete = valorTotal + valorFrete;
+        console.log(valorTotalFrete)
         valorTotalElement.textContent = "R$ " + valorTotalFrete.toFixed(2);
         valorFreteElement.textContent = novoValorFrete;
         freteAdicionado = true;
@@ -58,14 +63,34 @@ function calcularValorTotal() {
     var carrinhoItens = JSON.parse(localStorage.getItem("carrinho")) || [];
     var valorTotal = 0;
 
-    carrinhoItens.forEach(function (item) {
+    carrinhoItens.forEach(function (item, index) { 
         if (item && item.dados && item.dados.length > 0) {
             var valorProduto = parseFloat(item.dados[0].cal_valor);
-            var quantidadeProduto = parseInt(item.quantidade || 1); // Suponhamos que a quantidade padrão seja 1
+
+            var quantidadeProdutoId = 'select-quantidade' + (index + 1);
+
+            var quantidadeProdutoElement = document.getElementById(quantidadeProdutoId);
+            var quantidadeProduto = parseInt(quantidadeProdutoElement.value);
+
 
             valorTotal += valorProduto * quantidadeProduto;
+
         }
     });
+
+    var valorFrete = parseInt(localStorage.getItem("valorFrete"));
+
+    if (!isNaN(valorFrete)) {
+
+        valorTotal += valorFrete
+
+        var precoFreteElement = document.querySelector("#preco-frete");
+
+        var precoFreteTexto = precoFreteElement.textContent;
+
+        var valorFreteElement = document.querySelector("#valorFrete");
+        valorFreteElement.textContent = precoFreteTexto;
+    }
 
     var valorFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -74,13 +99,6 @@ function calcularValorTotal() {
     localStorage.setItem("valorProdutos", valorTotal);
 }
 
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    calcularValorTotal();
-});
 
 function validaDevolucao() {
     var devolucao = document.getElementById("nome").value;
@@ -144,15 +162,6 @@ function alteraStatusPedido() {
             break;
         default:
     }
-
-    /* if (lineElement) {
-        // Acessar e alterar o valor do atributo y2
-        lineElement.setAttribute('y2', '300'); // Alterando para 300
-        lineElement.setAttribute('y2', '300'); // Alterando para 300
-    } else {
-        console.log('Elemento não encontrado.');
-    } */
-
 }
 
 function addItemCarrinho() {
@@ -162,7 +171,6 @@ function addItemCarrinho() {
     localStorage.setItem("carrinhoQuantidade", novoValor);
 }
 
-// Carregar o valor do carrinho do Local Storage ao carregar a página
 function carregarValorCarrinho() {
     let valorCarrinho = localStorage.getItem("carrinhoQuantidade");
     if (valorCarrinho !== null) {
@@ -175,11 +183,9 @@ const circles = document.querySelectorAll('.circle');
 
 miniProductImages.forEach((image, index) => {
     image.addEventListener('click', () => {
-        // Remover destaque de todos os círculos
         circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
 
-        // Destacar o círculo correspondente à imagem selecionada
-        circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que você deseja
+        circles[index].setAttribute('fill', '#15368A'); 
     });
 });
 
@@ -189,13 +195,10 @@ const circle = document.querySelectorAll('.circle');
 
 miniProductImages.forEach((image, index) => {
     image.addEventListener('click', () => {
-        // Remover destaque de todos os círculos
         circles.forEach(circle => circle.setAttribute('fill', '#E6E6E6'));
 
-        // Destacar o círculo correspondente à imagem selecionada
-        circles[index].setAttribute('fill', '#15368A'); // Substitua pela cor que você deseja
+        circles[index].setAttribute('fill', '#15368A'); 
 
-        // Atualizar a imagem principal com a imagem correspondente
         mainProductImage.setAttribute('src', image.getAttribute('src'));
     });
 });
@@ -240,31 +243,35 @@ function calcularValorTotalFormaPagamento() {
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
 }
 
-function adicionarItemAoCarrinho(cal_id) {
+function adicionarItemAoCarrinho(cal_id, redirecionar) {
     var cal_id = parseInt(cal_id, 10);
     addItemCarrinho();
     encontrarItemPorId(cal_id, function (item) {
 
         if (item) {
             var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
             carrinho.push(item);
 
             localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
-            window.location.href = "/CarrinhoCompras/CarrinhoCompras"; 
-
+            if (redirecionar) {
+                window.location.href = "/CarrinhoCompras/CarrinhoCompras"; 
+            }
         }
     });
 }
 
 
 
-
 function encontrarItemPorId(cal_id, callback) {
+
     $.ajax({
         url: '/Produto/SelecionarProdutoId/' + cal_id,
         type: 'GET',
         dataType: 'json',
+        data: { cal_id: parseInt(cal_id) },
+        async: false,
         success: function (data) {
             if (data) {
                 if (typeof callback === 'function') {
@@ -316,12 +323,10 @@ function preencherItemDiv(itens) {
                 precoProduto.classList.add("descricao-produto");
                 precoProduto.textContent = "R$ " + item.dados[0].cal_valor;
 
-                precoProduto.id = "produto" + contadorIdProduto; // Define o ID único
+                precoProduto.id = "produto" + contadorIdProduto; 
 
                 var valoresProduto = document.createElement("p");
                 valoresProduto.classList.add("valores-produto");
-
-                contadorIdProduto++;
 
                 var parcelaProduto = document.createElement("p");
                 parcelaProduto.classList.add("parcela-produto");
@@ -351,6 +356,8 @@ function preencherItemDiv(itens) {
                 selectQuantidade.classList.add("select-input");
                 selectQuantidade.id = "select-quantidade" + contadorIdProduto;
                 selectQuantidade.setAttribute("onchange", "calcularValorTotal()");
+                selectQuantidade.style.width = "65px";
+
                 selectQuantidade.name = "pedido";
 
                 contadorIdProduto++;
@@ -390,4 +397,13 @@ function preencherItemDiv(itens) {
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
 
+    var itemDoCarrinho = JSON.parse(localStorage.getItem("carrinho"));
+
+    if (itemDoCarrinho) {
+        preencherItemDiv(itemDoCarrinho);
+    }
+
+    calcularValorTotal();
+});

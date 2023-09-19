@@ -50,7 +50,9 @@
             <div class="linha-horizontal"></div>
 
             <div class="container-geral-resumo">
-            <a style="text-decoration: none;"><button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
+
+            <a  asp-controller="PaginaInicial" asp-action="PaginaInicial" style="text-decoration: None">
+            <button class="btn-branco" id="meuBotao"> <strong>Adicionar itens ao carrinho</strong></button></a>
             </div>
 
             <div class="linha-horizontal"></div>
@@ -142,22 +144,4 @@
     
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>
-
-    <script>
-        // Aguarde até que o DOM da página seja totalmente carregado
-        document.addEventListener("DOMContentLoaded", function () {
-            // Recupere o item do carrinho do localStorage
-            var itemDoCarrinho = JSON.parse(localStorage.getItem("carrinho"));
-
-            // Verifique se o item do carrinho foi encontrado no localStorage
-            if (itemDoCarrinho) {
-                console.log("entrou");
-                console.log(itemDoCarrinho);
-
-
-                // Chame a função para preencher o item na página
-                preencherItemDiv(itemDoCarrinho);
-            }
-        });
-    </script>
 </body>
