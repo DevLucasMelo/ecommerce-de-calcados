@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "FormaPagamento";
+}
+<body onload="carregarValores()">
+    <!-- Modal de Sucesso -->
+    <div class="modal modal-success" id="modalSuccess">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sucesso!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Ação realizada com sucesso.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div class="modal modal-error" id="modalError">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Erro!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Houve um erro ao realizar a ação.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div>
+        <h2>Forma de Pagamento</h2>
+
+        <button class="btn-azul btn-azul-pagamento" id="meuBotaoCupom">Adicionar cupom de troca</button>
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- ... Seu código atual ... -->
+
+                    <div class="lista-cartoes" id="listaCartoes">
+                    </div>
+                </div>
+
+
+                <!-- Cartões serão renderizados aqui -->
+            </div>
+            <br>
+            <button class="btn-azul btn-azul-pagamento" id="meuBotaoCartao">Adicionar cartão de crédito</button>
+            <br>
+
+
+            <div class="escolhe-pedido">
+                <form action="">
+                    <div class="input-group mb-3">
+                        <input type="text" id="input-pedido" class="form-control" placeholder="Insira o código promocional">
+                        <div class="input-group-append">
+                            <button class="btn-azul" type="button">OK</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <div class="linha-horizontal"></div>
+            <br>
+
+            <div class="container-resumo-pedido">
+                <p class="cor-azul"><strong>Resumo</strong></p>
+                <table>
+                    <tr>
+                        <td class="td-esquerda-pedido">Valor dos produtos</td>
+                        <td class="td-direita-pedido" id="valorProduto">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td class="td-esquerda-pedido">Valor do Frete</td>
+                        <td class="td-direita-pedido" id="valorFrete">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td class="td-esquerda-pedido">Código promocional:</td>
+                        <td class="td-direita-pedido" id="valorCodPromo">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td class="td-esquerda-pedido">Cupom de troca</td>
+                        <td class="td-direita-pedido" id="cupomTroca">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td id="td-esquerda-pedido"><strong>Total</strong></td>
+                        <td id="td-direita-pedido"><strong>R$ 0,00</strong></td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <a href="pedidos_status_cliente.html">
+                <button class="btn-finaliza-pedido" id="confirmar-pedido">Finalizar Pedido</button>
+            </a>
+        </div>
+
+        <div class="overlay" id="overlay-cupom">
+            <div class="popup" id="popup-cupom">
+                <button id="fechar-cupom" class="close-button"><i class="fas fa-times"></i></button>
+                <h3 class="popup-title">Adicionar Cupom de Troca</h3>
+
+                <div class="mb-3">
+                    <label for="cupom" class="label-blue">Cupom:</label>
+                    <input type="text" class="form-control input-card" id="cupom" placeholder="Informe o cupom">
+                </div>
+
+                <button id="confirmar-cupom" class="btn btn-primary">Confirmar</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay">
+            <div class="popup" id="popup">
+                <button id="fechar" class="close-button"><i class="fas fa-times"></i></button>
+                <h3 class="popup-title">Adicionar Cartão de Crédito</h3>
+
+                <div class="mb-3">
+                    <label for="numero" class="label-blue">Número do Cartão:</label>
+                    <input type="text" class="form-control input-card" id="numero" placeholder="____.____.____.____">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="cvv" class="label-blue">CVV:</label>
+                    <input type="text" class="form-control input-card" id="cvv" placeholder="CVV">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="titular" class="label-blue">Titular do Cartão:</label>
+                    <input type="text" class="form-control input-card" id="titular" placeholder="Nome Completo">
+                </div>
+
+                <div class="mb-3">
+                    <label for="bandeira" class="label-blue">Bandeira:</label>
+                    <input type="text" class="form-control input-card" id="bandeira" required>
+                </div>
+
+                <button id="confirmar" class="btn btn-primary">Confirmar</button>
+            </div>
+            <iframe id="responseFrame" style="display: none;"></iframe>
+        </div>
+       
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="~/css/style.css">
+        <script src="~/js/script.js"></script>
+        <script src="~/js/scriptFormaPagamento.js"></script>
+</body>
