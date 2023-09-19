@@ -44,11 +44,11 @@
 
     <div class="container-externo">
         <div class="container-mini-product">
-            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/airforce1.png" alt="">
-            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/airforce1.png" alt="">
-            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/airforce1.png" alt="">
-            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/airforce1.png" alt="">
-            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/airforce1.png" alt="">
+            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-2.png" alt="">
+            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-3.png" alt="">
+            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-4.png" alt="">
+            <img class="mini-product-image" width="65px" height="48px" src="~/imagens/@(calcados[0].cal_marca.Replace(" ", "").ToLower())@(calcados[0].cal_modelo.Replace(" ", "").ToLower())-5.png" alt="">
         </div>
 
         <div class="container-product">
@@ -103,14 +103,16 @@
             </div>
 
             <div class="comprar-adicionar">
-                <button onclick="adicionarItemAoCarrinho(1)" class="btn-azul" id="btn-comprar">Comprar</button>
 
-                <button class="btn-branco" onclick="adicionarItemAoCarrinho(1)" data-item-id="1">Adicionar ao carrinho</button>
+                    <button onclick="adicionarItemAoCarrinho(@calcados[0].cal_id, true)" class="btn-azul" id="btn-comprar">Comprar</button>
+
+                    <button class="btn-branco" onclick="adicionarItemAoCarrinho(@calcados[0].cal_id, false)" data-item-id="1">Adicionar ao carrinho</button>
                 </div>
         </div>
     </div>
 
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>
+
 
 </body>

@@ -18,7 +18,7 @@ namespace EcommerceBack.Controllers
 
         public IActionResult CarrinhoCompras(int cal_id)
         {
-
+            
             List<Calcados> listaDeCalcados;
 
             try

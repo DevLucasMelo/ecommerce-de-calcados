@@ -53,11 +53,16 @@
             <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None">
                 <div class="container-item">
                     <input type="hidden" id="@calcados.cal_id">
-                    <img class="image-index" src="~/imagens/airforce1.png" alt="">
+                    <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                     <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
                     <p class="p-index">@calcados.cal_cat_id</p>
                     <p class="p-index">@calcados.cal_valor</p>
-                    <p class="p-index">10x de R$ @calcados.cal_valor</p>
+                    @{
+                        decimal valorTotal = calcados.cal_valor;
+                        int numeroParcelas = 10;
+                        decimal valorParcela = valorTotal / numeroParcelas;
+                    }
+                    <p class="p-index">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
                 </div>
             </a>
         }
@@ -69,11 +74,16 @@
             <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None">
                 <div class="container-item">
                 <input type="hidden" id="@calcados.cal_id">
-                <img class="image-index" src="~/imagens/airforce1.png" alt="">
+                    <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                 <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
                 <p class="p-index">@calcados.cal_cat_id</p>
                 <p class="p-index">@calcados.cal_valor</p>
-                <p class="p-index">10x de R$ @calcados.cal_valor</p>
+                    @{
+                        decimal valorTotal = calcados.cal_valor;
+                        int numeroParcelas = 10;
+                        decimal valorParcela = valorTotal / numeroParcelas;
+                    }
+                    <p class="p-index">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
                 </div>
             </a>
         }
