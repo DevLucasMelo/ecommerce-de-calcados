@@ -67,7 +67,6 @@ namespace EcommerceBack.Data
             }
             catch (Exception ex)
             {
-                // Lida com exceções aqui, se necessário
                 return JsonConvert.SerializeObject(new List<Calcados>());
             }
         }

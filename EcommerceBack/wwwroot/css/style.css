@@ -447,14 +447,14 @@ svg:hover circle {
 
 .container-mensagem-acompanhe-pedido{
     margin-top: 70px;
-    text-align: center; /* Posiciona o conteúdo no lado direito */  
+    text-align: center; 
 }
 
 .container-geral-pedido {
     display: flex;
     flex-direction: column;
-    justify-content:center; /* Posiciona o conteúdo no lado direito */
-    padding: 20px; /* Espaçamento para separar da borda da tela */
+    justify-content:center; 
+    padding: 20px; 
     margin: auto;
     padding: 20px;
     width: 875.083px;
@@ -860,8 +860,6 @@ margin-left: 456px;
 }
 
 
-
-/* Estilos para a tela de cliente */
 #overlay-cliente {
     display: none;
     position: fixed;
@@ -945,7 +943,6 @@ margin-left: 456px;
     color: white;
     background-color: #15368A;
 }
-/*Formatação do menu*/
 
 nav#menu {
     display: block;
@@ -993,7 +990,7 @@ nav#menu a:hover {
 .numeracoes.sem-estoque {
     text-decoration: line-through;
     color: blue;
-    cursor: default !important; /* Remove o efeito de "hover" */
+    cursor: default !important; 
 }
 
 
