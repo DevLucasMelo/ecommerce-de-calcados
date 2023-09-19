@@ -1,9 +1,15 @@
 $(document).ready(function () {
-    selecionarCartao(1);
+
+    var resposta = window.confirm("Você gostaria de utilizar os cartões já cadastrados?");
+    if (resposta) {
+        selecionarCartao(1);
+    } 
 });
 
-const confirmarPedido = document.getElementById("confirmar-pedido");
-const cartoes = [];
+let numeroPedido = 1;
+
+const confirmarPedido = document.getElementById("finaliza-pedido");
+var cartoes = [];
 
 
 
@@ -28,7 +34,7 @@ confirmarPedido.addEventListener("click", function() {
 
             data.forEach(cartao => {
 
-                adicionarCartao(cartao.car_id, "/imagens/image7.png", cartao.car_numero,
+                adicionarCartao(cartao.car_id, "/imagens/image7.png", cartao.car_num,
                     cartao.car_cod_seguranca, cartao.car_nome, "Mastercard");
             });
         });
@@ -78,7 +84,11 @@ confirmarPedido.addEventListener("click", function() {
             bandeiraImg.className = "bandeira";
 
             const numero = document.createElement("p");
-            numero.textContent = "Número: **** **** **** " + cartao.numero.slice(-2);
+            if (cartao.numero && typeof cartao.numero === 'string') {
+                numero.textContent = "Número: **** **** **** " + cartao.numero.slice(-2);
+            } else {
+                // Lidar com o caso em que cartao.numero não está definido ou não é uma string
+            }
 
             const nome = document.createElement("p");
             nome.textContent = "Nome: " + cartao.nome;
@@ -177,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const confirmarBotao = document.getElementById("confirmar-cupom");
     const modalSuccess = document.getElementById("modalSuccess");
     const modalError = document.getElementById("modalError");
+    const confirmarPedido = document.getElementById("finaliza-pedido");
 
     // Função para abrir o modal de cupom
     function openCupomPopup() {
@@ -201,6 +212,53 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target === overlayCupom) {
             closeCupomPopup();
         }
+    });
+
+    confirmarPedido.addEventListener("click", function () {
+        const valorProduto = document.getElementById('valorProduto').textContent;
+        const valorFrete = document.getElementById('valorFrete').textContent;
+        const valorCodPromo = document.getElementById('valorCodPromo').textContent;
+        const total = document.getElementById('td-direita-pedido').textContent;
+
+        const Pedido = {
+            ped_sta_comp_id: 1,
+            ped_cli_id: 1,
+            ped_valor_total: parseFloat(document.getElementById('td-direita-pedido').textContent.replace('R$', '').trim()),
+            ped_valor_produtos: parseFloat(document.getElementById('valorProduto').textContent.replace('R$', '').trim()),
+            ped_valor_frete: parseFloat(document.getElementById('valorFrete').textContent.replace('R$', '').trim()),
+            ped_valor_cod_promo: parseFloat(document.getElementById('valorCodPromo').textContent.replace('R$', '').trim()),
+            CartaoList: cartoes.map(cartao => {
+                return {
+                    car_id: cartao.cartaoId,
+                    car_num: cartao.numero,
+                    car_nome: cartao.nome,
+                    car_cod_seguranca: cartao.cvv
+                };
+            })
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/FormaPagamento/InserirPedido",
+            dataType: "json",
+            data: Pedido,
+            async: false,
+            success: function (result) {
+                numeroPedido = parseInt(result);
+            },
+            error: function (status) {
+                //alert(status.toString());
+            }
+        });
+
+
+
+        alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
+
+        const urlDaPaginaEspecifica = 'http://localhost:7247/FormaPagamento/FormaPagamento';
+
+        window.location.href = urlDaPaginaEspecifica;
+        window.location.reload(true);
     });
 
     confirmarBotao.addEventListener("click", function() {
