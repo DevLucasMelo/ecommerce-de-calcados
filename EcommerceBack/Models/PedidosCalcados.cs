@@ -15,5 +15,7 @@ namespace EcommerceBack.Models
         public int ped_cal_quant { get; set; }
         public int ped_cal_tamanho { get; set; }
         public string cal_cor { get; set; }
+        public string sta_comp_fase { get; set; }
+
     }
 }
