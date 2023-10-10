@@ -1,4 +1,143 @@
+$(document).ready(function () {
+    var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
+    if (enderecoArmazenado || localStorage.getItem("EnderecoId") !== null) {
+        var enderecoObjeto = JSON.parse(enderecoArmazenado);
+        var enderecoId = localStorage.getItem("EnderecoId");
+
+        if (enderecoId !== null && enderecoId !== "") {
+            alterarAposAdicionarEndereco();
+        }
+        else if (Object.keys(enderecoObjeto).length > 0) {
+            alterarAposAdicionarEndereco();
+        }
+    }
+});
+
+
 var circuloSelecionado = null;
+
+const confirmarEndereco = document.getElementById("confirmar-endereco");
+const adicionarEndereco = document.getElementById("adicionar-endereco");
+const overlay = document.getElementById("overlay-endereco");
+const popup = document.getElementById("popup-endereco");
+const closeButton = document.getElementById("fechar-endereco");
+
+confirmarEndereco.addEventListener("click", function () {
+
+    const bairroCliente = document.getElementById("bairroCliente1").value;
+    const cidadeCliente = document.getElementById("cidadeCliente1").value;
+    const estadoCliente = document.getElementById("estadoCliente1").value;
+    const numeroEndereco = document.getElementById("numeroEndereco1").value;
+    const paisCliente = document.getElementById("paisCliente1").value;
+    const cep = document.getElementById("cep1").value;
+    const logradouro = document.getElementById("logradouro1").value;
+
+    const selectTipoResidencia = document.getElementById("tipoResidencia1");
+    var tipoResidencia = selectTipoResidencia.options[selectTipoResidencia.selectedIndex].value;
+    var tipoResInt = parseInt(tipoResidencia, 10);
+
+    const selectTipoLogradouro = document.getElementById("tipoLogradouro1");
+    var tipoLogradouro = selectTipoLogradouro.options[selectTipoLogradouro.selectedIndex].value;
+    var tipoLogInt = parseInt(tipoLogradouro, 10);
+
+    var endereco = {
+        end_logradouro: logradouro,
+        end_numero: numeroEndereco,
+        end_bairro: bairroCliente,
+        end_cep: cep,
+        end_tip_res_id: tipoResInt,
+        end_tip_log_id: tipoLogInt,
+        cidade: {
+            cid_nome: cidadeCliente
+        },
+        estado: {
+            est_nome: estadoCliente
+        },
+        pais: {
+            pais_nome: paisCliente
+        }
+    };
+
+    localStorage.setItem("EnderecoEntrega", endereco);
+
+    alterarAposAdicionarEndereco();
+});
+
+function alterarAposAdicionarEndereco() {
+    
+    var botao = document.querySelector('.btn-add-endereco');
+
+    var elementoTexto = botao.querySelector('#adicionar-endereco p');
+
+    var elementoIcone = botao.querySelector('#icone i');
+
+    elementoTexto.textContent = 'Endereco adicionado';
+
+    elementoIcone.classList.remove('fas', 'fa-map-marker-alt');
+
+    elementoIcone.classList.add('fas', 'fa-check');
+
+    var botaoEndereco = document.getElementById("btn-endereco");
+    botaoEndereco.disabled = false;
+}
+
+function verificarNomeBotao() {
+    var botao = document.querySelector('.btn-add-endereco');
+
+    var elementoTexto = botao.querySelector('#adicionar-endereco p');
+
+    if (elementoTexto.textContent == 'Endereco adicionado') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+adicionarEndereco.addEventListener("click", verificarAdicionarEndereco);
+
+function verificarAdicionarEndereco() {
+
+    var resposta1 = verificarNomeBotao();
+
+    if (!resposta1) {
+        var resposta = window.confirm("Você gostaria de utilizar o endereço de entrega já cadastrado?");
+        if (!resposta) {
+            openPopupAdicionarEndereco();
+        } else {
+
+            $.ajax({
+                type: "GET",
+                url: "/Endereco/SelecionarUmEnderecoIdCliente",
+                dataType: "json",
+                data: { clienteId: 1 },
+                async: false,
+                success: function (id) {
+                    localStorage.setItem("EnderecoId", id);
+                    alterarAposAdicionarEndereco();
+                },
+                error: function (status) {
+                    //alert(status.toString());
+                }
+            });
+        }
+    }
+    else {
+        alert('Endereco ja foi adicionado!');
+    }
+}
+
+function openPopupAdicionarEndereco() {
+    overlay.style.display = "flex";
+    popup.style.display = "block";
+}
+
+function closePopupAdicionarEndereco() {
+    overlay.style.display = "none";
+    popup.style.display = "none";
+}
+
+closeButton.addEventListener("click", closePopupAdicionarEndereco);
 
 function alternarSelecao(circulo) {
     if (circuloSelecionado) {

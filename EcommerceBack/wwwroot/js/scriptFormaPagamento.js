@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    localStorage.removeItem("cartoes");
     var resposta = window.confirm("Você gostaria de utilizar os cartões já cadastrados?");
     if (resposta) {
         selecionarCartao(1);
@@ -117,6 +117,16 @@ confirmarPedido.addEventListener("click", function() {
     // Função para adicionar cartão à lista
     function adicionarCartao(cartaoId, bandeiraImg, numero,cvv, nome, bandeira) {
         cartoes.push({ cartaoId, bandeiraImg, numero, cvv, nome, bandeira });
+        var cartoesJSON = localStorage.getItem("cartoes");
+
+        var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
+
+        cartoes1.push({ cartaoId, bandeiraImg, numero, cvv, nome, bandeira });
+
+        cartoesJSON = JSON.stringify(cartoes1);
+
+        localStorage.setItem("cartoes", cartoesJSON);
+
         renderizarListaCartoes();
     }
 
@@ -214,20 +224,32 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    function extrairValor(elementId) {
+        var valorTexto = document.getElementById(elementId).textContent.trim();
+        var valorSemR = valorTexto.replace('R$', '').replace('.', '').replace(/\s/g, '');
+        return valorSemR;
+    }
+
+
     confirmarPedido.addEventListener("click", function () {
         const valorProduto = document.getElementById('valorProduto').textContent;
         const valorFrete = document.getElementById('valorFrete').textContent;
         const valorCodPromo = document.getElementById('valorCodPromo').textContent;
         const total = document.getElementById('td-direita-pedido').textContent;
 
-        const Pedido = {
+        var cartoesJSON = localStorage.getItem("cartoes");
+
+        var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
+
+
+        var Pedido = {
             ped_sta_comp_id: 1,
             ped_cli_id: 1,
-            ped_valor_total: parseFloat(document.getElementById('td-direita-pedido').textContent.replace('R$', '').trim()),
-            ped_valor_produtos: parseFloat(document.getElementById('valorProduto').textContent.replace('R$', '').trim()),
-            ped_valor_frete: parseFloat(document.getElementById('valorFrete').textContent.replace('R$', '').trim()),
-            ped_valor_cod_promo: parseFloat(document.getElementById('valorCodPromo').textContent.replace('R$', '').trim()),
-            CartaoList: cartoes.map(cartao => {
+            ped_valor_total: extrairValor('td-direita-pedido'),
+            ped_valor_produtos: extrairValor('valorProduto'),
+            ped_valor_frete: extrairValor('valorFrete'),
+            ped_valor_cod_promo: extrairValor('valorCodPromo'),
+            CartaoList: cartoes1.map(cartao => {
                 return {
                     car_id: cartao.cartaoId,
                     car_num: cartao.numero,
@@ -237,28 +259,100 @@ document.addEventListener("DOMContentLoaded", function() {
             })
         };
 
-        $.ajax({
-            type: "POST",
-            url: "/FormaPagamento/InserirPedido",
-            dataType: "json",
-            data: Pedido,
-            async: false,
-            success: function (result) {
-                numeroPedido = parseInt(result);
-            },
-            error: function (status) {
-                //alert(status.toString());
+        var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
+        if (enderecoArmazenado || localStorage.getItem("EnderecoId") !== null) {
+            var enderecoObjeto = JSON.parse(enderecoArmazenado);
+            var enderecoId = localStorage.getItem("EnderecoId");
+
+            if (enderecoId !== null && enderecoId !== "") {
+                Pedido.ped_end_id = enderecoId;
+
+                $.ajax({
+                    type: "POST",
+                    url: "/FormaPagamento/InserirPedido",
+                    dataType: "json",
+                    data: Pedido,
+                    async: false,
+                    success: function (result) {
+                        numeroPedido = parseInt(result);
+                    },
+                    error: function (status) {
+                        //alert(status.toString());
+                    }
+                });
+
+                const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+                if (carrinho[0] && carrinho[0].dados) {
+                    for (const item of carrinho[0].dados) {
+                        const pedidoCalcado = {
+                            ped_cal_ped_id: numeroPedido,
+                            ped_cal_cal_id: item.cal_id,
+                            ped_cal_quant: 1,
+                            ped_cal_tamanho: item.cal_tamanho,
+                        };
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/FormaPagamento/InserirPedidoCalcados",
+                            dataType: "json",
+                            data: Pedido,
+                            async: false,
+                            success: function (result) {
+                                numeroPedido = parseInt(result);
+                            },
+                            error: function (status) {
+                                
+                            }
+                        });
+
+                    }
+                }
+
             }
-        });
+            else if (Object.keys(enderecoObjeto).length > 0) {
+                var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
+
+                enderecoArmazenado.ClienteId = 1;
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Endereco/PostEnderecoRetornoId",
+                    dataType: "json",
+                    data: endereco,
+                    async: false,
+                    success: function (id) {
+                        Pedido.ped_end_id = id;
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/FormaPagamento/InserirPedido",
+                            dataType: "json",
+                            data: Pedido,
+                            async: false,
+                            success: function (result) {
+                                numeroPedido = parseInt(result);
+                            },
+                            error: function (status) {
+                                //alert(status.toString());
+                            }
+                        });
+                    },
+                    error: function (status) {
+                        //alert(status.toString());
+                    }
+                });
+
+            }
+        }
+
+
+        
 
 
 
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
 
-        const urlDaPaginaEspecifica = 'http://localhost:7247/FormaPagamento/FormaPagamento';
-
-        window.location.href = urlDaPaginaEspecifica;
-        window.location.reload(true);
+        
     });
 
     confirmarBotao.addEventListener("click", function() {
@@ -274,3 +368,42 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+function carregarValores() {
+    carregarValorCarrinho();
+    carregarValorFrete();
+    calcularValorTotalFormaPagamento();
+}
+
+function carregarValorCarrinho() {
+    let valorCarrinho = localStorage.getItem("carrinhoQuantidade");
+    if (valorCarrinho !== null) {
+        document.querySelector("#quantidade-item-cart").textContent = valorCarrinho;
+    }
+}
+
+function carregarValorFrete() {
+    let valor = parseInt(localStorage.getItem("valorProdutos"));
+    var valorFormatado = (valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    let frete = parseInt(localStorage.getItem("valorFrete"));
+    var freteFormatado = (frete).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    if (valor !== null) {
+        document.querySelector("#valorProduto").textContent = valorFormatado;
+    }
+    if (frete !== null) {
+        document.querySelector("#valorFrete").textContent = freteFormatado;
+    }
+}
+
+function calcularValorTotalFormaPagamento() {
+    var valorElemento1 = parseFloat(localStorage.getItem("valorProdutos"));
+    var valorElemento2 = parseFloat(localStorage.getItem("valorFrete"));
+    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace("R$", "").trim());
+    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace("R$", "").trim());
+
+    var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
+    var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    document.querySelector("#td-direita-pedido").textContent = valorFormatado;
+}

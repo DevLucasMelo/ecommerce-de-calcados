@@ -13,6 +13,7 @@ namespace EcommerceBack.Models
         public decimal ped_valor_frete { get; set; }
         public decimal ped_valor_cod_promo { get; set; }
         public decimal ped_valor_produtos { get; set; }
+        public int ped_end_id { get; set; }
 
         [Computed]
         public List<Cartao> CartaoList { get; set; }

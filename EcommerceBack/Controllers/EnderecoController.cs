@@ -20,6 +20,8 @@ namespace EcommerceBack.Controllers
             long idPais = 0;
             try
             {
+                endereco.end_cobranca = true;
+                endereco.end_entrega = true;
                 endereco.end_cid_id = (int)EnderecoDao.InserirCidade(endereco.cidade);
                 endereco.end_est_id = (int)EnderecoDao.InserirEstado(endereco.estado);
                 endereco.end_pais_id = (int)EnderecoDao.InserirPais(endereco.pais);
@@ -33,6 +35,32 @@ namespace EcommerceBack.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult PostEnderecoRetornoId(Endereco endereco)
+        {
+            long idEnd = 0;
+            long idCid = 0;
+            long idEst = 0;
+            long idPais = 0;
+            try
+            {
+
+                endereco.end_cobranca = true;
+                endereco.end_entrega = true;
+                endereco.end_cid_id = (int)EnderecoDao.InserirCidade(endereco.cidade);
+                endereco.end_est_id = (int)EnderecoDao.InserirEstado(endereco.estado);
+                endereco.end_pais_id = (int)EnderecoDao.InserirPais(endereco.pais);
+
+                idEnd = EnderecoDao.InserirEndereco(endereco);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(idEnd);
         }
 
         [HttpGet]
@@ -58,6 +86,21 @@ namespace EcommerceBack.Controllers
                 var cartao = CartaoDao.ConsultarSomenteCartaoPoriD(enderecoId);
 
                 return Json(cartao);
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult SelecionarUmEnderecoIdCliente(int clienteId)
+        {
+            try
+            {
+                var id = EnderecoDao.SelecionarUmEnderecoIdCliente(clienteId);
+
+                return Json(id);
             }
             catch
             {

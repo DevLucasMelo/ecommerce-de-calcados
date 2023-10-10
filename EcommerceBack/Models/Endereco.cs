@@ -21,6 +21,8 @@ namespace EcommerceBack.Models
         public int end_est_id { get; set; }
         public int end_tip_res_id { get; set; }
         public int end_tip_log_id { get; set; }
+        public bool end_cobranca { get; set; }
+        public bool end_entrega { get; set; }
 
         [Computed]
         public Cidade cidade { get; set; }

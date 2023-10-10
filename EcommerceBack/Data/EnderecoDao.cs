@@ -120,6 +120,27 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static int SelecionarUmEnderecoIdCliente(int ClienteId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT e.end_id
+                                FROM enderecos e
+                                INNER JOIN clientes_enderecos ce ON e.end_id = ce.cri_end_end_id
+                                WHERE ce.cri_end_cli_id = {ClienteId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<int>(query).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static Cartao ConsultarSomenteEnderecoPoriD(int cartao)
         {
             string conn = config().GetConnectionString("Conn");

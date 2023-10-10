@@ -27,5 +27,21 @@ namespace EcommerceBack.Controllers
             
             return Ok(id);
         }
+
+        [HttpPost]
+        public IActionResult InserirPedidoCalcados(PedidosCalcados pedidoCalcado)
+        {
+            long id;
+            try
+            {
+                PedidoDao.InserirPedidoCalcado(pedidoCalcado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok();
+        }
     }
 }
