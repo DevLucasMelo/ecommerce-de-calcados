@@ -266,7 +266,7 @@ svg:hover circle {
 
 .select-input{
     display: flex;
-    width: 340px;
+    width: 65px;
     padding: 6px 12px;
     justify-content: center;
     align-items: center;
@@ -450,15 +450,23 @@ svg:hover circle {
     text-align: center; 
 }
 
+.center-acompanhar-pedido {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+}
+
 .container-geral-pedido {
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
-    justify-content:center; 
-    padding: 20px; 
+    justify-content: center;
+    padding: 20px;
     margin: auto;
     padding: 20px;
     width: 875.083px;
-    height: 323.392px;
+    height: auto;
     border-radius: 11.296px;
     background: #FFF;
     box-shadow: 0px 4.650578022003174px 6.743337631225586px 0px rgba(0, 0, 0, 0.02), 0px 12.858253479003906px 18.644466400146484px 0px rgba(0, 0, 0, 0.03), 0px 30.957719802856445px 44.888694763183594px 0px rgba(0, 0, 0, 0.03), 0px 102.68897247314453px 148.89901733398438px 0px rgba(0, 0, 0, 0.05);

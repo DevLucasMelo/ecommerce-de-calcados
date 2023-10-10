@@ -32,7 +32,6 @@ app.UseEndpoints(endpoints =>
         defaults: new { controller = "Produto", action = "Produto" }
     );
 
-    // Outras rotas...
 });
 
 app.Run();
