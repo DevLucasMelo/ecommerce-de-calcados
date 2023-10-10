@@ -1,0 +1,139 @@
+﻿@model List<PedidoCalcados>
+
+
+@{
+    ViewData["Title"] = "StatusPedidoCliente";
+}
+
+
+<body onload="carregarValorCarrinho()">
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("PaginaInicial", "PaginaInicial")"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("CarrinhoCompras", "CarrinhoCompras")">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="@Url.Action("PedidosCliente", "PedidosCliente")"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Detalhes do Pedido</h2>
+
+    @foreach (var pedido in Model.GroupBy(p => p.ped_cal_ped_id))
+     {
+    <div class="container-geral-pedido">
+        @foreach (var item in pedido)
+        {
+            <div id="item-pedido-one">
+                <div class="image-pedido">
+                    <img width="166px" height="107px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+                </div>
+
+                <div class="product-info-pedido">
+                    <p class="descricao-produto">@item.cal_titulo</p>
+                    <p class="descricao-produto">R$ @item.cal_valor.ToString("0.00")</p>
+                    @{
+                        decimal valorTotal = item.cal_valor;
+                        int numeroParcelas = 10;
+                        decimal valorParcela = valorTotal / numeroParcelas;
+                    }
+                    <p class="descricao-produto">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
+                    <p class="descricao-produto">Quantidade: @item.ped_cal_quant</p>
+                    <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
+                    <p class="descricao-produto">Cor: @item.cal_cor</p>
+                </div>
+
+                <div class="quantitade">
+                    <div class="top-element">
+                        <p>Quantidade</p>
+                    </div>
+                    <div class="center-element">
+                        <select class="select-input" id="select-quantidade" onchange="calcularValorTotal()" name="pedido">
+                            <option class="Option" value="1">1</option>
+                            <option class="Option" value="2">2</option>
+                            <option class="Option" value="3">3</option>
+                            <option class="Option" value="4">4</option>
+                            <option class="Option" value="5">5</option>
+                            <option class="Option" value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+
+                    <div class="center-element-pedidos">
+                        <a href="solicitar_devolucao.html">
+                            <button class="btn-azul-pedido" id="meuBotao">Solicitar devolução</button>
+                        </a>
+                    </div>
+            </div>      
+            
+        }
+            
+    </div>
+
+    <br>
+    }
+
+    <h2>Status da Compra</h2>
+    <div class="container-geral-status">
+        <div class="container-mensagem-confirmacao">
+            <strong><h3>Concluído!</h3></strong>
+            <p>Recebemos seu pagamento, agora é só esperar a entrega</p>
+            <p>Acompanhe o seu pedido</p>
+
+        </div>
+        <br>
+        <div class="container-fases">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="246" viewBox="0 0 200 246" fill="none">
+
+                <text x="25" y="12" fill="#A0A0A0" font-size="12px">
+                    Em processamento
+                </text>
+                <text x="25" y="70" fill="#A0A0A0" font-size="12px">
+                    Em trânsito
+                </text>
+                <text x="25" y="128" fill="#A0A0A0" font-size="12px">
+                    Entregue
+                </text>
+                <text x="25" y="186" fill="#A0A0A0" font-size="12px">
+                    Em troca
+                </text>
+                <text x="25" y="244" fill="#A0A0A0" font-size="12px">
+                    Troca realizada
+                </text>
+                <line x1="5.36954" y1="7.323" x2="5.36954" y2="240.173" stroke="#E5E5E5" stroke-width="3" />
+                <line x1="5.36954" y1="7.323" x2="5.36953" y2="64.0168" stroke="#15368A" stroke-width="3" />
+                <path d="M0.891274 5.29822C0.891274 7.8265 2.90079 9.86017 5.36022 9.86017C7.81965 9.86017 9.82916 7.8265 9.82916 5.29822C9.82916 2.76994 7.81965 0.736267 5.36022 0.736267C2.90079 0.736267 0.891274 2.76994 0.891274 5.29822Z" fill="#15368A" stroke="#15368A" />
+                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 235.111)" fill="#E5E5E5" />
+                <path d="M0.891274 64.0168C0.891274 66.5451 2.90079 68.5788 5.36022 68.5788C7.81965 68.5788 9.82916 66.5451 9.82916 64.0168C9.82916 61.4886 7.81965 59.4549 5.36022 59.4549C2.90079 59.4549 0.891274 61.4886 0.891274 64.0168Z" fill="#15368A" stroke="#15368A" />
+                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 176.392)" fill="#E5E5E5" />
+                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 117.674)" fill="#E5E5E5" />
+            </svg>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/script.js"></script>
+</body>

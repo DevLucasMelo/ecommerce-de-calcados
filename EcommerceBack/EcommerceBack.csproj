@@ -15,5 +15,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Status_compra_admin\" />
+  </ItemGroup>
   
 </Project>

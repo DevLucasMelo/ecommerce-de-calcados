@@ -211,25 +211,62 @@ class TestesAutomatizados
 
     }
 
+    void ConsultarPedidos(IWebDriver driver)
+    {
+        System.Threading.Thread.Sleep(1000);
+
+        IWebElement acompanhaPedido = driver.FindElement(By.Id("acompanhaPedido"));
+
+        int scrollAmount = 10;
+        int scrollTotal = 1600;  
+
+        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+        System.Threading.Thread.Sleep(1000); 
+
+        acompanhaPedido.Click(); 
+
+        System.Threading.Thread.Sleep(1500); 
+
+        scrollAmount = 10;
+        scrollTotal = 800;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+
+    }
+
     static void Main(string[] args)
     {
-        string chromedriverPath = @"C:\EcommerceBack2\EcommerceBack\testes\chromedriver-win64\chromedriver.exe"; 
+        string chromedriverPath = @"C:\Users\lucas\OneDrive\Área de Trabalho\ecommerce full\testes\chromedriver-win64\chromedriver.exe"; 
 
         var chromeOptions = new ChromeOptions();
         chromeOptions.AddArgument("--start-maximized"); 
 
         IWebDriver driver = new ChromeDriver(chromedriverPath, chromeOptions);
 
-        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "Cliente", "Cliente.html");
+        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "PedidosCliente", "PedidosCliente.cshtml");
 
-        driver.Url = "http://localhost:7247/Cliente/Cliente";
+        driver.Url = "http://localhost:7247/PedidosCliente/PedidosCliente";
         
         var testes = new TestesAutomatizados(); 
 
         //testes.Insercao(driver); 
         //testes.Alteracao(driver);
-        testes.Consulta(driver);
-        testes.Exclusao(driver);
+        //testes.Consulta(driver);
+        //testes.Exclusao(driver);
+
+        testes.ConsultarPedidos(driver);
 
 
     }

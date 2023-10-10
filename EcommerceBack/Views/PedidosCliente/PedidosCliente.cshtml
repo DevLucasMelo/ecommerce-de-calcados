@@ -1,0 +1,85 @@
+﻿@model List<PedidoCalcados>
+
+
+@{
+    ViewData["Title"] = "PedidosCliente";
+}
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("PaginaInicial", "PaginaInicial")"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("CarrinhoCompras", "CarrinhoCompras")">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="@Url.Action("PedidosCliente", "PedidosCliente")"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Meus pedidos</h2>
+
+    @foreach (var pedido in Model.GroupBy(p => p.ped_cal_ped_id))
+     {
+    <div class="container-geral-pedido">
+        @foreach (var item in pedido)
+        {
+            <div id="item-pedido-one">
+                <div class="image-pedido">
+                    <img width="166px" height="107px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+                </div>
+
+                <div class="product-info-pedido">
+                    <p class="descricao-produto">@item.cal_titulo</p>
+                    <p class="descricao-produto">R$ @item.cal_valor.ToString("0.00")</p>
+                    @{
+                        decimal valorTotal = item.cal_valor;
+                        int numeroParcelas = 10;
+                        decimal valorParcela = valorTotal / numeroParcelas;
+                    }
+                    <p class="descricao-produto">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
+                    <p class="descricao-produto">Quantidade: @item.ped_cal_quant</p>
+                    <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
+                    <p class="descricao-produto">Cor: @item.cal_cor</p>
+                </div>
+
+            </div>
+
+                
+            
+        }
+            <div class="center-acompanhar-pedido">
+                <a href="@Url.Action("StatusPedidoCliente", "StatusPedidoCliente")">
+                    <button id="acompanhaPedido" class="btn-azul-pedido">Acompanhar Pedido</button>
+                </a>
+            </div>
+    </div>
+        
+    <br>
+    }
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/script.js"></script>
+</body>
