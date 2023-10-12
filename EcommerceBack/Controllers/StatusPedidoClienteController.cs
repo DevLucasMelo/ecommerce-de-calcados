@@ -18,7 +18,7 @@ namespace EcommerceBack.Controllers
         }
         public IActionResult StatusPedidoCliente(int ped_cal_ped_id)
         {
-            List<PedidoCalcados> listaDePedidosComCalcados;
+            List<PedidosCalcados> listaDePedidosComCalcados;
 
             ped_cal_ped_id = 1;
             try
@@ -28,7 +28,7 @@ namespace EcommerceBack.Controllers
             }
             catch (Exception ex)
             {
-                listaDePedidosComCalcados = new List<PedidoCalcados>();
+                listaDePedidosComCalcados = new List<PedidosCalcados>();
             }
             return View(listaDePedidosComCalcados);
         }

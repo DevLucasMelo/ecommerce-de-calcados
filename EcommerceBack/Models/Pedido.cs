@@ -8,7 +8,7 @@ namespace EcommerceBack.Models
     {
 
         [Key]
-        public int? cal_id { get; set; }
+        public long ped_id { get; set; }
 
         [Column("ped_sta_comp_id")]
         public int ped_sta_comp_id { get; set; }

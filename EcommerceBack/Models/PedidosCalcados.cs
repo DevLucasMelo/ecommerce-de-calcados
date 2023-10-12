@@ -1,5 +1,4 @@
 ﻿using Dapper.Contrib.Extensions;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcommerceBack.Models
 {

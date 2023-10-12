@@ -248,7 +248,7 @@ class TestesAutomatizados
 
     static void Main(string[] args)
     {
-        string chromedriverPath = @"C:\Users\lucas\OneDrive\Área de Trabalho\ecommerce full\testes\chromedriver-win64\chromedriver.exe"; 
+        string chromedriverPath = @"C:\EcommerceBack2\EcommerceBack\testes\chromedriver-win64\chromedriver.exe"; 
 
         var chromeOptions = new ChromeOptions();
         chromeOptions.AddArgument("--start-maximized"); 

@@ -18,7 +18,7 @@ namespace EcommerceBack.Controllers
 
         public IActionResult PedidosCliente()
         {
-            List<PedidoCalcados> listaDePedidosComCalcados;
+            List<PedidosCalcados> listaDePedidosComCalcados;
 
             try
             {
@@ -27,7 +27,7 @@ namespace EcommerceBack.Controllers
             }
             catch (Exception ex)
             {
-                listaDePedidosComCalcados = new List<PedidoCalcados>();
+                listaDePedidosComCalcados = new List<PedidosCalcados>();
             }
             return View(listaDePedidosComCalcados);
         }

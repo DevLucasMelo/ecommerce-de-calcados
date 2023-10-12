@@ -37,7 +37,7 @@ namespace EcommerceBack.Data
             }
         }
 
-        public static List<PedidoCalcados> consultarPedidosClienteComCalcados()
+        public static List<PedidosCalcados> consultarPedidosClienteComCalcados()
         {
             string conn = config().GetConnectionString("Conn");
             string query = "SELECT ped_cal.ped_cal_ped_id, ped_cal.ped_cal_cal_id, cal.cal_titulo, cal.cal_marca, cal.cal_modelo, cal.cal_valor, ped_cal.ped_cal_quant, ped_cal.ped_cal_tamanho, cal.cal_cor " +
@@ -50,17 +50,17 @@ namespace EcommerceBack.Data
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
-                    var pedidos = sqlCon.Query<PedidoCalcados>(query).ToList();
+                    var pedidos = sqlCon.Query<PedidosCalcados>(query).ToList();
                     return pedidos;
                 }
             }
             catch (Exception ex)
             {
-                return new List<PedidoCalcados>();
+                return new List<PedidosCalcados>();
             }
         }
 
-        public static List<PedidoCalcados> consultarPedidoStatusCliente(int ped_cal_ped_id)
+        public static List<PedidosCalcados> consultarPedidoStatusCliente(int ped_cal_ped_id)
         {
             string conn = config().GetConnectionString("Conn");
             string query = $"\r\nSELECT sta_comp_fase, ped_cal_ped_id ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
@@ -69,13 +69,13 @@ namespace EcommerceBack.Data
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
-                    var pedidos = sqlCon.Query<PedidoCalcados>(query).ToList();
+                    var pedidos = sqlCon.Query<PedidosCalcados>(query).ToList();
                     return pedidos;
                 }
             }
             catch (Exception ex)
             {
-                return new List<PedidoCalcados>();
+                return new List<PedidosCalcados>();
             }
         }
 
