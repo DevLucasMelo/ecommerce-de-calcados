@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Devolucao\Devolucao.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
@@ -18,6 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Views\Status_compra_admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Devolucao\Devolucao.cshtml" />
   </ItemGroup>
   
 </Project>
