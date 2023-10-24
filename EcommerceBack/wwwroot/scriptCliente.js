@@ -829,3 +829,45 @@ function inativaCliente(cliId) {
   
 }
 
+function consulTrans(clienteId) {
+    preencherTransacoes(clienteId);
+    abrirModalTransacao();
+}
+
+function preencherTransacoes(clienteId)
+{ 
+    fetch(`/PedidoAdmin/ConsultarPedidoCliente?clienteId=${clienteId}`)
+        .then(response => response.json())
+        .then(data => {
+            var resultadoPesquisa = document.getElementById('resultadoPesquisaTransacoes');
+            resultadoPesquisa.innerHTML = '';
+
+            data.forEach(pedido => {
+                resultadoPesquisa.innerHTML += `
+                    <div class="row">
+                        <div class="col">${pedido.ped_id}</div>
+                        <div class="col">${pedido.cliente.cli_nome}</div>
+                        <div class="col">${pedido.ped_valor_total}</div>
+                        <div class="col">${pedido.ped_valor_frete}</div>
+                        <div class="col">${pedido.ped_valor_produtos}</div>
+                        <div class="col">${pedido.endereco.end_logradouro}</div>
+                    </div>`;
+            });
+            
+        });
+}
+
+const overlayTransacao = document.getElementById("overlay-transacoes");
+const popupTransacao = document.getElementById("popup-transacoes");
+const closeButtonTransacao = document.getElementById("fechar-transacao");
+
+closeButtonTransacao.addEventListener("click", closeTransacaoPopup);
+function closeTransacaoPopup() {
+    overlayTransacao.style.display = "none";
+    popupTransacao.style.display = "none";
+}
+
+function abrirModalTransacao() {
+    overlayTransacao.style.display = "flex";
+    popupTransacao.style.display = "block";
+} 

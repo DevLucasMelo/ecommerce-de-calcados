@@ -99,6 +99,87 @@ namespace EcommerceBack.Data
 
         }
 
+        public static Endereco SelecionarEnderecoById(int enderecoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT e.end_logradouro, e.end_cep, e.end_bairro, e.end_id, 
+                                e.end_numero, e.end_cid_id, e.end_pais_id, e.end_est_id
+                                FROM enderecos e
+                                WHERE e.end_id = {enderecoId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Endereco>(query).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static Pais SelecionarPaisById(int paisId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT pais_nome
+                                FROM paises p
+                                WHERE p.pais_id = {paisId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Pais>(query).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static Estado SelecionarEstadoById(int estadoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT e.est_nome
+                                FROM estados e
+                                WHERE e.est_id = {estadoId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Estado>(query).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static Cidade SelecionarCidadeById(int cidadeId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"SELECT e.cid_nome
+                                FROM cidades e
+                                WHERE e.cid_id = {cidadeId} ;";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    return sqlCon.Query<Cidade>(query).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static List<Endereco> SelecionarEnderecoIdCliente(int ClienteId)
         {
             string conn = config().GetConnectionString("Conn");

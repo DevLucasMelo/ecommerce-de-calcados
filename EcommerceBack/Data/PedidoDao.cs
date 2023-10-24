@@ -101,5 +101,91 @@ namespace EcommerceBack.Data
                 throw;
             }
         }
+
+        public static List<Pedido> ConsultarPedidoByClienteId(int id)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var sqlConn = new NpgsqlConnection(conn))
+                {
+                    sqlConn.Open();
+
+                    string sql = $"select ped_id, ped_valor_total, ped_valor_produtos, ped_valor_frete, ped_cli_id, ped_end_id, ped_sta_comp_id from pedidos where ped_cli_id = {id}";
+
+                    var pedido = sqlConn.Query<Pedido>(sql).ToList();
+                    return pedido;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<Pedido>();
+            }
+        }
+
+        public static Pedido ConsultarPedidoById(int id)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var sqlConn = new NpgsqlConnection(conn))
+                {
+                    sqlConn.Open();
+
+                    string sql = $"select ped_id, ped_valor_total, ped_valor_produtos, ped_valor_frete, ped_cli_id, ped_end_id, ped_sta_comp_id from pedidos where ped_id = {id}";
+
+                    var pedido = sqlConn.Query<Pedido>(sql).FirstOrDefault();
+                    return pedido;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Pedido();
+            }
+        }
+
+        public static List<PedidosCalcados> ConsultarPedidosProdutosById(int pedidoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var sqlConn = new NpgsqlConnection(conn))
+                {
+                    sqlConn.Open();
+
+                    string sql = $@"select ped_cal_quant, ped_cal_tamanho, c.cal_marca, c.cal_modelo, ped_cal_cal_id
+                        from pedidos_calcados pc
+						inner join calcados c on c.cal_id = pc.ped_cal_cal_id
+                        where pc.ped_cal_ped_id = {pedidoId}";
+
+                    var pedido = sqlConn.Query<PedidosCalcados>(sql).ToList();
+                    return pedido;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<PedidosCalcados>();
+            }
+        }
+
+        public static void atualizarStatusCompra(int statusId, int pedidoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var sqlConn = new NpgsqlConnection(conn))
+                {
+                    sqlConn.Open();
+
+                    string sql = $@"update pedidos set ped_sta_comp_id = {statusId} where ped_id = {pedidoId}";
+
+                    var pedido = sqlConn.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
     }
 }

@@ -1,0 +1,84 @@
+﻿@model Pedido
+@{
+    ViewData["Title"] = "PedidoAdmin";
+}
+
+<body>
+
+    <div class="container-consulta">
+        <input type="text" id="termoPesquisa" placeholder="Digite aqui...">
+        <button class="btn btn-primary mb-3" id="consultarPedidos">Consultar</button>
+    </div>
+
+    <div id="pedidoGrid" class="container mt-4">
+        <h1 class="text-center">Lista de Pedidos</h1>
+        <div class="row grid-header">
+            <div class="col">Código do pedido</div>
+            <div class="col">Nome do Cliente</div>
+            <div class="col">Valor Total</div>
+            <div class="col">Consultar Pedido</div>
+        </div>
+        <div id="resultadoPesquisa">
+            
+        </div>
+    </div>
+
+    <div class="overlay-pedidoadmin" id="overlay-pedidoadmin">
+        <div class="popup-pedidoadmin" id="popup-pedidoadmin">
+            <button id="fechar-pedido" class="close-button"><i class="fas fa-times"></i></button>
+            <form>
+                <input type="hidden" id="pedidoId">
+                <h3 class="popup-title">Endereço</h3>
+
+                <div class="mb-3">
+                    <label for="enderecoSimples" class="label-blue">Endereço simplificado:</label>
+                    <input type="text" id="enderecoSimples" class="form-control input-card" readonly>
+                </div>
+
+                <h3 class="popup-title">Informações do Pedido</h3>
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <label for="valorTotal" class="label-blue">Valor total do pedido:</label>
+                        <input type="text" id="valorTotal" class="form-control input-card" readonly>
+                    </div>
+                    <div>
+                        <label for="valorProdutos" class="label-blue">Valor dos Produtos:</label>
+                        <input type="text" id="valorProdutos" class="form-control input-card" readonly>
+                    </div>
+                </div>
+                <br>
+                <div id="produtosGrid" class="container mt-4">
+                    <h1 class="text-center">Lista de Calçados</h1>
+                    <div class="row grid-header">
+                        <div class="col">Código do produto</div>
+                        <div class="col">Nome do Produto</div>
+                        <div class="col">Tamanho</div>
+                        <div class="col">Qtd</div>
+                    </div>
+                    <div id="resultadoProdutos">
+                    </div>
+                </div>
+                <br>
+                <div class"mb-3">
+                    <label for="faseCompra" class="label-blue">Fase da compra:</label>
+                    <select id="faseCompra" class="form-select input-card">
+                        <option selected>Selecione...</option>
+                        <option value="1">EM PROCESSAMENTO</option>
+                        <option value="2">EM TRANSITO</option>
+                        <option value="3">ENTREGUE</option>
+                        <option value="4">TROCA AUTORIZADA</option>
+                        <option value="5">EM TROCA</option>
+                    </select>
+                </div>
+                <br>
+            </form>
+
+            <button id="confirmar" class="btn btn-primary">Confirmar</button>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/scriptPedidoAdmin.js"></script>
+
+</body>

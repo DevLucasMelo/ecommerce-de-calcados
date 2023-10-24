@@ -34,5 +34,14 @@ namespace EcommerceBack.Models
 
         [Computed]
         public List<Cartao> CartaoList { get; set; }
+
+        [Computed]
+        public Cliente Cliente { get; set; }
+
+        [Computed]
+        public Endereco Endereco { get; set; }
+
+        [Computed]
+        public List<PedidosCalcados> PedidosCalcados { get; set; }
     }
 }
