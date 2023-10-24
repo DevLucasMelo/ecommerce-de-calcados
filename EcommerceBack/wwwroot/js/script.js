@@ -161,11 +161,29 @@ function alternarSelecaoElemento(elemento) {
     divSelecionada = elemento;
 }
 
-function removerProduto(button) {
-    var containerGeral = button.closest(".container-geral");
-    containerGeral.remove();
-}
 
+function removerProduto(elemento, cal_id) {
+    removeItemCarrinho()
+
+    var itemContainer = elemento.parentNode.parentNode.parentNode;
+
+    itemContainer.parentNode.removeChild(itemContainer);
+
+    var items = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    var indexToRemove = items.findIndex(function (item) {
+        return item.dados[0].cal_id === cal_id;
+    });
+
+    if (indexToRemove !== -1) {
+        items.splice(indexToRemove, 1);
+                
+        localStorage.setItem("carrinho", JSON.stringify(items));
+
+        calcularValorTotal()
+    }
+
+}
 
 function selecionarBtn(button) {
     button.classList.toggle("selected");
@@ -322,6 +340,13 @@ function addItemCarrinho() {
     localStorage.setItem("carrinhoQuantidade", novoValor);
 }
 
+function removeItemCarrinho() {
+    let valorAtual = parseInt(document.querySelector("#quantidade-item-cart").textContent);
+    let novoValor = valorAtual - 1;
+    document.querySelector("#quantidade-item-cart").textContent = novoValor
+    localStorage.setItem("carrinhoQuantidade", novoValor);
+}
+
 function carregarValorCarrinho() {
     let valorCarrinho = localStorage.getItem("carrinhoQuantidade");
     if (valorCarrinho !== null) {
@@ -400,10 +425,13 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
     encontrarItemPorId(cal_id, function (item) {
 
         if (item) {
+            
             var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-            carrinho.push(item);
+            var quantidade_item = { quantidade: 1 };
 
+            carrinho.push(item);
+            
             localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
             if (redirecionar) {
@@ -456,6 +484,7 @@ function preencherItemDiv(itens) {
 
                 var itemContainer = document.createElement("div");
                 itemContainer.classList.add("item-container");
+                itemContainer.id = item.dados[0].cal_id;                    ;
 
                 var img = document.createElement("img");
                 img.width = "166";
@@ -527,7 +556,9 @@ function preencherItemDiv(itens) {
                 aRemover.href = "#";
                 aRemover.classList.add("btn-remove");
                 aRemover.textContent = "Remover";
-                aRemover.setAttribute("onclick", "removerProduto(this)");
+                aRemover.addEventListener("click", function () {
+                    removerProduto(this, item.dados[0].cal_id);
+                });
 
                 topElement.appendChild(pQuantidade);
                 centerElement.appendChild(selectQuantidade);
