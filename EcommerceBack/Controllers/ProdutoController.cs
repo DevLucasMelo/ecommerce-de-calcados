@@ -44,7 +44,6 @@ namespace EcommerceBack.Controllers
         [HttpGet]
         public IActionResult SelecionarProdutoId(int cal_id)
         {
-            Console.WriteLine(cal_id);
             try
             {
                 var calcado = CalcadosDao.SelecionarCalcadosIdComoJson(cal_id);

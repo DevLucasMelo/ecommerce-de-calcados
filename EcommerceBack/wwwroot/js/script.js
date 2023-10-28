@@ -149,16 +149,35 @@ function alternarSelecao(circulo) {
 
 var divSelecionada = null;
 
-function alternarSelecaoElemento(elemento) {
+function alternarSelecaoElemento(elemento, cal_id) {
+
     if (divSelecionada) {
         divSelecionada.classList.remove("selecionado");
-        divSelecionada.style.border = "Nenhum";
+        divSelecionada.style.border = "none";
     }
 
     elemento.classList.add("selecionado");
     elemento.style.border = "1px solid #000000";
 
     divSelecionada = elemento;
+
+    var numero_calcado = elemento.innerHTML;
+
+    var cal_id = parseInt(cal_id, 10);
+
+    console.log(cal_id)
+
+    encontrarItemPorId(cal_id, function (item) {
+        if (item) {
+            var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+            item.dados[0].tamanho = numero_calcado;
+
+            carrinho.push(item);
+
+            localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        }
+    });
 }
 
 
@@ -237,15 +256,18 @@ function calcularValorTotal() {
             var valorProduto = parseFloat(item.dados[0].cal_valor);
 
             var quantidadeProdutoId = 'select-quantidade' + (index + 1);
-
             var quantidadeProdutoElement = document.getElementById(quantidadeProdutoId);
             var quantidadeProduto = parseInt(quantidadeProdutoElement.value);
 
-
+            item.dados[0].quantidade = quantidadeProduto;
+                                    
             valorTotal += valorProduto * quantidadeProduto;
 
+           
         }
     });
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinhoItens))
 
     var valorFrete = parseInt(localStorage.getItem("valorFrete"));
 
@@ -266,6 +288,8 @@ function calcularValorTotal() {
     document.querySelector("#valorProdutos").textContent = valorFormatado;
     document.querySelector("#valorTotal").textContent = valorFormatado;
     localStorage.setItem("valorProdutos", valorTotal);
+    localStorage.setItem("valorProdutos", valorTotal);
+    
 }
 
 
@@ -425,13 +449,12 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
     encontrarItemPorId(cal_id, function (item) {
 
         if (item) {
-            
             var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-            var quantidade_item = { quantidade: 1 };
-
+            item.dados[0].quantidade = 1;
+                        
             carrinho.push(item);
-            
+                                   
             localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
             if (redirecionar) {
@@ -546,6 +569,10 @@ function preencherItemDiv(itens) {
                     var option = document.createElement("option");
                     option.classList.add("Option");
                     option.value = i;
+                    quantidade_localStorage = item.dados[0].quantidade
+                    if (option.value == quantidade_localStorage) {
+                        option.selected = true;
+                    }
                     option.textContent = i;
                     selectQuantidade.appendChild(option);
                 }

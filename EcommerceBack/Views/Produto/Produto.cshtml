@@ -88,7 +88,7 @@
 
                         var classeCSS = quantidadeEmEstoque == 0 ? "sem-estoque" : "";
 
-                        <div class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this)">@tamanho</div>
+                            <div class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this, @calcados[0].cal_id)">@tamanho</div>
                     }
                 </div>
                 <p class="valores-produto"><strong>R$ @calcados[0].cal_valor</strong> à vista</p>

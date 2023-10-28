@@ -16,7 +16,7 @@ namespace EcommerceBack.Controllers
         {
             _logger = logger;
         }
-        public IActionResult StatusPedidoCliente(int ped_cal_ped_id)
+        public IActionResult StatusPedidoCliente (int ped_cal_ped_id)
         {
             List<PedidosCalcados> listaDePedidosComCalcados;
 
