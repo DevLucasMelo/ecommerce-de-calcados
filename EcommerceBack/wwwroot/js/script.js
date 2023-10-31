@@ -464,7 +464,27 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
     });
 }
 
+function redirectToStatusPedidoCliente(pedId) {
+    document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var pedId = this.getAttribute('data-pedidoid');
+            window.location.href = '/StatusPedidoCliente/StatusPedidoCliente?ped_cal_ped_id=' + pedId;
+        });
+    });
+}
 
+function redirectToDevolucao(calId, pedId) { 
+    document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var calId = this.getAttribute('data-calcadoid');
+            var pedId = this.getAttribute('data-pedidoid');
+            var select = document.getElementById("select-quantidade");
+            var quantidadeSelecionada = select.options[select.selectedIndex].value;
+
+            window.location.href = '/Devolucao/Devolucao?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
+        });
+    });   
+}
 
 function encontrarItemPorId(cal_id, callback) {
 
@@ -617,3 +637,29 @@ document.addEventListener("DOMContentLoaded", function () {
     calcularValorTotal();
 });
 
+function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
+    const motivo = document.getElementById("motivo").value;
+
+    if (!motivo) {
+        alert("Por favor, informe o motivo antes de solicitar a devolução.");
+        return;
+    }
+
+
+    fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Solicitacao de devolucao enviada com sucesso.");
+            } else {
+                alert("Erro ao enviar a solicitação de devolução.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao enviar a solicitação de devolução: " + error);
+        });
+}

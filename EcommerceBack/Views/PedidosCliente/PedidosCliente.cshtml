@@ -44,9 +44,10 @@
     @foreach (var pedido in Model.GroupBy(p => p.ped_cal_ped_id))
      {
     <div class="container-geral-pedido">
+        <p class="num-pedido" style="font-weight: bold; font-size: 16px;">N° do Pedido: @pedido.Key</p>
         @foreach (var item in pedido)
         {
-            <div id="item-pedido-one">
+                <div id="@pedido.Key" class="item-pedido">
                 <div class="image-pedido">
                     <img width="166px" height="107px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                 </div>
@@ -71,10 +72,11 @@
             
         }
             <div class="center-acompanhar-pedido">
-                <a href="@Url.Action("StatusPedidoCliente", "StatusPedidoCliente")">
-                    <button id="acompanhaPedido" class="btn-azul-pedido">Acompanhar Pedido</button>
+                <a class="acompanhar-pedido-button" data-pedidoid="@pedido.Key">
+                    <button class="btn-azul-pedido" onclick="redirectToStatusPedidoCliente(this.getAttribute('data-pedidoid'))">Acompanhar Pedido</button>
                 </a>
             </div>
+
     </div>
         
     <br>

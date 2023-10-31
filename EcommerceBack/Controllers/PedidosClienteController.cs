@@ -23,7 +23,6 @@ namespace EcommerceBack.Controllers
             try
             {
                 listaDePedidosComCalcados = PedidoDao.consultarPedidosClienteComCalcados();
-                Console.WriteLine(listaDePedidosComCalcados);
             }
             catch (Exception ex)
             {

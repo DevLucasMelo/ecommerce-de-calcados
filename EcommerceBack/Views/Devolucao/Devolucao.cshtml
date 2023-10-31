@@ -1,5 +1,74 @@
-<body>
+﻿@model List<PedidosCalcados>
 
-    <h1>Teste</h1>
 
+@{
+    ViewData["Title"] = "Devolucao";
+}
+
+
+
+<body onload="carregarValorCarrinho()">
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @foreach (var item in Model)
+    {
+        <h2>Solicitar Devolução</h2>
+        <div class="container-geral-devolucao">
+            <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+            <div class="product-info">
+                <p class="descricao-produto">@item.cal_titulo</p>
+                <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
+                <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
+                <p class="descricao-produto">Cor: @item.cal_cor</p>
+            </div>
+
+            <div class="informe">
+                <form>
+                    <label class="informe-motivo" for="motivo"><strong>Informe o motivo:</strong></label>
+                    <br>
+                    <input class="input-motivo" type="text" id="motivo" name="motivo" placeholder="Digite aqui">
+                </form>
+            </div>
+        </div>
+
+        <div class="linha-horizontal"></div>
+
+        <div class="solicitar-devolucao">
+            <button class="btn-azul" onclick="solicitarDevolucao(@item.ped_cal_cal_id, @item.ped_cal_ped_id)">Solicitar devolução</button>
+        </div>
+    }
+
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/script.js"></script>
 </body>

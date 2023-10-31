@@ -60,10 +60,27 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    sqlCon.Execute(query);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        
         public static List<PedidosCalcados> consultarPedidoStatusCliente(int ped_cal_ped_id)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $"\r\nSELECT sta_comp_fase, ped_cal_ped_id ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
+            string query = $"\r\nSELECT sta_comp_fase, ped_cal_ped_id, ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
 
             try
             {
@@ -79,6 +96,28 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static List<PedidosCalcados> consultarCalcadoDevolucao(int ped_cal_ped_id, int ped_cal_cal_id)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $"\r\nSELECT sta_comp_fase, ped_cal_ped_id, ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id} and ped_cal_cal_id = {ped_cal_cal_id}";
+            
+            Console.WriteLine(ped_cal_ped_id);
+            Console.WriteLine(ped_cal_cal_id);
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var pedidos = sqlCon.Query<PedidosCalcados>(query).ToList();
+                    Console.WriteLine(pedidos);
+                    return pedidos;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<PedidosCalcados>();
+            }
+        }
 
         public static void InserirPedidoCalcado(PedidosCalcados pedidoCalcado)
         {

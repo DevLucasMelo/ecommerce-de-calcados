@@ -44,7 +44,10 @@
 
     @foreach (var pedido in Model.GroupBy(p => p.ped_cal_ped_id))
      {
+
     <div class="container-geral-pedido">
+        <p class="num-pedido" style="font-weight: bold; font-size: 16px;">N° do Pedido: @pedido.Key</p>
+
         @foreach (var item in pedido)
         {
             <div id="item-pedido-one">
@@ -71,26 +74,26 @@
                         <p>Quantidade</p>
                     </div>
                     <div class="center-element">
-                        <select class="select-input" id="select-quantidade" onchange="calcularValorTotal()" name="pedido">
-                            <option class="Option" value="1">1</option>
-                            <option class="Option" value="2">2</option>
-                            <option class="Option" value="3">3</option>
-                            <option class="Option" value="4">4</option>
-                            <option class="Option" value="5">5</option>
-                            <option class="Option" value="6">6</option>
+                        <select class="select-input" id="select-quantidade" name="pedido">
+                            @for (var i = 1; i <= @item.ped_cal_quant; i++)
+                            {
+                                <option class="Option" value="@i">@i</option>
+                            }
                         </select>
                     </div>
                 </div>
 
-                    <div class="center-element-pedidos">
-                        <a href="solicitar_devolucao.html">
-                            <button class="btn-azul-pedido" id="meuBotao">Solicitar devolução</button>
+                    <div class="center-acompanhar-pedido">
+                        <a class="acompanhar-pedido-button" data-calcadoid="@item.ped_cal_cal_id" data-pedidoid="@item.ped_cal_ped_id">
+                            <button class="btn-azul-pedido" onclick="redirectToDevolucao(this.getAttribute('data-calcadoid'))">Solicitar devolução</button>
                         </a>
                     </div>
-            </div>      
-            
+
+
+            </div> 
+                
         }
-            
+         
     </div>
 
     <br>

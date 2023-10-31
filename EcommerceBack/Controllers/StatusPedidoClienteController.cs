@@ -1,8 +1,6 @@
 ﻿using EcommerceBack.Data;
 using EcommerceBack.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-
 
 namespace EcommerceBack.Controllers
 {
@@ -20,11 +18,9 @@ namespace EcommerceBack.Controllers
         {
             List<PedidosCalcados> listaDePedidosComCalcados;
 
-            ped_cal_ped_id = 1;
             try
             {
                 listaDePedidosComCalcados = PedidoDao.consultarPedidoStatusCliente(ped_cal_ped_id);
-                Console.WriteLine(listaDePedidosComCalcados);
             }
             catch (Exception ex)
             {

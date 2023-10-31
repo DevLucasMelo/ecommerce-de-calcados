@@ -490,11 +490,6 @@ svg:hover circle {
     width: 200px;
 }
 
-.descricao-produto{
-    font-size: 10px;
-    margin: 0px;
-}
-
 .container-fases{
     display: flex;
     justify-content:center; 
@@ -517,6 +512,11 @@ svg:hover circle {
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.container-geral-devolucao {
+    display: flex;
+    justify-content: center;
 }
 
 .container-geral-resumo {
@@ -657,13 +657,13 @@ h1, h2{
     color: #15368A;
 }
 
-.descricao-produto{
-    font-size: 10px;
+.descricao-produto {
+    font-size: 10pt;
     margin: 1px;
     padding: 1px;
 }
 
-#item-pedido-one{
+.item-pedido{
     display: flex;
     flex-direction: row;
     justify-content:center;
@@ -1025,5 +1025,7 @@ nav#menu a:hover {
 
 
 
-
+.num-pedido {
+    text-align: center;
+}
 
