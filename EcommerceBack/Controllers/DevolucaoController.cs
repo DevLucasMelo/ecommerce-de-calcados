@@ -37,8 +37,6 @@ namespace EcommerceBack.Controllers
         [HttpPost]
         public ActionResult InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo)
         {
-            Console.WriteLine(motivo);
-
             try
             {
                 PedidoDao.InserirMotivoDevolucao(ped_cal_cal_id, ped_cal_ped_id, motivo);

@@ -58,7 +58,7 @@
                 <div class="product-info-pedido">
                     <p class="descricao-produto">@item.cal_titulo</p>
                     <p class="descricao-produto">R$ @item.cal_valor.ToString("0.00")</p>
-                    @{
+                    @{      
                         decimal valorTotal = item.cal_valor;
                         int numeroParcelas = 10;
                         decimal valorParcela = valorTotal / numeroParcelas;
@@ -69,6 +69,8 @@
                     <p class="descricao-produto">Cor: @item.cal_cor</p>
                 </div>
 
+                @if (item.sta_comp_fase == "ENTREGUE")
+                {
                 <div class="quantitade">
                     <div class="top-element">
                         <p>Quantidade</p>
@@ -83,12 +85,14 @@
                     </div>
                 </div>
 
-                    <div class="center-acompanhar-pedido">
-                        <a class="acompanhar-pedido-button" data-calcadoid="@item.ped_cal_cal_id" data-pedidoid="@item.ped_cal_ped_id">
+                    
+
+                        <div class="center-acompanhar-pedido">
+                            <a class="acompanhar-pedido-button" data-calcadoid="@item.ped_cal_cal_id" data-pedidoid="@item.ped_cal_ped_id">
                             <button class="btn-azul-pedido" onclick="redirectToDevolucao(this.getAttribute('data-calcadoid'))">Solicitar devolução</button>
                         </a>
                     </div>
-
+                }
 
             </div> 
                 

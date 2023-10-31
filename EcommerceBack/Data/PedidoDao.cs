@@ -63,13 +63,15 @@ namespace EcommerceBack.Data
         public static void InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_troca = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
 
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
-                    sqlCon.Execute(query);
+                    sqlCon.Execute(query_motivo);
+                    sqlCon.Execute(query_troca);
                 }
             }
             catch (Exception ex)
