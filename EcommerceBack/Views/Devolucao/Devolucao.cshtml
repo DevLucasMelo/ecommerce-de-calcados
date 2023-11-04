@@ -40,34 +40,80 @@
         </div>
     </nav>
 
-    @foreach (var item in Model)
+    @if (ViewBag.TipoDevolucao == "Calcado")
     {
         <h2>Solicitar Devolução</h2>
-        <div class="container-geral-devolucao">
-            <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
-            <div class="product-info">
-                <p class="descricao-produto">@item.cal_titulo</p>
-                <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
-                <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
-                <p class="descricao-produto">Cor: @item.cal_cor</p>
+
+        @foreach (var item in Model)
+        {
+            <div class="container-geral-devolucao">
+                <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+                <div class="product-info">
+                    <p class="descricao-produto">@item.cal_titulo</p>
+                    <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
+                    <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
+                    <p class="descricao-produto">Cor: @item.cal_cor</p>
+                </div>
+
+                <div class="informe">
+                    <form>
+                        <label class="informe-motivo" for="motivo"><strong>Informe o motivo:</strong></label>
+                        <br>
+                        <input class="input-motivo" type="text" id="motivo" name="motivo" placeholder="Digite aqui">
+                    </form>
+                </div>
             </div>
 
-            <div class="informe">
-                <form>
-                    <label class="informe-motivo" for="motivo"><strong>Informe o motivo:</strong></label>
-                    <br>
-                    <input class="input-motivo" type="text" id="motivo" name="motivo" placeholder="Digite aqui">
-                </form>
+            <div class="linha-horizontal"></div>
+
+            <div class="solicitar-devolucao">
+                <button class="btn-azul" onclick="solicitarDevolucao(@item.ped_cal_cal_id, @item.ped_cal_ped_id)">Solicitar devolução</button>
             </div>
-        </div>
-
-        <div class="linha-horizontal"></div>
-
-        <div class="solicitar-devolucao">
-            <button class="btn-azul" onclick="solicitarDevolucao(@item.ped_cal_cal_id, @item.ped_cal_ped_id)">Solicitar devolução</button>
-        </div>
+        }
     }
 
+    else if (ViewBag.TipoDevolucao == "Pedido")
+    {
+        <h2>Solicitar Devolução</h2>
+
+        @foreach (var item in Model)
+        {
+            <div class="container-geral-devolucao">
+                <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
+                <div class="product-info">
+                    <p class="descricao-produto">@item.cal_titulo</p>
+                    <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
+                    <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
+                    <p class="descricao-produto">Cor: @item.cal_cor</p>
+                </div>
+
+                
+            </div>
+
+            
+        }
+        <div class="linha-horizontal"></div>
+
+        <div class="informe">
+            <form>
+                <label class="informe-motivo" for="motivo"><strong>Informe o motivo:</strong></label>
+                <br>
+                <input class="input-motivo" type="text" id="motivo" name="motivo" placeholder="Digite aqui">
+            </form>
+        </div>
+
+        <div class="solicitar-devolucao">
+            @if (Model.Count > 0)
+            {
+                var primeiroItem = Model[0];
+                var pedidoid = primeiroItem.ped_cal_ped_id;
+
+                <a>
+                    <button class="btn-azul" onclick="solicitarDevolucaoPedido(@pedidoid)">Solicitar devolução</button>
+                </a>
+            }
+        </div>
+    }
 
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>

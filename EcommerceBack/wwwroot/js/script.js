@@ -473,7 +473,7 @@ function redirectToStatusPedidoCliente(pedId) {
     });
 }
 
-function redirectToDevolucao(calId, pedId) { 
+function redirectToDevolucaoCalcado(calId, pedId) { 
     document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
         button.addEventListener('click', function () {
             var calId = this.getAttribute('data-calcadoid');
@@ -481,10 +481,21 @@ function redirectToDevolucao(calId, pedId) {
             var select = document.getElementById("select-quantidade");
             var quantidadeSelecionada = select.options[select.selectedIndex].value;
 
-            window.location.href = '/Devolucao/Devolucao?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
+            window.location.href = '/Devolucao/DevolucaoCalcado?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
         });
     });   
 }
+
+function redirectToDevolucaoPedido(pedId) {
+    document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var pedId = this.getAttribute('data-pedidoid');
+
+            window.location.href = '/Devolucao/DevolucaoPedido?ped_cal_ped_id=' + pedId;
+        });
+    });
+}
+
 
 function encontrarItemPorId(cal_id, callback) {
 
@@ -647,6 +658,37 @@ function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
 
 
     fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Solicitacao de devolucao enviada com sucesso.");
+            } else {
+                alert("Erro ao enviar a solicitação de devolução.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao enviar a solicitação de devolução: " + error);
+        });
+}
+
+function solicitarDevolucaoPedido(pedId) {
+    const motivo = document.getElementById("motivo").value;
+    console.log(pedId)
+
+    const ped_cal_ped_id = parseInt(pedId, 10);
+
+    if (!motivo) {
+        alert("Por favor, informe o motivo antes de solicitar a devolução.");
+        return;
+    }
+
+    console.log(ped_cal_ped_id)
+
+    fetch(`/Devolucao/InserirMotivoDevolucaoPedido?ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

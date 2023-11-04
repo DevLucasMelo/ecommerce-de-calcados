@@ -85,11 +85,9 @@
                     </div>
                 </div>
 
-                    
-
-                        <div class="center-acompanhar-pedido">
+                    <div class="center-acompanhar-pedido">
                             <a class="acompanhar-pedido-button" data-calcadoid="@item.ped_cal_cal_id" data-pedidoid="@item.ped_cal_ped_id">
-                            <button class="btn-azul-pedido" onclick="redirectToDevolucao(this.getAttribute('data-calcadoid'))">Solicitar devolução</button>
+                                <button class="btn-azul-pedido" onclick="redirectToDevolucaoCalcado(this.getAttribute('data-calcadoid'), this.getAttribute('data-pedidoid'))">Solicitar devolução</button>
                         </a>
                     </div>
                 }
@@ -97,9 +95,17 @@
             </div> 
                 
         }
-         
-    </div>
-
+            @if (pedido.Any(pedidos => pedidos.sta_comp_fase == "ENTREGUE"))
+            {
+                <div class="center-acompanhar-pedido">
+                    <a class="acompanhar-pedido-button" data-pedidoid="@pedido.First().ped_cal_ped_id">
+                        <button class="btn-azul-pedido-geral" onclick="redirectToDevolucaoPedido(this.getAttribute('data-pedidoid'))">Solicitar devolução do pedido</button>
+                    </a>
+                </div>
+            }
+        </div>
+        
+        
     <br>
     }
 
