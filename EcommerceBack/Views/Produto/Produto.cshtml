@@ -68,8 +68,8 @@
 
         <div class="info-product">
             <div class="colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="28" viewBox="0 0 17 17" fill="none">
-                    <circle cx="7.5" cy="7.0" r="7.0" fill="url(#paint0_linear_8_1279)" onclick="alternarSelecao(this)" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="28" viewBox="0 0 17 17" fill="none" >
+                    <circle cx="7.5" cy="7.0" r="7.0" fill="url(#paint0_linear_8_1279)" onclick="alternarSelecao(this)" id="cor" />
                     <defs>
                         <linearGradient id="paint0_linear_8_1279" x1="5" y1="1.5" x2="13" y2="14.5" gradientUnits="userSpaceOnUse">
                             <stop stop-color="#FFFFFF" />
@@ -81,15 +81,18 @@
             <div class="size">
                 <p class="tamanho">Tamanho</p>
                 <div class="numeracoes-container">
-                    @foreach (var estoqueItem in estoque)
-                    {
-                        var tamanho = estoqueItem.estq_tamanho;
-                        var quantidadeEmEstoque = estoqueItem.estq_quantidade;
 
-                        var classeCSS = quantidadeEmEstoque == 0 ? "sem-estoque" : "";
+                        @foreach (var estoqueItem in estoque)
+                        {
+                            var tamanho = estoqueItem.estq_tamanho;
+                            var quantidadeEmEstoque = estoqueItem.estq_quantidade;
 
-                            <div class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this, @calcados[0].cal_id)">@tamanho</div>
-                    }
+                            var classeCSS = quantidadeEmEstoque == 0 ? "sem-estoque" : "";
+
+                            <div id="tam_@estoqueItem.estq_tamanho" class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this, @calcados[0].cal_id)">@tamanho</div>
+
+                        }
+                    
                 </div>
                 <p class="valores-produto"><strong>R$ @calcados[0].cal_valor</strong> à vista</p>
                 @{

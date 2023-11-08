@@ -12,7 +12,7 @@ namespace EcommerceBack.Data
         public static long InserirPedido(Pedido pedido)
         {
             string conn = config().GetConnectionString("Conn");
-
+            pedido.ped_end_id = 1;
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
@@ -20,9 +20,9 @@ namespace EcommerceBack.Data
                     sqlCon.Open();
 
                     string sql = @"INSERT INTO public.pedidos
-                            (ped_sta_comp_id, ped_cli_id, ped_valor_total, ped_valor_frete, ped_valor_produtos, ped_valor_cod_promo)
+                            (ped_sta_comp_id, ped_cli_id, ped_valor_total, ped_valor_frete, ped_valor_produtos, ped_valor_cod_promo, ped_end_id)
                             VALUES
-                            (@ped_sta_comp_id, @ped_cli_id, @ped_valor_total, @ped_valor_frete, @ped_valor_produtos, @ped_valor_cod_promo)
+                            (@ped_sta_comp_id, @ped_cli_id, @ped_valor_total, @ped_valor_frete, @ped_valor_produtos, @ped_valor_cod_promo, @ped_end_id)
                             RETURNING ped_id";
 
                     
@@ -249,6 +249,7 @@ namespace EcommerceBack.Data
         public static void atualizarStatusCompra(int statusId, int pedidoId)
         {
             string conn = config().GetConnectionString("Conn");
+
             try
             {
                 using (var sqlConn = new NpgsqlConnection(conn))

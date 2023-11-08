@@ -30,7 +30,7 @@ function preencherModalPedido(pedidoId) {
         }
     });
 
-    document.getElementById('pedidoiD').value = pedidoId;
+    document.getElementById('pedidoId').value = pedidoId;
 
     var selectElementGenero = document.getElementById('faseCompra');
     selectElementGenero.value = pedidoObjeto.ped_sta_comp_id.toString();
@@ -93,13 +93,17 @@ document.getElementById('consultarPedidos').addEventListener('click', function (
 botaoConfirmar.addEventListener("click", function () {
 
     var selectElementGenero = document.getElementById('faseCompra');
-    var pedidoId = document.getElementById('pedidoiD').value;
+    var statusId = selectElementGenero.value;
+    var pedidoId = document.getElementById('pedidoId').value;
 
     $.ajax({
         type: "POST",
         url: "/PedidoAdmin/atualizarStatusCompra",
         dataType: "json",
-        data: { pedidoId: parseInt(pedidoId) },
+        data: {
+            statusId: parseInt(statusId),
+            pedidoId: parseInt(pedidoId)
+        },
         async: false,
         success: function (jsonResult) {
             

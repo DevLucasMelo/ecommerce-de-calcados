@@ -32,7 +32,7 @@ namespace EcommerceBack.Controllers
             ViewBag.QuantidadeSelecionada = quantidade;
             ViewBag.TipoDevolucao = "Calcado";
 
-            return View(listaDePedidosComCalcados);
+            return View("Devolucao", listaDePedidosComCalcados);
         }
 
         public IActionResult DevolucaoPedido(int ped_cal_ped_id)
