@@ -10,6 +10,7 @@ let numeroPedido = 1;
 
 const confirmarPedido = document.getElementById("finaliza-pedido");
 var cartoes = [];
+var cupons = [];
 
 
 
@@ -40,9 +41,52 @@ confirmarPedido.addEventListener("click", function() {
         });
     }
 
-     // Array para armazenar os cartões
+    function renderizarListaCupons() {
+        const listaCupons = document.getElementById("listaCupons");
+        listaCupons.innerHTML = "";
 
-    // Função para renderizar a lista de cartões
+        if (cupons.length > 0) {
+            listaCupons.style.marginTop = "20px"; // Aplica a margem superior
+        } else {
+            listaCupons.style.marginTop = "0"; // Remove a margem superior
+        }
+
+        cupons.forEach(function (cupom, index) {
+
+            const cupomBlock = document.createElement("div");
+            cupomBlock.className = "cartao-block";
+
+            const cupId = document.createElement("input");
+            cupId.type = "hidden";
+            cupId.value = cupom.cupId;
+
+            const nome = document.createElement("p");
+            nome.textContent = "Cupom: " + cupom.cupomNome;
+
+            const valor = document.createElement("p");
+            valor.textContent = "Valor do Cupom: " + cupom.cupValor;
+
+            const deleteCupomButton = document.createElement("span");
+            deleteCupomButton.className = "delete-button";
+            deleteCupomButton.innerHTML = '<i class="fas fa-times"></i>'; // Ícone X do Font Awesome
+
+            deleteCupomButton.addEventListener("click", function () {
+                cupons.splice(index, 1); 
+                renderizarListaCupons();
+                carregarValores();
+            });
+
+            cupomBlock.appendChild(cupId);
+            cupomBlock.appendChild(nome);
+            cupomBlock.appendChild(valor);
+            cupomBlock.appendChild(deleteCupomButton);
+            listaCupons.appendChild(cupomBlock);
+        });
+
+        
+    }
+
+
     function renderizarListaCartoes() {
         const listaCartoes = document.getElementById("listaCartoes");
         listaCartoes.innerHTML = ""; // Limpa a lista
@@ -128,6 +172,11 @@ confirmarPedido.addEventListener("click", function() {
         localStorage.setItem("cartoes", cartoesJSON);
 
         renderizarListaCartoes();
+    }
+
+    function adicionarCupom(cupomNome, cupValor, cupId) {
+        cupons.push({ cupomNome, cupValor, cupId});
+        renderizarListaCupons();
     }
 
 
@@ -241,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
 
+        
 
         var Pedido = {
             ped_sta_comp_id: 1,
@@ -281,6 +331,29 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
+                var Cupons = {
+                    cupomList: cupons.map(cupom => {
+                        return {
+                            cup_id: cupom.cupId,
+                            pedidoId: numeroPedido
+                        };
+                    })
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/FormaPagamento/InserirCupom",
+                    dataType: "json",
+                    data: Cupons,
+                    async: false,
+                    success: function (result) {
+                        
+                    },
+                    error: function (status) {
+
+                    }
+                });
+
                 const carrinho = JSON.parse(localStorage.getItem("carrinho"));
                 if (carrinho[0] && carrinho[0].dados) {
                     for (const item of carrinho[0].dados) {
@@ -295,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             type: "POST",
                             url: "/FormaPagamento/InserirPedidoCalcados",
                             dataType: "json",
-                            data: Pedido,
+                            data: pedidoCalcado,
                             async: false,
                             success: function (result) {
                                 numeroPedido = parseInt(result);
@@ -357,22 +430,67 @@ document.addEventListener("DOMContentLoaded", function() {
 
     confirmarBotao.addEventListener("click", function() {
         const cupom = document.getElementById("cupom").value;
-        
+
         if (cupom === "") {
-            // Exibir modal de erro
             modalError.style.display = "block";
         } else {
-            // Exibir modal de sucesso
-            modalSuccess.style.display = "block";
-            closeCupomPopup();
+
+            let cupomJaExistente = cupons.some(cupons => cupons.cupomNome === cupom);
+            if (cupomJaExistente) {
+                alert('Esse cupom já foi adicionado!');
+            } else { 
+                var cupomObjeto;
+                $.ajax({
+                    type: "GET",
+                    url: "/FormaPagamento/ConsultarCupom",
+                    dataType: "json",
+                    data: { cupomName: cupom.toUpperCase() },
+                    async: false,
+                    success: function (jsonResult) {
+                        cupomObjeto = jsonResult;
+                    },
+                    error: function (status) {
+
+                    }
+                });
+
+                if (cupomObjeto.cup_ativo) {
+                    adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id);
+                } else {
+                    alert('Digite um cupom que está ativo!');
+                }
+                modalSuccess.style.display = "block";
+            } 
         }
+        carregarValores();
+        document.getElementById("cupom").value = "";
+        closeCupomPopup();
+        
     });
 });
 
 function carregarValores() {
+    carregarValorCupomTroca();
     carregarValorCarrinho();
     carregarValorFrete();
     calcularValorTotalFormaPagamento();
+}
+
+function carregarValorCupomTroca() {
+    let totalCupValor = 0;
+
+    if (cupons.length > 0) {
+        for (let i = 0; i < cupons.length; i++) {
+            totalCupValor += cupons[i].cupValor;
+        }
+        localStorage.setItem("cupons", cupons);
+    } else { 
+        totalCupValor = 0;
+    }
+
+    var valorFormatado = (totalCupValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    document.querySelector("#cupomTroca").textContent = valorFormatado;
 }
 
 function carregarValorCarrinho() {

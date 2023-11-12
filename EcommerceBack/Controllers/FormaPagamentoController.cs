@@ -43,5 +43,37 @@ namespace EcommerceBack.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult ConsultarCupom(string cupomName)
+        {
+            try
+            {
+                var cupom = PedidoDao.consultarCupomByName(cupomName);
+                return Json(cupom);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult InserirCupom(Cupom cupons)
+        {
+            try
+            {
+                foreach(var item in cupons.cupomList)
+                {
+                    PedidoDao.InserirCupom(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok();
+        }
     }
 }
