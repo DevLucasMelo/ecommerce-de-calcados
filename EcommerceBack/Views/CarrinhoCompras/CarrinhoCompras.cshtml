@@ -65,7 +65,7 @@
 
                     <div class="linha-horizontal-frete"></div>
                     <br>
-                    <button class="btn-endereco-cadastrado" onclick="selecionarBtn(this)">
+                    <button class="btn-endereco-cadastrado" onclick="selecionarBtn(this)" id="receber-casa">
                         <div id="icone">
                             <i style="color: #15368A;" class="fas fa-home"></i>
                         </div>
@@ -79,9 +79,7 @@
                                     <td><span class="delivery-time">5 dias úteis</span></td>
                                 </tr>
                             </table>
-                            <div id="preco-frete">
-                                <p>R$ 10,00</p>
-                            </div>
+                            
                         </div>
                         <br>
 
@@ -89,7 +87,7 @@
                     <br>
                     <br>
 
-                    <button class="btn-add-endereco" id="btn-endereco">
+                    <button class="btn-add-endereco" id="btn-endereco" onclick="selecionarBtn(this)">
                         <div id="icone">
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
@@ -210,7 +208,7 @@
                     </table>
                     <br>
 
-                <a href="@Url.Action("FormaPagamento", "FormaPagamento")"><button class="btn-azul" onclick="addValorFrete(this)">Ir para o pagamento</button></a>
+                <a href="@Url.Action("FormaPagamento", "FormaPagamento")"><button class="btn-azul" onclick="addValorFrete(this)" id="pagamento">Ir para o pagamento</button></a>
                 </div>
 
         </div>

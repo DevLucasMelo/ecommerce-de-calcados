@@ -153,7 +153,7 @@ svg:hover circle {
 
 #receber-em-casa{
     margin-left: 20px;
-    margin-right: 30px;
+    margin-right: 20px;
     display: flex;
     align-self: flex-end;
 }
@@ -363,6 +363,24 @@ svg:hover circle {
 
 .btn-azul-pedido{
     width: 156.324px;
+    height: 50.751px;
+    flex-shrink: 0;
+    border-radius: 4.138px;
+    border: 0.696px solid #294DAA;
+    margin-left: 100px;
+    background: #15368A;
+    color: #FFF;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 13.993px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: block;
+}
+
+.btn-azul-pedido-geral {
+    width: 250.324px;
     height: 50.751px;
     flex-shrink: 0;
     border-radius: 4.138px;

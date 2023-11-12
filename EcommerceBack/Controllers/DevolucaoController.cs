@@ -16,7 +16,7 @@ namespace EcommerceBack.Controllers
             _logger = logger;
         }
 
-        public IActionResult Devolucao(int ped_cal_cal_id, int ped_cal_ped_id, int quantidade)
+        public IActionResult DevolucaoCalcado(int ped_cal_cal_id, int ped_cal_ped_id, int quantidade)
         {
             List<PedidosCalcados> listaDePedidosComCalcados;
 
@@ -30,8 +30,27 @@ namespace EcommerceBack.Controllers
             }
 
             ViewBag.QuantidadeSelecionada = quantidade;
+            ViewBag.TipoDevolucao = "Calcado";
 
-            return View(listaDePedidosComCalcados);
+            return View("Devolucao", listaDePedidosComCalcados);
+        }
+
+        public IActionResult DevolucaoPedido(int ped_cal_ped_id)
+        {
+            List<PedidosCalcados> listaDePedidosComCalcados;
+
+            try
+            {
+                listaDePedidosComCalcados = PedidoDao.consultarPedidoDevolucao(ped_cal_ped_id);
+            }
+            catch (Exception ex)
+            {
+                listaDePedidosComCalcados = new List<PedidosCalcados>();
+            }
+
+            ViewBag.TipoDevolucao = "Pedido";
+
+            return View("Devolucao", listaDePedidosComCalcados);
         }
 
         [HttpPost]
@@ -40,6 +59,24 @@ namespace EcommerceBack.Controllers
             try
             {
                 PedidoDao.InserirMotivoDevolucao(ped_cal_cal_id, ped_cal_ped_id, motivo);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public ActionResult InserirMotivoDevolucaoPedido(int ped_cal_ped_id, string motivo)
+        {
+            Console.WriteLine("entrou");
+            Console.WriteLine(ped_cal_ped_id);
+
+            try
+            {
+                PedidoDao.InserirMotivoDevolucaoPedidos(ped_cal_ped_id, motivo);
             }
             catch (Exception ex)
             {

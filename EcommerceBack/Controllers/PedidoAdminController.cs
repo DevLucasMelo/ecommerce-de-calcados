@@ -19,7 +19,6 @@ namespace EcommerceBack.Controllers
             try
             {
                 pedido = PedidoDao.ConsultarPedidoById(pedidoId);
-
                 pedido.Cliente = ClienteDao.SelecionarClienteId(pedido.ped_cli_id);
                 pedido.Endereco = EnderecoDao.SelecionarEnderecoById(pedido.ped_end_id);
                 
@@ -62,7 +61,7 @@ namespace EcommerceBack.Controllers
             try
             {
                 pedido = PedidoDao.ConsultarPedidoById(pedidoId);
-
+                pedido.ped_end_id = 1;
                 pedido.Cliente = ClienteDao.SelecionarClienteId(pedido.ped_cli_id);
                 pedido.Endereco = EnderecoDao.SelecionarEnderecoById(pedido.ped_end_id);
                 pedido.Endereco.pais = EnderecoDao.SelecionarPaisById(pedido.Endereco.end_pais_id);

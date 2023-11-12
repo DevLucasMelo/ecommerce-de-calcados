@@ -15,6 +15,7 @@ namespace EcommerceBack.Controllers
         [HttpPost]
         public IActionResult InserirPedido(Pedido pedido)
         {
+            Console.WriteLine(pedido);
             long id;
             try
             {
@@ -31,6 +32,8 @@ namespace EcommerceBack.Controllers
         [HttpPost]
         public IActionResult InserirPedidoCalcados(PedidosCalcados pedidoCalcado)
         {
+            Console.WriteLine(pedidoCalcado);
+
             long id;
             try
             {

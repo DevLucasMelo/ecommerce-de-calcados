@@ -89,6 +89,7 @@ namespace EcommerceBack.Data
 
         public static Cliente SelecionarClienteId(int id)
         {
+
             string conn = config().GetConnectionString("Conn");
             string query = $"select * from clientes where cli_id = {id}";
 

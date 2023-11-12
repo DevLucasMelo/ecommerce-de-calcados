@@ -17,7 +17,7 @@ var cupons = [];
 confirmarPedido.addEventListener("click", function() {
     // Exibir modal de sucesso
     modalSuccess.style.display = "block";
-    closeCupomPopup();
+    //closeCupomPopup();
 });
 
     const overlay = document.getElementById("overlay");
@@ -355,30 +355,32 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
 
                 const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+
                 if (carrinho[0] && carrinho[0].dados) {
-                    for (const item of carrinho[0].dados) {
-                        const pedidoCalcado = {
-                            ped_cal_ped_id: numeroPedido,
-                            ped_cal_cal_id: item.cal_id,
-                            ped_cal_quant: 1,
-                            ped_cal_tamanho: item.cal_tamanho,
-                        };
+                    carrinho.forEach(function (carrinhoItem) {
+                        carrinhoItem.dados.forEach(function (item) {
+                            const pedidoCalcado = {
+                                ped_cal_ped_id: numeroPedido,
+                                ped_cal_cal_id: item.cal_id,
+                                ped_cal_quant: item.quantidade,
+                                ped_cal_tamanho: item.cal_tamanho,
+                            };
 
-                        $.ajax({
-                            type: "POST",
-                            url: "/FormaPagamento/InserirPedidoCalcados",
-                            dataType: "json",
-                            data: pedidoCalcado,
-                            async: false,
-                            success: function (result) {
-                                numeroPedido = parseInt(result);
-                            },
-                            error: function (status) {
-                                
-                            }
+                            $.ajax({
+                                type: "POST",
+                                url: "/FormaPagamento/InserirPedidoCalcados",
+                                dataType: "json",
+                                data: pedidoCalcado,
+                                async: false,
+                                success: function (result) {
+                                    numeroPedido = parseInt(result);
+                                },
+                                error: function (status) {
+
+                                }
+                            });
                         });
-
-                    }
+                    });
                 }
 
             }

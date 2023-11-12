@@ -1,6 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.IO;
 
@@ -246,18 +247,204 @@ class TestesAutomatizados
 
     }
 
+    void conducaoPedido(IWebDriver driver)
+    {
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("1")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        //driver.FindElement(By.Id("cor")).Click();
+
+        //System.Threading.Thread.Sleep(2000); 
+
+        //driver.FindElement(By.Id("tam_34")).Click();
+
+        //System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("btn-comprar")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+        
+        IWebElement quantidadeSelect = driver.FindElement(By.Id("select-quantidade1"));
+
+        quantidadeSelect.Click(); 
+
+        IWebElement optionQuantidade = driver.FindElement(By.CssSelector("#select-quantidade1 option[value='2']"));
+
+        optionQuantidade.Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("meuBotao")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("2")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        //driver.FindElement(By.Id("cor")).Click();
+
+        //System.Threading.Thread.Sleep(2000); 
+
+        //driver.FindElement(By.Id("tam_34")).Click();
+
+        //System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("btn-comprar")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        IWebElement quantidadeSelect2 = driver.FindElement(By.Id("select-quantidade2"));
+
+        quantidadeSelect2.Click(); 
+
+        IWebElement optionQuantidade2 = driver.FindElement(By.CssSelector("#select-quantidade2 option[value='2']"));
+
+        optionQuantidade2.Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("meuBotao")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("6")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("btn-comprar")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        IWebElement quantidadeSelect3 = driver.FindElement(By.Id("select-quantidade3"));
+
+        quantidadeSelect3.Click(); 
+
+        IWebElement optionQuantidade3 = driver.FindElement(By.CssSelector("#select-quantidade3 option[value='4']"));
+
+        optionQuantidade3.Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("btn-endereco")).Click();
+
+        System.Threading.Thread.Sleep(3000); 
+        
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        IAlert alert = wait.Until(ExpectedConditions.AlertIsPresent());
+
+        alert.Accept();
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("pagamento")).Click();
+
+        System.Threading.Thread.Sleep(3000); 
+
+        alert.Accept();
+        
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("finaliza-pedido")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        alert.Accept();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("fechar")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("telaPedidos")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("acompanhaPedido")).Click();
+
+        System.Threading.Thread.Sleep(9000);
+
+        driver.Url = "http://localhost:7247/PedidoAdmin/PedidoAdmin";
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("termoPesquisa")).SendKeys("1");
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("consultarPedidos")).Click();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.FindElement(By.Id("consultar-pedido")).Click();
+
+        System.Threading.Thread.Sleep(6000);
+
+        IWebElement faseCompraSelect = driver.FindElement(By.Id("faseCompra"));
+
+        faseCompraSelect.Click(); 
+
+        IWebElement optionFase = driver.FindElement(By.CssSelector("#faseCompra option[value='3']"));
+
+        optionFase.Click();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.FindElement(By.Id("confirmar")).Click();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.Url = "http://localhost:7247/PedidosCliente/PedidosCliente";
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("acompanhaPedido")).Click();
+
+        System.Threading.Thread.Sleep(5000);
+
+        IWebElement selectQuanti = driver.FindElement(By.Id("select-quantidade"));
+
+        selectQuanti.Click(); 
+
+        IWebElement optionQuant= driver.FindElement(By.CssSelector("#select-quantidade option[value='2']"));
+
+        optionQuant.Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("ped-1")).Click();
+
+        System.Threading.Thread.Sleep(5000);
+        
+        driver.FindElement(By.Id("motivo")).SendKeys("Calçado com defeito");
+
+        System.Threading.Thread.Sleep(5000);
+
+        driver.FindElement(By.Id("calcado-devolucao")).Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+    }
+
     static void Main(string[] args)
     {
-        string chromedriverPath = @"C:\EcommerceBack2\EcommerceBack\testes\chromedriver-win64\chromedriver.exe"; 
+        string chromedriverPath = @"C:\Users\lucas\OneDrive\Área de Trabalho\ecommerce full\testes\chromedriver-win64\chromedriver.exe";
 
         var chromeOptions = new ChromeOptions();
-        chromeOptions.AddArgument("--start-maximized"); 
+        chromeOptions.AddArgument("--start-maximized");
 
         IWebDriver driver = new ChromeDriver(chromedriverPath, chromeOptions);
 
-        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "PedidosCliente", "PedidosCliente.cshtml");
 
-        driver.Url = "http://localhost:7247/PedidosCliente/PedidosCliente";
+        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "PaginaInicial", "PaginaInicial.cshtml");
+
+        driver.Url = "http://localhost:7247/PaginaInicial/PaginaInicial";
+
+
         
         var testes = new TestesAutomatizados(); 
 
@@ -266,8 +453,9 @@ class TestesAutomatizados
         //testes.Consulta(driver);
         //testes.Exclusao(driver);
 
-        testes.ConsultarPedidos(driver);
-
+        //testes.ConsultarPedidos(driver);
+        
+        testes.conducaoPedido(driver);
 
     }
 }

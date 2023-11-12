@@ -50,7 +50,7 @@
     <div class="container-card-image">
         @foreach (var calcados in Model.Take(4))
         {
-            <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None">
+            <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None" id="@calcados.cal_id">
                 <div class="container-item">
                     <input type="hidden" id="@calcados.cal_id">
                     <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
@@ -71,7 +71,7 @@
     <div class="container-card-image">
         @foreach (var calcados in Model.Skip(4).Take(4)) 
         {
-            <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None">
+            <a asp-controller="Produto" asp-action="Produto" asp-route-cal_id="@calcados.cal_id" style="text-decoration: None" id="@calcados.cal_id">
                 <div class="container-item">
                 <input type="hidden" id="@calcados.cal_id">
                     <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">

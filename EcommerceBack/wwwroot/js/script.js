@@ -202,6 +202,15 @@ function removerProduto(elemento, cal_id) {
         calcularValorTotal()
     }
 
+    if (items.length === 0) {
+        var valorFreteElement = document.querySelector("#valorFrete");
+        valorFreteElement.textContent = "0,00" 
+        localStorage.setItem("valorFrete", 0);
+        localStorage.setItem("valorTotal", 0);
+        localStorage.setItem("valorProdutos", 0);
+
+
+    } 
 }
 
 function selecionarBtn(button) {
@@ -212,39 +221,21 @@ function selecionarBtn(button) {
 var freteAdicionado = false;
 
 function calcularValorFrete() {
-    var precoFreteElement = document.querySelector("#preco-frete");
-    var valorFreteElement = document.querySelector("#valorFrete");
-    var valorTotalElement = document.querySelector("#valorTotal");
 
-    var precoFreteTexto = precoFreteElement.textContent;
-    var novoValorFrete = precoFreteTexto;
-    var valorFrete = parseFloat(document.querySelector("#preco-frete").textContent.replace("R$", "").trim());
+    var valorTotal = parseInt(localStorage.getItem("valorProdutos"));
 
-    var valorText = valorTotalElement.textContent.trim(); 
-    valorText = valorText.replace("R$", ""); 
+    var valorFrete = valorTotal * 0.01;
 
-    var textoSemPontosEVirgulas = valorText.replace(/[.,]/g, '');
-
-    var parteInteira = textoSemPontosEVirgulas.slice(0, -2);
-    var parteDecimal = textoSemPontosEVirgulas.slice(-2);
-
-    var valorTotal = parteInteira + "." + parteDecimal;
-
-    valorTotal = parseFloat(valorTotal)
-
- 
     console.log(valorTotal)
 
-    var valorFreteLocalStorage = parseInt(localStorage.getItem("valorFrete"));
+    console.log(valorFrete)
 
-    if (!freteAdicionado && isNaN(valorFreteLocalStorage)) {
-        var valorTotalFrete = valorTotal + valorFrete;
-        console.log(valorTotalFrete)
-        valorTotalElement.textContent = "R$ " + valorTotalFrete.toFixed(2);
-        valorFreteElement.textContent = novoValorFrete;
-        freteAdicionado = true;
-        addValorFrete();
-    }
+    var valorFreteFormatado = valorFrete.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    var valorFreteElement = document.querySelector("#valorFrete");
+    valorFreteElement.textContent = "R$ " + valorFreteFormatado;
+
+    localStorage.setItem("valorFrete", valorFrete);
 }
 
 function calcularValorTotal() {
@@ -262,33 +253,34 @@ function calcularValorTotal() {
             item.dados[0].quantidade = quantidadeProduto;
                                     
             valorTotal += valorProduto * quantidadeProduto;
-
-           
         }
     });
 
     localStorage.setItem("carrinho", JSON.stringify(carrinhoItens))
 
+    valorProdutos = valorTotal
+
+    localStorage.setItem("valorProdutos", valorProdutos);
+
+    var valorProdutos = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    document.querySelector("#valorProdutos").textContent = valorProdutos;
+
     var valorFrete = parseInt(localStorage.getItem("valorFrete"));
 
-    if (!isNaN(valorFrete)) {
-
-        valorTotal += valorFrete
-
-        var precoFreteElement = document.querySelector("#preco-frete");
-
-        var precoFreteTexto = precoFreteElement.textContent;
-
-        var valorFreteElement = document.querySelector("#valorFrete");
-        valorFreteElement.textContent = precoFreteTexto;
+    if (valorFrete != 0) {
+        console.log('Não deve entrar aqui')
+        calcularValorFrete();
     }
 
+    valorTotal += valorFrete
+
+    console.log(valorFrete)
+
+    console.log(valorTotal)
     var valorFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    document.querySelector("#valorProdutos").textContent = valorFormatado;
     document.querySelector("#valorTotal").textContent = valorFormatado;
-    localStorage.setItem("valorProdutos", valorTotal);
-    localStorage.setItem("valorProdutos", valorTotal);
     
 }
 
@@ -403,12 +395,6 @@ miniProductImages.forEach((image, index) => {
     });
 });
 
-function addValorFrete() {
-    let valorFrete = parseInt(document.querySelector("#valorFrete").textContent.replace("R$", "").trim());
-    localStorage.setItem("valorFrete", valorFrete);
-
-}
-
 function carregarValorFrete() {
     let valor = parseInt(localStorage.getItem("valorProdutos"));
     var valorFormatado = (valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -473,7 +459,7 @@ function redirectToStatusPedidoCliente(pedId) {
     });
 }
 
-function redirectToDevolucao(calId, pedId) { 
+function redirectToDevolucaoCalcado(calId, pedId) { 
     document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
         button.addEventListener('click', function () {
             var calId = this.getAttribute('data-calcadoid');
@@ -481,10 +467,21 @@ function redirectToDevolucao(calId, pedId) {
             var select = document.getElementById("select-quantidade");
             var quantidadeSelecionada = select.options[select.selectedIndex].value;
 
-            window.location.href = '/Devolucao/Devolucao?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
+            window.location.href = '/Devolucao/DevolucaoCalcado?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
         });
     });   
 }
+
+function redirectToDevolucaoPedido(pedId) {
+    document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var pedId = this.getAttribute('data-pedidoid');
+
+            window.location.href = '/Devolucao/DevolucaoPedido?ped_cal_ped_id=' + pedId;
+        });
+    });
+}
+
 
 function encontrarItemPorId(cal_id, callback) {
 
@@ -647,6 +644,37 @@ function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
 
 
     fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Solicitacao de devolucao enviada com sucesso.");
+            } else {
+                alert("Erro ao enviar a solicitação de devolução.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao enviar a solicitação de devolução: " + error);
+        });
+}
+
+function solicitarDevolucaoPedido(pedId) {
+    const motivo = document.getElementById("motivo").value;
+    console.log(pedId)
+
+    const ped_cal_ped_id = parseInt(pedId, 10);
+
+    if (!motivo) {
+        alert("Por favor, informe o motivo antes de solicitar a devolução.");
+        return;
+    }
+
+    console.log(ped_cal_ped_id)
+
+    fetch(`/Devolucao/InserirMotivoDevolucaoPedido?ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
