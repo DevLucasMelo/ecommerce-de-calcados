@@ -13,7 +13,7 @@ namespace EcommerceBack.Data
         public static List<Calcados> SelecionarCalcados()
         {
             string conn = config().GetConnectionString("Conn");
-            string query = "SELECT * FROM calcados";
+            string query = "SELECT calcados.*, cat_nome FROM calcados join categorias on cat_id = cal_cat_id\r\norder by cal_id";
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))

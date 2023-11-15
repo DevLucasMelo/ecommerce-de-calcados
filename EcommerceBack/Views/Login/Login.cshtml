@@ -1,10 +1,6 @@
-﻿@model List<Transacoes>
-
-
-@{
-    ViewData["Title"] = "AnaliseVendas";
+﻿@{
+    ViewData["Title"] = "Login";
 }
-
 
 <body>
 
@@ -20,7 +16,12 @@
                         <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
                         Carrinho
                     </a>
-                </li>              
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="navbar-nav navbar-nav-right">
@@ -35,37 +36,29 @@
         </div>
     </nav>
 
-    <h2>Análise de Vendas</h2>
+    <h2>Login</h2>
 
-    <div class="container-analise">
-
-        <div class="container">
-            <label for="data-inicio" class="label">Data de Início:</label>
-            <input type="date" id="data-inicio" class="input-date">
-        </div>
-        <div class="container">
-            <label for="data-fim" class="label">Data de Fim:</label>
-            <input type="date" id="data-fim" class="input-date">
-        </div>
-        <div class="container">
-            <button id="analise-vendas" class="btn-azul">Analisar vendas</button>
-        </div>
-
-        <div class="container">
-            <canvas id="meuGrafico" class="chart-canvas"></canvas>
+    <div class="container-login">
+        <div id="login-form">
+            <form>
+                <label class="login" for="nome"><strong>Usuário</strong></label>
+                <br>
+                <input class="input-login" type="text" id="nome" name="nome" placeholder="email">
+                <br>
+                <label class="login" for="nome"><strong>Senha</strong></label>
+                <br>
+                <input class="input-login" type="text" id="nome" name="nome" placeholder="senha">
+            </form>
         </div>
 
+        <div class="botao-login">
+            <a href="index.html">
+                <button class="btn-azul-login" id="meuBotao">Login</button>
+            </a>
+        </div>
     </div>
 
     <link rel="stylesheet" href="~/css/style.css">
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
-
-    <script src="~/js/scriptAnalise.js"></script>
+    <script src="~/js/script.js"></script>
 
 </body>

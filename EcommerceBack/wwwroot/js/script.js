@@ -691,3 +691,4 @@ function solicitarDevolucaoPedido(pedId) {
             console.error("Erro ao enviar a solicitação de devolução: " + error);
         });
 }
+
