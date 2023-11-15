@@ -37,6 +37,27 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void InserirCupom(Cupom cupom)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    sqlCon.Open();
+
+                    string sql = $@"INSERT INTO cupons_pedidos (cup_ped_ped_id, cup_ped_cup_id) VALUES ({cupom.pedidoId}, {cupom.cup_id});";
+
+
+                    int novoIdPedido = sqlCon.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
         public static List<PedidosCalcados> consultarPedidosClienteComCalcados()
         {
             string conn = config().GetConnectionString("Conn");
@@ -57,6 +78,25 @@ namespace EcommerceBack.Data
             catch (Exception ex)
             {
                 return new List<PedidosCalcados>();
+            }
+        }
+
+        public static Cupom consultarCupomByName(string nome)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"select * from cupons where cup_nome like '{nome}'";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var cupom = sqlCon.Query<Cupom>(query).FirstOrDefault();
+                    return cupom;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Cupom();
             }
         }
 
