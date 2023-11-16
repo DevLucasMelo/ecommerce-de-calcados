@@ -48,11 +48,11 @@ namespace EcommerceBack.Data
             }
         }
 
-        public static string SelecionarCalcadosIdComoJson(int cal_id)
+        public static string SelecionarCalcadosIdComoJson(int cal_id, string tamanhoSelecionado)
         {
             string conn = config().GetConnectionString("Conn");
 
-            string query = $"SELECT * FROM calcados where cal_id = {cal_id}";
+            string query = $"SELECT calcados.*, estq_quantidade FROM calcados JOIN estoque ON estq_cal_id = cal_id where cal_id = {cal_id} and estq_tamanho = '{tamanhoSelecionado}'\r\n";
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))

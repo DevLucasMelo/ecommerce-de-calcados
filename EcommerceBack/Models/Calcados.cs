@@ -66,6 +66,9 @@ namespace EcommerceBack.Models
         [Column("cat_nome")]
         public string cat_nome { get; set; }
 
+        [Column("estq_quantidade")]
+        public string estq_quantidade { get; set; }
+
         [Computed]
         public List<Calcados> calcados { get; set; }
 

@@ -88,8 +88,16 @@
                             var quantidadeEmEstoque = estoqueItem.estq_quantidade;
 
                             var classeCSS = quantidadeEmEstoque == 0 ? "sem-estoque" : "";
+                            if (quantidadeEmEstoque == 0){
 
-                            <div id="tam_@estoqueItem.estq_tamanho" class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this, @calcados[0].cal_id)">@tamanho</div>
+                                <div id="tam_@estoqueItem.estq_tamanho" class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque">@tamanho</div>
+
+                            }
+                            else
+                            {
+                                <div id="tam_@estoqueItem.estq_tamanho" class="numeracoes @classeCSS" data-quantidade="@quantidadeEmEstoque" onclick="alternarSelecaoElemento(this, @calcados[0].cal_id)">@tamanho</div>
+
+                            }
 
                         }
                     

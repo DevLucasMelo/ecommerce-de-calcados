@@ -62,6 +62,8 @@
                         decimal valorTotal = item.cal_valor;
                         int numeroParcelas = 10;
                         decimal valorParcela = valorTotal / numeroParcelas;
+                        var staCompFase = item.sta_comp_fase;
+
                     }
                     <p class="descricao-produto">@String.Format("10x R$ {0:0.00}", valorParcela)</p>
                     <p class="descricao-produto">Quantidade: @item.ped_cal_quant</p>
@@ -120,32 +122,54 @@
         <br>
         <div class="container-fases">
             <svg xmlns="http://www.w3.org/2000/svg" width="200" height="246" viewBox="0 0 200 246" fill="none">
-
-                <text x="25" y="12" fill="#A0A0A0" font-size="12px">
+                <!-- Linhas e elementos do SVG aqui -->
+                <text x="25" y="12" fill="#000000" font-size="14px" font-weight="600">
                     Em processamento
                 </text>
-                <text x="25" y="70" fill="#A0A0A0" font-size="12px">
+                <text x="25" y="40" fill="#000000" font-size="14px" font-weight="600" id="pedidoAprovadoText" style="display: none;">
+                    Pedido Aprovado
+                </text>
+                <text x="25" y="40" fill="#000000" font-size="14px" font-weight="600" id="pagamentoRecusadoText" style="display: none;">
+                    Pagamento Recusado
+                </text>
+                <text x="25" y="70" fill="#000000" font-size="14px" font-weight="600">
                     Em trânsito
                 </text>
-                <text x="25" y="128" fill="#A0A0A0" font-size="12px">
+                <text x="25" y="128" fill="#000000" font-size="14px" font-weight="600">
                     Entregue
                 </text>
-                <text x="25" y="186" fill="#A0A0A0" font-size="12px">
+                <text x="25" y="186" fill="#000000" font-size="14px" font-weight="600" id="emTrocaText" style="display: none;">
                     Em troca
                 </text>
-                <text x="25" y="244" fill="#A0A0A0" font-size="12px">
+                <text x="25" y="244" fill="#000000" font-size="14px" font-weight="600" id="trocaRealizadaText" style="display: none;">
                     Troca realizada
                 </text>
+                <text x="25" y="244" fill="#000000" font-size="14px" font-weight="600" id="trocaRecusadaText" style="display: none;">
+                    Troca recusada
+                </text>
                 <line x1="5.36954" y1="7.323" x2="5.36954" y2="240.173" stroke="#E5E5E5" stroke-width="3" />
-                <line x1="5.36954" y1="7.323" x2="5.36953" y2="64.0168" stroke="#15368A" stroke-width="3" />
-                <path d="M0.891274 5.29822C0.891274 7.8265 2.90079 9.86017 5.36022 9.86017C7.81965 9.86017 9.82916 7.8265 9.82916 5.29822C9.82916 2.76994 7.81965 0.736267 5.36022 0.736267C2.90079 0.736267 0.891274 2.76994 0.891274 5.29822Z" fill="#15368A" stroke="#15368A" />
-                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 235.111)" fill="#E5E5E5" />
-                <path d="M0.891274 64.0168C0.891274 66.5451 2.90079 68.5788 5.36022 68.5788C7.81965 68.5788 9.82916 66.5451 9.82916 64.0168C9.82916 61.4886 7.81965 59.4549 5.36022 59.4549C2.90079 59.4549 0.891274 61.4886 0.891274 64.0168Z" fill="#15368A" stroke="#15368A" />
-                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 176.392)" fill="#E5E5E5" />
-                <ellipse cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 117.674)" fill="#E5E5E5" />
+                <line id="linha-status" x1="5.36954" y1="7.323" x2="5.36953" y2="0" stroke="#15368A" stroke-width="3" />
+                <path id="elipse-1" d="M0.891274 5.29822C0.891274 7.8265 2.90079 9.86017 5.36022 9.86017C7.81965 9.86017 9.82916 7.8265 9.82916 5.29822C9.82916 2.76994 7.81965 0.736267 5.36022 0.736267C2.90079 0.736267 0.891274 2.76994 0.891274 5.29822Z" fill="#E5E5E5" stroke="#15368A" />
+                <ellipse id="elipse-5" cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 235.111)" fill="#E5E5E5" stroke="#15368A" />
+                <path id="elipse-2" d="M0.891274 64.0168C0.891274 66.5451 2.90079 68.5788 5.36022 68.5788C7.81965 68.5788 9.82916 66.5451 9.82916 64.0168C9.82916 61.4886 7.81965 59.4549 5.36022 59.4549C2.90079 59.4549 0.891274 61.4886 0.891274 64.0168Z" fill="#E5E5E5" stroke="#15368A" />
+                <ellipse id="elipse-4" cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 176.392)" fill="#E5E5E5" stroke="#15368A" />
+                <ellipse id="elipse-3" cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 117.674)" fill="#E5E5E5" stroke="#15368A" />
+                <ellipse id="elipse-pedido-aprovado" cx="4.96894" cy="5.06195" rx="4.96894" ry="5.06195" transform="matrix(-1 0 0 1 10.3292 30)" fill="#E5E5E5" stroke="#15368A" />
+
             </svg>
+
+               
         </div>
     </div>
+
+    <script>
+        var pedidos = @Html.Raw(Json.Serialize(Model));
+
+        window.onload = function () {
+            alteraStatusPedido(pedidos);
+        };
+
+    </script>
 
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>
