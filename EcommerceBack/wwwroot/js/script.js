@@ -380,6 +380,7 @@ function calcularValorTotalFormaPagamento() {
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
 }
 
+
 function adicionarItemAoCarrinho(cal_id, redirecionar) {    
     var cal_id = parseInt(cal_id, 10);
 
@@ -387,6 +388,7 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
 
     if (tamanhoSelecionadoElement) {
         var tamanhoSelecionado = tamanhoSelecionadoElement.textContent;
+
         addItemCarrinho();
         encontrarItemPorId(cal_id, tamanhoSelecionado, function (item) {
 
@@ -397,21 +399,31 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
 
                 item.dados[0].tamanho = tamanhoSelecionado;
 
+                tempoLimite = Date.now() + 2000000 // 30 minutos
+
+                item.dados[0].tempoLimite = tempoLimite;
+
                 carrinho.push(item);
 
                 localStorage.setItem("carrinho", JSON.stringify(carrinho));
-
+               
                 if (redirecionar) {
+
                     window.location.href = "/CarrinhoCompras/CarrinhoCompras";
                 }
             }
+            
         });
+
+        
     } else {
         alert('Tamanho nao selecionado');
     }
 
    
 }
+
+
 
 function redirectToStatusPedidoCliente(pedId) {
     document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {

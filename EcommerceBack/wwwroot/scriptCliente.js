@@ -129,7 +129,7 @@ function selecionarClientes() {
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${cliente.cli_nome}</div>
-                        <div class="col">${cliente.cli_dt_nascimento}</div>
+                        <div class="col">${cliente.cli_dt_nascimento_formatted}</div>
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
@@ -788,7 +788,7 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${cliente.cli_nome}</div>
-                        <div class="col">${cliente.cli_dt_nascimento}</div>
+                        <div class="col">${cliente.cli_dt_nascimento_formatted}</div>
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
@@ -841,8 +841,9 @@ function preencherTransacoes(clienteId)
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisaTransacoes');
             resultadoPesquisa.innerHTML = '';
-
+            
             data.forEach(pedido => {
+                console.log(pedido)
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${pedido.ped_id}</div>
@@ -850,6 +851,7 @@ function preencherTransacoes(clienteId)
                         <div class="col">${pedido.ped_valor_total}</div>
                         <div class="col">${pedido.ped_valor_frete}</div>
                         <div class="col">${pedido.ped_valor_produtos}</div>
+                        <div class="col">${pedido.tra_data_hora}</div>
                         <div class="col">${pedido.endereco.end_logradouro}</div>
                     </div>`;
             });

@@ -27,6 +27,13 @@ namespace EcommerceBack.Models
 
         [Column("ped_valor_produtos")]
         public decimal ped_valor_produtos { get; set; }
+
+        [Column("tra_data_hora")]
+        public string tra_data_hora { get; set; }
+        
+        [Column("tra_ped_id")]
+        public int tra_ped_id { get; set; }
+        
         public int ped_end_id { get; set; }
 
         [Computed]

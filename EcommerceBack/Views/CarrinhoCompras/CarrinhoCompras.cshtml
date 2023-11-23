@@ -216,4 +216,24 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+            console.log("Tempo atual:", Date.now());
+
+            carrinho.forEach(function (item) {
+                if (item.dados[0].tempoLimite && Date.now() < item.dados[0].tempoLimite) {
+                    setTimeout(function () {
+                        carrinho = carrinho.filter((c) => c.dados[0].cal_id !== item.dados[0].cal_id);
+                        localStorage.setItem("carrinho", JSON.stringify(carrinho));
+                        console.log("Item removido do carrinho após 20 segundos");
+                        alert('Item removido por atingir o tempo máximo de espera para finalizar a compra!')
+                        window.location.reload();
+                    }, item.dados[0].tempoLimite - Date.now()); 
+                }
+            });
+        });
+    </script>
+
 </body>

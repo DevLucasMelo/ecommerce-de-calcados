@@ -4,6 +4,7 @@ using Dapper;
 using Dapper.Contrib.Extensions;
 using System.Data.Common;
 using System.Data;
+using System.Globalization;
 
 namespace EcommerceBack.Data
 {
@@ -104,14 +105,16 @@ namespace EcommerceBack.Data
         {
             string conn = config().GetConnectionString("Conn");
             string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
-            string query_troca = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_troca_cal_ped = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_troca_ped = $"update pedidos set ped_sta_comp_id = 6 \r\nWHERE ped_id = {ped_cal_ped_id};";
 
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     sqlCon.Execute(query_motivo);
-                    sqlCon.Execute(query_troca);
+                    sqlCon.Execute(query_troca_cal_ped);
+                    sqlCon.Execute(query_troca_ped);
                 }
             }
             catch (Exception ex)
@@ -126,6 +129,7 @@ namespace EcommerceBack.Data
             string conn = config().GetConnectionString("Conn");
             string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_ped_id = {ped_cal_ped_id};";
             string query_troca = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_troca_ped = $"update pedidos set ped_sta_comp_id = 6 \r\nWHERE ped_id = {ped_cal_ped_id};";
 
             try
             {
@@ -133,6 +137,7 @@ namespace EcommerceBack.Data
                 {
                     sqlCon.Execute(query_motivo);
                     sqlCon.Execute(query_troca);
+                    sqlCon.Execute(query_troca_ped);
                 }
             }
             catch (Exception ex)
@@ -229,10 +234,19 @@ namespace EcommerceBack.Data
                 {
                     sqlConn.Open();
 
-                    string sql = $"select ped_id, ped_valor_total, ped_valor_produtos, ped_valor_frete, ped_cli_id, ped_end_id, ped_sta_comp_id from pedidos where ped_cli_id = {id}";
+                    string sql = $"select ped_id, ped_valor_total, ped_valor_produtos, ped_valor_frete, ped_cli_id, ped_end_id, ped_sta_comp_id, tra_data_hora from pedidos JOIN transacoes ON tra_ped_id = ped_id where ped_cli_id = {id}";
 
-                    var pedido = sqlConn.Query<Pedido>(sql).ToList();
-                    return pedido;
+                    var pedidos = sqlConn.Query<Pedido>(sql).ToList();
+
+                    foreach (var pedido in pedidos)
+                    {
+                        if (DateTime.TryParseExact(pedido.tra_data_hora, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dataHora))
+                        {
+                            pedido.tra_data_hora = dataHora.ToString("dd/MM/yyyy");
+                        }
+                    }
+
+                    return pedidos;
                 }
             }
             catch (Exception ex)
