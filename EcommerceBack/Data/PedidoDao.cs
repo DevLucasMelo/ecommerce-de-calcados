@@ -238,12 +238,8 @@ namespace EcommerceBack.Data
 
                     string selectSql = "SELECT estq_quantidade FROM estoque WHERE estq_cal_id = @ped_cal_cal_id AND estq_tamanho = CAST(@ped_cal_tamanho AS VARCHAR)";
 
-                    Console.WriteLine(selectSql);
-
                     int quantidadeNoEstoque = dbConnection.ExecuteScalar<int>(selectSql, pedidoCalcado);
                     
-                    Console.WriteLine(quantidadeNoEstoque);
-
                     int novaQuantidade = quantidadeNoEstoque - pedidoCalcado.ped_cal_quant;
 
                     string updateSql = "UPDATE estoque SET estq_quantidade = @novaQuantidade WHERE estq_cal_id = @ped_cal_cal_id AND estq_tamanho = CAST(@ped_cal_tamanho AS VARCHAR)";
