@@ -78,7 +78,7 @@
                         <p>Quantidade</p>
                     </div>
                     <div class="center-element">
-                        <select class="select-input" id="select-quantidade" name="pedido">
+                         <select class="select-input" id="select-quantidade-@item.ped_cal_cal_id" name="pedido">
                             @for (var i = 1; i <= @item.ped_cal_quant; i++)
                             {
                                 <option class="Option" value="@i">@i</option>

@@ -51,7 +51,7 @@
                 <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                 <div class="product-info">
                     <p class="descricao-produto">@item.cal_titulo</p>
-                    <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
+                    <p class="descricao-produto" id="quantidade-selecionada">Quantidade selecionada: @ViewBag.QuantidadeSelecionada</p>
                     <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
                     <p class="descricao-produto">Cor: @item.cal_cor</p>
                 </div>

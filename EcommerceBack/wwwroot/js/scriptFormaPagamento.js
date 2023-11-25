@@ -420,14 +420,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-
-        
-
-
-
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
 
-        
+        localStorage.clear()
+
     });
 
     confirmarBotao.addEventListener("click", function() {

@@ -1,6 +1,7 @@
 ﻿using EcommerceBack.Data;
 using EcommerceBack.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace EcommerceBack.Controllers
 {
@@ -38,6 +39,8 @@ namespace EcommerceBack.Controllers
             try
             {
                 PedidoDao.InserirPedidoCalcado(pedidoCalcado);
+
+                PedidoDao.BaixarEstoque(pedidoCalcado);
             }
             catch (Exception ex)
             {

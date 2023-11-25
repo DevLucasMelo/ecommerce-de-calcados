@@ -202,15 +202,15 @@ function removerProduto(elemento, cal_id) {
         calcularValorTotal()
     }
 
+    console.log(items.length)
+
     if (items.length === 0) {
-        var valorFreteElement = document.querySelector("#valorFrete");
-        valorFreteElement.textContent = "0,00" 
-        localStorage.setItem("valorFrete", 0);
-        localStorage.setItem("valorTotal", 0);
-        localStorage.setItem("valorProdutos", 0);
-
-
+        console.log('entrou')
+        localStorage.clear()
     } 
+
+    document.location.reload()
+
 }
 
 function selecionarBtn(button) {
@@ -439,7 +439,8 @@ function redirectToDevolucaoCalcado(calId, pedId) {
         button.addEventListener('click', function () {
             var calId = this.getAttribute('data-calcadoid');
             var pedId = this.getAttribute('data-pedidoid');
-            var select = document.getElementById("select-quantidade");
+            console.log(calId)
+            var select = document.getElementById("select-quantidade" + "-" + calId);
             var quantidadeSelecionada = select.options[select.selectedIndex].value;
 
             window.location.href = '/Devolucao/DevolucaoCalcado?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
@@ -622,13 +623,19 @@ document.addEventListener("DOMContentLoaded", function () {
 function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
     const motivo = document.getElementById("motivo").value;
 
+    var quantElemento = document.getElementById('quantidade-selecionada');
+
+    var quantidadeSelecionada = quantElemento.textContent;
+
+
+
     if (!motivo) {
         alert("Por favor, informe o motivo antes de solicitar a devolução.");
         return;
     }
 
 
-    fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
+    fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}&quantidadeSelecionada=${quantidadeSelecionada}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -648,7 +655,6 @@ function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
 
 function solicitarDevolucaoPedido(pedId) {
     const motivo = document.getElementById("motivo").value;
-    console.log(pedId)
 
     const ped_cal_ped_id = parseInt(pedId, 10);
 
@@ -656,8 +662,6 @@ function solicitarDevolucaoPedido(pedId) {
         alert("Por favor, informe o motivo antes de solicitar a devolução.");
         return;
     }
-
-    console.log(ped_cal_ped_id)
 
     fetch(`/Devolucao/InserirMotivoDevolucaoPedido?ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
         method: "POST",

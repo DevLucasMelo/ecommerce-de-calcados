@@ -545,6 +545,12 @@ svg:hover circle {
     justify-content: center;
 }
 
+.container-geral-resumo-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 .container-geral-resumo {
     display: flex;
     justify-content: center;

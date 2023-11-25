@@ -33,8 +33,11 @@ namespace EcommerceBack.Models
         
         [Column("tra_ped_id")]
         public int tra_ped_id { get; set; }
-        
+
         public int ped_end_id { get; set; }
+
+        [Computed]
+        public Estoque Estoque { get; set; }
 
         [Computed]
         public List<Pedido> pedidos { get; set; }
