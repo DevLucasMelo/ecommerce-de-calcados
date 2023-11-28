@@ -42,11 +42,11 @@ namespace EcommerceBack.Controllers
         }
 
         [HttpGet]
-        public IActionResult SelecionarProdutoId(int cal_id)
+        public IActionResult SelecionarProdutoId(int cal_id, string tamanhoSelecionado)
         {
             try
             {
-                var calcado = CalcadosDao.SelecionarCalcadosIdComoJson(cal_id);
+                var calcado = CalcadosDao.SelecionarCalcadosIdComoJson(cal_id, tamanhoSelecionado);
 
                 if (calcado != null)
                 {

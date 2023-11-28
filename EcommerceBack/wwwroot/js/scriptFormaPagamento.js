@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 ped_cal_ped_id: numeroPedido,
                                 ped_cal_cal_id: item.cal_id,
                                 ped_cal_quant: item.quantidade,
-                                ped_cal_tamanho: item.cal_tamanho,
+                                ped_cal_tamanho: parseInt(item.tamanho),
                             };
 
                             $.ajax({
@@ -420,14 +420,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-
-        
-
-
-
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
 
-        
+        localStorage.clear()
+
     });
 
     confirmarBotao.addEventListener("click", function() {

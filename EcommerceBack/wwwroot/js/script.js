@@ -167,7 +167,7 @@ function alternarSelecaoElemento(elemento, cal_id) {
 
     console.log(cal_id)
 
-    encontrarItemPorId(cal_id, function (item) {
+    /*encontrarItemPorId(cal_id, function (item) {
         if (item) {
             var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
@@ -177,7 +177,7 @@ function alternarSelecaoElemento(elemento, cal_id) {
 
             localStorage.setItem("carrinho", JSON.stringify(carrinho));
         }
-    });
+    });*/
 }
 
 
@@ -202,15 +202,15 @@ function removerProduto(elemento, cal_id) {
         calcularValorTotal()
     }
 
+    console.log(items.length)
+
     if (items.length === 0) {
-        var valorFreteElement = document.querySelector("#valorFrete");
-        valorFreteElement.textContent = "0,00" 
-        localStorage.setItem("valorFrete", 0);
-        localStorage.setItem("valorTotal", 0);
-        localStorage.setItem("valorProdutos", 0);
-
-
+        console.log('entrou')
+        localStorage.clear()
     } 
+
+    document.location.reload()
+
 }
 
 function selecionarBtn(button) {
@@ -222,13 +222,9 @@ var freteAdicionado = false;
 
 function calcularValorFrete() {
 
-    var valorTotal = parseInt(localStorage.getItem("valorProdutos"));
+    var valorProdutos = parseInt(localStorage.getItem("valorProdutos"));
 
-    var valorFrete = valorTotal * 0.01;
-
-    console.log(valorTotal)
-
-    console.log(valorFrete)
+    var valorFrete = valorProdutos * 0.01;
 
     var valorFreteFormatado = valorFrete.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -253,34 +249,42 @@ function calcularValorTotal() {
             item.dados[0].quantidade = quantidadeProduto;
                                     
             valorTotal += valorProduto * quantidadeProduto;
+
+            localStorage.setItem("valorProdutos", valorTotal);
+
         }
     });
 
     localStorage.setItem("carrinho", JSON.stringify(carrinhoItens))
 
-    valorProdutos = valorTotal
+    var valorProdutos = parseInt(localStorage.getItem("valorProdutos"));
 
-    localStorage.setItem("valorProdutos", valorProdutos);
+    var valorProdutosFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    var valorProdutos = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    document.querySelector("#valorProdutos").textContent = valorProdutos;
+    document.querySelector("#valorProdutos").textContent = valorProdutosFormatado;
 
     var valorFrete = parseInt(localStorage.getItem("valorFrete"));
 
-    if (valorFrete != 0) {
-        console.log('Não deve entrar aqui')
+    if (valorFrete !== 0 && !isNaN(valorFrete)) {
         calcularValorFrete();
+
+        var valorFrete = parseInt(localStorage.getItem("valorFrete"));
+
+        valorTotal = valorProdutos + valorFrete
+
+        var valorTotalFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        document.querySelector("#valorTotal").textContent = valorTotalFormatado;
+    }
+    else {
+        valorTotal = valorProdutos
+
+        var valorTotalFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        document.querySelector("#valorTotal").textContent = valorTotalFormatado;
     }
 
-    valorTotal += valorFrete
-
-    console.log(valorFrete)
-
-    console.log(valorTotal)
-    var valorFormatado = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    document.querySelector("#valorTotal").textContent = valorFormatado;
+   
     
 }
 
@@ -295,59 +299,6 @@ function validaDevolucao() {
     }
 }
 
-function alteraStatusPedido() {
-    var selectElement = document.getElementById("pedido");
-    var selectedValue = selectElement.value;
-    var lineElement = document.querySelector('#linha-status');
-    var elipse1 = document.querySelector('#elipse-1')
-    var elipse2 = document.querySelector('#elipse-2')
-    var elipse3 = document.querySelector('#elipse-3')
-    var elipse4 = document.querySelector('#elipse-4')
-    var elipse5 = document.querySelector('#elipse-5')
-
-    switch (selectedValue) {
-        case 'fase1':
-            elipse1.setAttribute('fill', '#15368A');
-            elipse2.setAttribute('fill', '#E5E5E5');
-            elipse3.setAttribute('fill', '#E5E5E5');
-            elipse4.setAttribute('fill', '#E5E5E5');
-            elipse5.setAttribute('fill', '#E5E5E5');
-            break;
-        case 'fase2':
-            lineElement.setAttribute('y2', '70');
-            elipse1.setAttribute('fill', '#15368A');
-            elipse2.setAttribute('fill', '#15368A');
-            elipse3.setAttribute('fill', '#E5E5E5');
-            elipse4.setAttribute('fill', '#E5E5E5');
-            elipse5.setAttribute('fill', '#E5E5E5');
-            break;
-        case 'fase3':
-            lineElement.setAttribute('y2', '120');
-            elipse1.setAttribute('fill', '#15368A');
-            elipse2.setAttribute('fill', '#15368A');
-            elipse3.setAttribute('fill', '#15368A');
-            elipse4.setAttribute('fill', '#E5E5E5');
-            elipse5.setAttribute('fill', '#E5E5E5');
-            break;
-        case 'fase4':
-            lineElement.setAttribute('y2', '180');
-            elipse1.setAttribute('fill', '#15368A');
-            elipse2.setAttribute('fill', '#15368A');
-            elipse3.setAttribute('fill', '#15368A');
-            elipse4.setAttribute('fill', '#15368A');
-            elipse5.setAttribute('fill', '#E5E5E5');
-            break;
-        case 'fase5':
-            lineElement.setAttribute('y2', '240');
-            elipse1.setAttribute('fill', '#15368A');
-            elipse2.setAttribute('fill', '#15368A');
-            elipse3.setAttribute('fill', '#15368A');
-            elipse4.setAttribute('fill', '#15368A');
-            elipse5.setAttribute('fill', '#15368A');
-            break;
-        default:
-    }
-}
 
 function addItemCarrinho() {
     let valorAtual = parseInt(document.querySelector("#quantidade-item-cart").textContent);
@@ -429,26 +380,50 @@ function calcularValorTotalFormaPagamento() {
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
 }
 
-function adicionarItemAoCarrinho(cal_id, redirecionar) {
+
+function adicionarItemAoCarrinho(cal_id, redirecionar) {    
     var cal_id = parseInt(cal_id, 10);
-    addItemCarrinho();
-    encontrarItemPorId(cal_id, function (item) {
 
-        if (item) {
-            var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    var tamanhoSelecionadoElement = document.querySelector('.numeracoes.selecionado');
 
-            item.dados[0].quantidade = 1;
-                        
-            carrinho.push(item);
-                                   
-            localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    if (tamanhoSelecionadoElement) {
+        var tamanhoSelecionado = tamanhoSelecionadoElement.textContent;
 
-            if (redirecionar) {
-                window.location.href = "/CarrinhoCompras/CarrinhoCompras"; 
+        addItemCarrinho();
+        encontrarItemPorId(cal_id, tamanhoSelecionado, function (item) {
+
+            if (item) {
+                var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+                item.dados[0].quantidade = 1;
+
+                item.dados[0].tamanho = tamanhoSelecionado;
+
+                tempoLimite = Date.now() + 2000000 // 30 minutos
+
+                item.dados[0].tempoLimite = tempoLimite;
+
+                carrinho.push(item);
+
+                localStorage.setItem("carrinho", JSON.stringify(carrinho));
+               
+                if (redirecionar) {
+
+                    window.location.href = "/CarrinhoCompras/CarrinhoCompras";
+                }
             }
-        }
-    });
+            
+        });
+
+        
+    } else {
+        alert('Tamanho nao selecionado');
+    }
+
+   
 }
+
+
 
 function redirectToStatusPedidoCliente(pedId) {
     document.querySelectorAll('.acompanhar-pedido-button').forEach(function (button) {
@@ -464,7 +439,8 @@ function redirectToDevolucaoCalcado(calId, pedId) {
         button.addEventListener('click', function () {
             var calId = this.getAttribute('data-calcadoid');
             var pedId = this.getAttribute('data-pedidoid');
-            var select = document.getElementById("select-quantidade");
+            console.log(calId)
+            var select = document.getElementById("select-quantidade" + "-" + calId);
             var quantidadeSelecionada = select.options[select.selectedIndex].value;
 
             window.location.href = '/Devolucao/DevolucaoCalcado?ped_cal_cal_id=' + calId + '&ped_cal_ped_id=' + pedId + '&quantidade=' + quantidadeSelecionada;
@@ -483,13 +459,16 @@ function redirectToDevolucaoPedido(pedId) {
 }
 
 
-function encontrarItemPorId(cal_id, callback) {
+function encontrarItemPorId(cal_id, tamanhoSelecionado, callback) {
 
     $.ajax({
         url: '/Produto/SelecionarProdutoId/' + cal_id,
         type: 'GET',
         dataType: 'json',
-        data: { cal_id: parseInt(cal_id) },
+        data: {
+            cal_id: parseInt(cal_id),
+            tamanhoSelecionado: tamanhoSelecionado
+        },
         async: false,
         success: function (data) {
             if (data) {
@@ -543,6 +522,10 @@ function preencherItemDiv(itens) {
                 precoProduto.classList.add("descricao-produto");
                 precoProduto.textContent = "R$ " + item.dados[0].cal_valor;
 
+                var tamanhoProduto = document.createElement("p");
+                tamanhoProduto.classList.add("descricao-produto");
+                tamanhoProduto.textContent = "Tamanho: " + item.dados[0].tamanho;
+
                 precoProduto.id = "produto" + contadorIdProduto; 
 
                 var valoresProduto = document.createElement("p");
@@ -558,6 +541,7 @@ function preencherItemDiv(itens) {
 
                 productInfo.appendChild(descricaoProduto);
                 productInfo.appendChild(precoProduto);
+                productInfo.appendChild(tamanhoProduto);
                 productInfo.appendChild(valoresProduto);
                 productInfo.appendChild(parcelaProduto);
                 productInfo.appendChild(semJuros);
@@ -582,7 +566,9 @@ function preencherItemDiv(itens) {
 
                 contadorIdProduto++;
 
-                for (var i = 1; i <= 6; i++) {
+                quantidadeEstoque = parseInt(item.dados[0].estq_quantidade)
+
+                for (var i = 1; i <= quantidadeEstoque; i++) {
                     var option = document.createElement("option");
                     option.classList.add("Option");
                     option.value = i;
@@ -637,13 +623,19 @@ document.addEventListener("DOMContentLoaded", function () {
 function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
     const motivo = document.getElementById("motivo").value;
 
+    var quantElemento = document.getElementById('quantidade-selecionada');
+
+    var quantidadeSelecionada = quantElemento.textContent;
+
+
+
     if (!motivo) {
         alert("Por favor, informe o motivo antes de solicitar a devolução.");
         return;
     }
 
 
-    fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
+    fetch(`/Devolucao/InserirMotivoDevolucao?ped_cal_cal_id=${ped_cal_cal_id}&ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}&quantidadeSelecionada=${quantidadeSelecionada}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -663,7 +655,6 @@ function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
 
 function solicitarDevolucaoPedido(pedId) {
     const motivo = document.getElementById("motivo").value;
-    console.log(pedId)
 
     const ped_cal_ped_id = parseInt(pedId, 10);
 
@@ -671,8 +662,6 @@ function solicitarDevolucaoPedido(pedId) {
         alert("Por favor, informe o motivo antes de solicitar a devolução.");
         return;
     }
-
-    console.log(ped_cal_ped_id)
 
     fetch(`/Devolucao/InserirMotivoDevolucaoPedido?ped_cal_ped_id=${ped_cal_ped_id}&motivo=${motivo}`, {
         method: "POST",
@@ -690,4 +679,103 @@ function solicitarDevolucaoPedido(pedId) {
         .catch(error => {
             console.error("Erro ao enviar a solicitação de devolução: " + error);
         });
+}
+
+function alteraStatusPedido(pedidos) {
+
+    pedidos.forEach(function (pedido, index) {
+        statusFase = pedido.sta_comp_fase;
+
+    });
+
+    var lineElement = document.querySelector('#linha-status');
+    var elipse1 = document.querySelector('#elipse-1')
+    var elipse2 = document.querySelector('#elipse-2')
+    var elipse3 = document.querySelector('#elipse-3')
+    var elipse4 = document.querySelector('#elipse-4')
+    var elipse5 = document.querySelector('#elipse-5')
+
+    var pedidoAprovadoText = document.querySelector('#pedidoAprovadoText');
+    var pagamentoRecusadoText = document.querySelector('#pagamentoRecusadoText');
+    var elipsePedidoAprovado = document.querySelector('#elipse-pedido-aprovado');
+
+    var emTrocaText = document.querySelector('#emTrocaText');
+    var trocaRealizadaText = document.querySelector('#trocaRealizadaText');
+    var trocaRecusadoText = document.querySelector('#trocaRecusadaText');
+
+    if (statusFase === 'EM PROCESSAMENTO') {
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#E5E5E5');
+        elipse3.setAttribute('fill', '#E5E5E5');
+        elipse4.setAttribute('fill', '#E5E5E5');
+        elipse5.setAttribute('fill', '#E5E5E5');
+    } else if (statusFase === 'EM TRANSITO') {
+        pedidoAprovadoText.style.display = 'block';
+        lineElement.setAttribute('y2', '70');
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+        elipse3.setAttribute('fill', '#E5E5E5');
+        elipse4.setAttribute('fill', '#E5E5E5');
+        elipse5.setAttribute('fill', '#E5E5E5');
+    } else if (statusFase === 'ENTREGUE') {
+        pedidoAprovadoText.style.display = 'block';
+        lineElement.setAttribute('y2', '120');
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#15368A');
+        elipse3.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+        elipse4.setAttribute('fill', '#E5E5E5');
+        elipse5.setAttribute('fill', '#E5E5E5');
+
+    } else if (statusFase === 'TROCA SOLICITADA') {
+        pedidoAprovadoText.style.display = 'block';
+        emTrocaText.style.display = 'block';
+        lineElement.setAttribute('y2', '180');
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#15368A');
+        elipse3.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+        elipse4.setAttribute('fill', '#15368A');
+        elipse5.setAttribute('fill', '#E5E5E5');
+
+    } else if (statusFase === 'TROCA REALIZADA') {
+        pedidoAprovadoText.style.display = 'block';
+        emTrocaText.style.display = 'block';
+        trocaRealizadaText.style.display = 'block';
+        lineElement.setAttribute('y2', '240');
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#15368A');
+        elipse3.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+        elipse4.setAttribute('fill', '#15368A');
+        elipse5.setAttribute('fill', '#15368A');
+    }
+    else if (statusFase === 'TROCA RECUSADA') {
+        pedidoAprovadoText.style.display = 'block';
+        emTrocaText.style.display = 'block';
+        trocaRecusadoText.style.display = 'block';
+        lineElement.setAttribute('y2', '240');
+        elipse1.setAttribute('fill', '#15368A');
+        elipse2.setAttribute('fill', '#15368A');
+        elipse3.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+        elipse4.setAttribute('fill', '#15368A');
+        elipse5.setAttribute('fill', '#15368A');
+    }
+
+    else if (statusFase === 'PEDIDO APROVADO') {
+        pedidoAprovadoText.style.display = 'block';
+        lineElement.setAttribute('y2', '30');
+        elipse1.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+    } else if (statusFase === 'PAGAMENTO RECUSADO') {
+        pagamentoRecusadoText.style.display = 'block';
+        lineElement.setAttribute('y2', '30');
+        elipse1.setAttribute('fill', '#15368A');
+        elipsePedidoAprovado.setAttribute('fill', '#15368A');
+
+    }
+
+
 }

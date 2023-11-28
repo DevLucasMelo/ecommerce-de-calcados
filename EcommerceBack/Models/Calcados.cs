@@ -63,12 +63,14 @@ namespace EcommerceBack.Models
         [Column("cal_cat_id")]
         public int? cal_cat_id { get; set; }
 
-        [Computed]
-        public List<Calcados> calcados { get; set; }
+        [Column("cat_nome")]
+        public string cat_nome { get; set; }
+
+        [Column("estq_quantidade")]
+        public string estq_quantidade { get; set; }
 
         [Computed]
-        [Write(false)]
-        public Categorias Categoria { get; set; }
+        public List<Calcados> calcados { get; set; }
 
     }
 }

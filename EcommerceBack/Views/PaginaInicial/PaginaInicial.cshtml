@@ -30,7 +30,7 @@
     <div class="navbar-nav navbar-nav-right">
       <ul class="navbar-nav">
         <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="@Url.Action("PedidosCliente", "PedidosCliente")"><i class="fas fa-file-alt"></i> Pedidos</a>
+                <a class="nav-link" style="color: white;" href="@Url.Action("PedidosCliente", "PedidosCliente")"><i class="fas fa-file-alt"></i> Pedidos</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
@@ -55,7 +55,7 @@
                     <input type="hidden" id="@calcados.cal_id">
                     <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                     <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
-                    <p class="p-index">@calcados.cal_cat_id</p>
+                    <p class="p-index">@calcados.cat_nome</p>
                     <p class="p-index">@calcados.cal_valor</p>
                     @{
                         decimal valorTotal = calcados.cal_valor;
@@ -76,7 +76,7 @@
                 <input type="hidden" id="@calcados.cal_id">
                     <img class="image-index" src="~/imagens/@(calcados.cal_marca.Replace(" ", "").ToLower())@(calcados.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                 <p class="p-index">@calcados.cal_marca @calcados.cal_modelo</p>
-                <p class="p-index">@calcados.cal_cat_id</p>
+                <p class="p-index">@calcados.cat_nome</p>
                 <p class="p-index">@calcados.cal_valor</p>
                     @{
                         decimal valorTotal = calcados.cal_valor;

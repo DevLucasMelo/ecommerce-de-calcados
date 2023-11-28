@@ -12,15 +12,16 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item nav-item-cart">
-                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("PaginaInicial", "PaginaInicial")"><i class="fas fa-home"></i> Tela inicial</a>
                 </li>
 
                 <li class="nav-item nav-item-cart">
-                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                    <a class="nav-link custom-link" style="color: white;" href="@Url.Action("CarrinhoCompras", "CarrinhoCompras")">
                         <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
                         Carrinho
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
@@ -31,7 +32,7 @@
         <div class="navbar-nav navbar-nav-right">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+                    <a class="nav-link" style="color: white;" href="@Url.Action("PedidosCliente", "PedidosCliente")"><i class="fas fa-file-alt"></i> Pedidos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
@@ -50,7 +51,7 @@
                 <img width="186px" height="127px" src="~/imagens/@(item.cal_marca.Replace(" ", "").ToLower())@(item.cal_modelo.Replace(" ", "").ToLower())-1.png" alt="">
                 <div class="product-info">
                     <p class="descricao-produto">@item.cal_titulo</p>
-                    <p class="descricao-produto">Quantidade selecionada:@ViewBag.QuantidadeSelecionada</p>
+                    <p class="descricao-produto" id="quantidade-selecionada">Quantidade selecionada: @ViewBag.QuantidadeSelecionada</p>
                     <p class="descricao-produto">Tamanho: @item.ped_cal_tamanho</p>
                     <p class="descricao-produto">Cor: @item.cal_cor</p>
                 </div>

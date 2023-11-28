@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="index.html"><i class="fas fa-home"></i> Tela inicial</a>
+                </li>
+
+                <li class="nav-item nav-item-cart">
+                    <a class="nav-link custom-link" style="color: white;" href="carrinho_compras.html">
+                        <i class="fas fa-shopping-cart"><span id="quantidade-item-cart">0</span></i>
+                        Carrinho
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <input type="text" class="form-control search-input" placeholder="Pesquisar produtos...">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav navbar-nav-right">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="pedidos_status_cliente.html"><i class="fas fa-file-alt"></i> Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="color: white;" href="#"> Login <i class="fas fa-user"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Login</h2>
+
+    <div class="container-login">
+        <div id="login-form">
+            <form>
+                <label class="login" for="nome"><strong>Usuário</strong></label>
+                <br>
+                <input class="input-login" type="text" id="nome" name="nome" placeholder="email">
+                <br>
+                <label class="login" for="nome"><strong>Senha</strong></label>
+                <br>
+                <input class="input-login" type="text" id="nome" name="nome" placeholder="senha">
+            </form>
+        </div>
+
+        <div class="botao-login">
+            <a href="index.html">
+                <button class="btn-azul-login" id="meuBotao">Login</button>
+            </a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/script.js"></script>
+
+</body>

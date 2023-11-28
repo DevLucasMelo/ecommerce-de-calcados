@@ -15,15 +15,15 @@ namespace EcommerceBack.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("PaginaInicial", "PaginaInicial");
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return RedirectToAction("PaginaInicial", "PaginaInicial");
         }
 
-        
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

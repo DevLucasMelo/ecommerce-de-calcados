@@ -2,6 +2,7 @@
 using Dapper.Contrib.Extensions;
 using EcommerceBack.Models;
 using Npgsql;
+using System.Globalization;
 
 namespace EcommerceBack.Data
 {
@@ -98,6 +99,7 @@ namespace EcommerceBack.Data
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     var cliente = sqlCon.Query<Cliente>(query).FirstOrDefault();
+
                     return cliente;
                 }
             }

@@ -38,6 +38,11 @@ namespace EcommerceBack.Models
         [Column(name:"cli_senha")]
         public string cli_senha { get; set; }
 
+        public string cli_dt_nascimento_formatted
+        {
+            get { return cli_dt_nascimento.ToString("dd/MM/yyyy"); }
+        }
+
         [Computed]
         public List<Cliente> clientes { get; set; }
 
