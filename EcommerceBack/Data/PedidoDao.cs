@@ -12,7 +12,7 @@ namespace EcommerceBack.Data
         public static long InserirPedido(Pedido pedido)
         {
             string conn = config().GetConnectionString("Conn");
-            pedido.ped_end_id = 1;
+            
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))
@@ -105,6 +105,7 @@ namespace EcommerceBack.Data
             string conn = config().GetConnectionString("Conn");
             string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
             string query_troca = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
+            string query_pedido = $"update pedidos set ped_sta_comp_id = 6 where ped_id = {ped_cal_ped_id};";
 
             try
             {
@@ -112,6 +113,7 @@ namespace EcommerceBack.Data
                 {
                     sqlCon.Execute(query_motivo);
                     sqlCon.Execute(query_troca);
+                    sqlCon.Execute(query_pedido);
                 }
             }
             catch (Exception ex)
