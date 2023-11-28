@@ -9,6 +9,7 @@ namespace EcommerceBack.Models
         public string cup_nome { get; set; }
         public decimal cup_valor { get; set; }
         public bool cup_ativo { get; set; }
+        public int cup_cli_id { get; set; }
 
         [Computed]
         public int pedidoId { get; set; }

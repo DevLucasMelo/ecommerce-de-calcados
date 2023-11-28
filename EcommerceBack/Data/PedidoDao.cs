@@ -13,7 +13,7 @@ namespace EcommerceBack.Data
         public static long InserirPedido(Pedido pedido)
         {
             string conn = config().GetConnectionString("Conn");
-            pedido.ped_end_id = 1;
+            
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))

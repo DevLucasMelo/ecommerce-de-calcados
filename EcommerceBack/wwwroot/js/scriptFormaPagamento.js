@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function() {
             var enderecoId = localStorage.getItem("EnderecoId");
 
             if (enderecoId !== null && enderecoId !== "") {
-                Pedido.ped_end_id = enderecoId;
+                Pedido.ped_end_id = parseInt(enderecoId);
 
                 $.ajax({
                     type: "POST",
@@ -452,11 +452,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
-                if (cupomObjeto.cup_ativo) {
-                    adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id);
+                if (cupomObjeto == null) {
+                    alert('Digite um cupom válido!');
                 } else {
-                    alert('Digite um cupom que está ativo!');
+                    if (cupomObjeto.cup_ativo) {
+                        adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id);
+                    } else {
+                        alert('Digite um cupom que está ativo!');
+                    }
                 }
+                
                 modalSuccess.style.display = "block";
             } 
         }

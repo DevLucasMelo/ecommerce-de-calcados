@@ -164,5 +164,24 @@ namespace EcommerceBack.Data
                 return false;
             }
         }
+
+        public static List<Cupom> consultarCupomById(int clienteID)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"select * from cupons where cup_cli_id = {clienteID}";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var cupom = sqlCon.Query<Cupom>(query).ToList();
+                    return cupom;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<Cupom>();
+            }
+        }
     }
 }
