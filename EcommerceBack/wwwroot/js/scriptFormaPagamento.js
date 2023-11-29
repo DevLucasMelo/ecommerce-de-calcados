@@ -174,9 +174,11 @@ confirmarPedido.addEventListener("click", function() {
         renderizarListaCartoes();
     }
 
-    function adicionarCupom(cupomNome, cupValor, cupId) {
-        cupons.push({ cupomNome, cupValor, cupId});
-        renderizarListaCupons();
+    function adicionarCupom(cupomNome, cupValor, cupId, cupTip) {
+        cupons.push({ cupomNome, cupValor, cupId, cupTip });
+        if (cupTip == 2) {
+            renderizarListaCupons();
+        }
     }
 
 
@@ -247,6 +249,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalSuccess = document.getElementById("modalSuccess");
     const modalError = document.getElementById("modalError");
     const confirmarPedido = document.getElementById("finaliza-pedido");
+    const confirmarPromocional = document.getElementById("botaoPromocional");
+
 
     // Função para abrir o modal de cupom
     function openCupomPopup() {
@@ -279,6 +283,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return valorSemR;
     }
 
+    
 
     confirmarPedido.addEventListener("click", function () {
         const valorProduto = document.getElementById('valorProduto').textContent;
@@ -340,19 +345,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     })
                 };
 
-                $.ajax({
-                    type: "POST",
-                    url: "/FormaPagamento/InserirCupom",
-                    dataType: "json",
-                    data: Cupons,
-                    async: false,
-                    success: function (result) {
-                        
-                    },
-                    error: function (status) {
+                if (cupons.length != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/FormaPagamento/InserirCupom",
+                        dataType: "json",
+                        data: Cupons,
+                        async: false,
+                        success: function (result) {
 
-                    }
-                });
+                        },
+                        error: function (status) {
+
+                        }
+                    });
+                }
+
+                
 
                 const carrinho = JSON.parse(localStorage.getItem("carrinho"));
 
@@ -426,6 +435,54 @@ document.addEventListener("DOMContentLoaded", function() {
 
     });
 
+    confirmarPromocional.addEventListener("click", function () {
+        const cupom = document.getElementById("input-pedido").value;;
+
+        if (cupom === "") {
+            modalError.style.display = "block";
+        }
+        else
+        {
+            var cupomObjeto;
+            $.ajax({
+                type: "GET",
+                url: "/FormaPagamento/ConsultarCupom",
+                dataType: "json",
+                data: { cupomName: cupom.toUpperCase() },
+                async: false,
+                success: function (jsonResult) {
+                    cupomObjeto = jsonResult;
+                },
+                error: function (status) {
+
+                }
+            });
+
+            if (cupomObjeto == null) {
+                alert('Digite um cupom válido!');
+            } else {
+                if (cupomObjeto.cup_ativo) {
+                    if (cupomObjeto.cup_tip_id == 1) {
+                        cupons = cupons.filter(cupom1 => cupom1.cupTip !== 1);
+                        adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id, cupomObjeto.cup_tip_id);
+                        modalSuccess.style.display = "block";
+                    }
+                    else
+                    {
+                        alert('Digite um cupom promocional!');
+                    }
+                    
+                } else {
+                    alert('Digite um cupom que está ativo!');
+                }
+            }
+        }
+
+        carregarValores();
+        document.getElementById("input-pedido").value = "";
+    });
+    
+
     confirmarBotao.addEventListener("click", function() {
         const cupom = document.getElementById("cupom").value;
 
@@ -456,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert('Digite um cupom válido!');
                 } else {
                     if (cupomObjeto.cup_ativo) {
-                        adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id);
+                        adicionarCupom(cupomObjeto.cup_nome, cupomObjeto.cup_valor, cupomObjeto.cup_id, cupomObjeto.cup_tip_id);
                     } else {
                         alert('Digite um cupom que está ativo!');
                     }
@@ -465,6 +522,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 modalSuccess.style.display = "block";
             } 
         }
+        
         carregarValores();
         document.getElementById("cupom").value = "";
         closeCupomPopup();
@@ -479,21 +537,38 @@ function carregarValores() {
     calcularValorTotalFormaPagamento();
 }
 
+function carregarValorCupomPromo() {
+
+    var valorFormatado = (valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    document.querySelector("#cupomTroca").textContent = valorFormatado;
+}
+
+
 function carregarValorCupomTroca() {
     let totalCupValor = 0;
+    let totalCupPromoValor = 0;
 
     if (cupons.length > 0) {
         for (let i = 0; i < cupons.length; i++) {
-            totalCupValor += cupons[i].cupValor;
+            if (cupons[i].cupTip == 2) {
+                totalCupValor += cupons[i].cupValor;
+            }
+            else {
+                totalCupPromoValor += cupons[i].cupValor;
+            }
         }
         localStorage.setItem("cupons", cupons);
     } else { 
         totalCupValor = 0;
+        totalCupPromoValor = 0;
     }
 
-    var valorFormatado = (totalCupValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    var valorFormatadoCupTroca = (totalCupValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    var valorFormatadoCupPromo = (totalCupPromoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    document.querySelector("#cupomTroca").textContent = valorFormatado;
+    document.querySelector("#valorCodPromo").textContent = valorFormatadoCupPromo;
+    document.querySelector("#cupomTroca").textContent = valorFormatadoCupTroca;
 }
 
 function carregarValorCarrinho() {
