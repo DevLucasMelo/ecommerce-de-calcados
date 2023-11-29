@@ -7,7 +7,7 @@ using System.IO;
 
 class TestesAutomatizados
 {
-    void Insercao(IWebDriver driver)
+    void InsercaoCliente(IWebDriver driver)
     {
         
         System.Threading.Thread.Sleep(3000);
@@ -67,7 +67,7 @@ class TestesAutomatizados
         System.Threading.Thread.Sleep(1000);
         driver.FindElement(By.Id("titular")).SendKeys("Paulo S de Oliveira");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("bandeira")).SendKeys("12/25");
+        driver.FindElement(By.Id("bandeira")).SendKeys("MasterCard");
         System.Threading.Thread.Sleep(1000);
         driver.FindElement(By.Id("cvv")).SendKeys("123");
         
@@ -127,22 +127,72 @@ class TestesAutomatizados
 
         driver.FindElement(By.Id("gerenciar-cartoes")).Click();
 
-        System.Threading.Thread.Sleep(1000);
+        System.Threading.Thread.Sleep(5000);
 
         driver.FindElement(By.Id("numeroCartao1")).SendKeys("1234.5678.9012.3456");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("titular1")).SendKeys("Paulo S de Oliveira");
+        driver.FindElement(By.Id("titular1")).SendKeys("Paulo S de Oliveira2");
         System.Threading.Thread.Sleep(1000);
-        driver.FindElement(By.Id("bandeira1")).SendKeys("12/25");
+        driver.FindElement(By.Id("bandeira1")).SendKeys("MasterCard");
         System.Threading.Thread.Sleep(1000);
         driver.FindElement(By.Id("cvv1")).SendKeys("123");
 
+        System.Threading.Thread.Sleep(3000);
+
         driver.FindElement(By.Id("confirmar-cartao")).Click();
 
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("fechar-cartao")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("gerenciar-enderecos")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("logradouro")).SendKeys("Rua Armando Maritan");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("cidadeCliente")).SendKeys("Mogi das Cruzes");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("bairroCliente")).SendKeys("Vila Oliveira");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("numeroEndereco")).SendKeys("234");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("cep")).SendKeys("08790-340");
+        System.Threading.Thread.Sleep(1000);
+
+        tipoResidenciaSelect.Click(); 
+
+        optionResidencia = driver.FindElement(By.CssSelector("#tipoResidencia option[value='2']"));
+
+        optionResidencia.Click();
+        
+        System.Threading.Thread.Sleep(1000);
+
+        tipoLogradouroSelect.Click(); 
+
+        optionLogradouro = driver.FindElement(By.CssSelector("#tipoLogradouro option[value='2']"));
+
+        optionLogradouro.Click();
+
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("estadoCliente")).SendKeys("São Paulo");
+
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("paisCliente")).SendKeys("Brasil");
+
+        System.Threading.Thread.Sleep(1000);
 
     }
 
-    void Alteracao(IWebDriver driver)
+    void AlteracaoCliente(IWebDriver driver)
     { 
         System.Threading.Thread.Sleep(3000);
 
@@ -169,34 +219,107 @@ class TestesAutomatizados
 
         driver.FindElement(By.Id("confirmar-cliente")).Click();
 
-        driver.FindElement(By.Id("fechar-cliente")).Click();
-
-    }
-
-    void Exclusao(IWebDriver driver)
-    {
         System.Threading.Thread.Sleep(3000);
 
-        driver.FindElement(By.Id("excluir-cliente")).Click();
+        driver.FindElement(By.Id("fechar-cliente")).Click();
+
+        System.Threading.Thread.Sleep(5000);
+
+        driver.FindElement(By.Id("gerenciar-cartoes")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("editar-cartao")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        var bandeira = driver.FindElement(By.Id("bandeira1"));
+
+        bandeira.Clear();
+
+        System.Threading.Thread.Sleep(3000);
+
+
+        bandeira.SendKeys("Visa");
+
+        System.Threading.Thread.Sleep(3000);
+
+        var cvv = driver.FindElement(By.Id("cvv1"));
+
+        cvv.Clear();
+
+        System.Threading.Thread.Sleep(3000);
+
+        cvv.SendKeys("321");
+
+        System.Threading.Thread.Sleep(3000);
+
     }
 
-    void Consulta(IWebDriver driver)
+    void ExclusaoCliente(IWebDriver driver)
     {
+
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("gerenciar-cartoes")).Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("excluir-cartao")).Click();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.FindElement(By.Id("fechar-cartao")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+
+        //driver.FindElement(By.Id("gerenciar-enderecos")).Click();
+
+        //System.Threading.Thread.Sleep(3000);
+
+        //driver.FindElement(By.Id("fechar-endereco")).Click();
+
+        //System.Threading.Thread.Sleep(5000);
+
+         int scrollAmount = 10;
+        int scrollTotal = 1600;  
+
+        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("excluir-cliente")).Click();
+
+        System.Threading.Thread.Sleep(3000);
+    }
+
+    void ConsultaCliente(IWebDriver driver)
+    {
+        System.Threading.Thread.Sleep(8000);
+
         IWebElement termoPesquisaInput = driver.FindElement(By.Id("termoPesquisa"));
 
         termoPesquisaInput.SendKeys("Paulo");
 
         driver.FindElement(By.Id("consultarClientes")).Click();
 
-        System.Threading.Thread.Sleep(3000);
+        System.Threading.Thread.Sleep(5000);
 
         termoPesquisaInput.Clear();
+
+        System.Threading.Thread.Sleep(5000);
 
         termoPesquisaInput.SendKeys("1990");
 
         driver.FindElement(By.Id("consultarClientes")).Click();
 
-        System.Threading.Thread.Sleep(3000);
+        System.Threading.Thread.Sleep(5000);
 
         termoPesquisaInput.Clear();
 
@@ -206,10 +329,17 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(5000);
 
+        driver.FindElement(By.Id("consult-transacoes")).Click();
+
+        System.Threading.Thread.Sleep(5000);
+
+         driver.FindElement(By.Id("fechar-transacao")).Click();
+
+        System.Threading.Thread.Sleep(5000);
+
         driver.FindElement(By.Id("inativar-cliente")).Click();
 
-        System.Threading.Thread.Sleep(3000);
-
+        System.Threading.Thread.Sleep(5000);
     }
 
     void ConsultarPedidos(IWebDriver driver)
@@ -440,22 +570,22 @@ class TestesAutomatizados
         IWebDriver driver = new ChromeDriver(chromedriverPath, chromeOptions);
 
 
-        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "PaginaInicial", "PaginaInicial.cshtml");
+        string paginaHTMLPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "EcommerceBack","Views", "Cliente", "Cliente.cshtml");
 
-        driver.Url = "http://localhost:7247/PaginaInicial/PaginaInicial";
+        driver.Url = "http://localhost:7247/Cliente/Cliente";
 
-
-        
         var testes = new TestesAutomatizados(); 
 
-        //testes.Insercao(driver); 
-        //testes.Alteracao(driver);
-        //testes.Consulta(driver);
-        //testes.Exclusao(driver);
+        //testes.InsercaoCliente(driver); 
+        //testes.AlteracaoCliente(driver);
+        //testes.ConsultaCliente(driver);
+        //testes.ExclusaoCliente(driver);
 
         //testes.ConsultarPedidos(driver);
         
-        testes.conducaoPedido(driver);
+        driver.Url = "http://localhost:7247/PaginaInicial/PaginaInicial";
+
+        //testes.conducaoPedido(driver);
 
     }
 }

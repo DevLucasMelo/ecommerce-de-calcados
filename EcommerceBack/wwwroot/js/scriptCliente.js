@@ -126,10 +126,12 @@ function selecionarClientes() {
                     genero = "Masculino";
                 }
 
+                const dataNascimentoFormatada = new Date(cliente.cli_dt_nascimento).toLocaleDateString('pt-BR');
+
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${cliente.cli_nome}</div>
-                        <div class="col">${cliente.cli_dt_nascimento_formatted}</div>
+                        <div class="col">${dataNascimentoFormatada}</div>
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
@@ -784,11 +786,14 @@ document.getElementById('consultarClientes').addEventListener('click', function 
                 } else if (cliente.cli_gen_id === 2) {
                     genero = "Masculino";
                 }
+
+                const dataNascimentoFormatada = new Date(cliente.cli_dt_nascimento).toLocaleDateString('pt-BR');
+
                 
                 resultadoPesquisa.innerHTML += `
                     <div class="row">
                         <div class="col">${cliente.cli_nome}</div>
-                        <div class="col">${cliente.cli_dt_nascimento_formatted}</div>
+                        <div class="col">${dataNascimentoFormatada}</div>
                         <div class="col">${cliente.cli_email}</div>
                         <div class="col">${cliente.cli_cpf}</div>
                         <div class="col">${genero}</div>
