@@ -127,6 +127,26 @@ function verificarAdicionarEndereco() {
     }
 }
 
+
+function adicionarEnderecoCasa() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Endereco/SelecionarUmEnderecoIdCliente",
+        dataType: "json",
+        data: { clienteId: 1 },
+        async: false,
+        success: function (id) {
+            localStorage.setItem("EnderecoId", id);
+            alterarAposAdicionarEndereco();
+        },
+        error: function (status) {
+            console.log("Não inserido")
+        }
+    });
+        
+}
+
 function openPopupAdicionarEndereco() {
     overlay.style.display = "flex";
     popup.style.display = "block";
@@ -215,7 +235,8 @@ function removerProduto(elemento, cal_id) {
 
 function selecionarBtn(button) {
     button.classList.toggle("selected");
-    calcularValorFrete()
+    calcularValorFrete();
+    adicionarEnderecoCasa();
 }
 
 var freteAdicionado = false;
@@ -266,6 +287,7 @@ function calcularValorTotal() {
     var valorFrete = parseInt(localStorage.getItem("valorFrete"));
 
     if (valorFrete !== 0 && !isNaN(valorFrete)) {
+
         calcularValorFrete();
 
         var valorFrete = parseInt(localStorage.getItem("valorFrete"));
@@ -414,13 +436,11 @@ function adicionarItemAoCarrinho(cal_id, redirecionar) {
             }
             
         });
-
         
     } else {
         alert('Tamanho nao selecionado');
     }
 
-   
 }
 
 
