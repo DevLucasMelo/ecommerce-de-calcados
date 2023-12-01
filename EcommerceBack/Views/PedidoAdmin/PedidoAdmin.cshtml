@@ -6,6 +6,9 @@
 <body>
     <a href="@Url.Action("AnaliseVendas", "AnaliseVendas")"><button class="btn-azul" id="analise-vendas">Analisar vendas</button></a>
 
+    
+
+
     <div class="container-consulta">
         <input type="text" id="termoPesquisa" placeholder="Digite aqui...">
         <button class="btn btn-primary mb-3" id="consultarPedidos">Consultar</button>
@@ -78,6 +81,9 @@
                 <br>
             </form>
 
+            <div id="cupomDiv"></div>
+
+
             <button id="confirmar" class="btn btn-primary">Confirmar</button>
         </div>
     </div>
@@ -85,5 +91,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/js/scriptPedidoAdmin.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
 
 </body>

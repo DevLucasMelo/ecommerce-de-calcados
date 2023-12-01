@@ -349,5 +349,79 @@ namespace EcommerceBack.Data
                 
             }
         }
+
+        public static string incluirCupomTrocaAprovada(decimal valorTroca, int clienteId)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlConn = new NpgsqlConnection(conn))
+                {
+                    sqlConn.Open();
+
+                    string cupomNome = GenerateUniqueToken();
+
+                    string sql1 = @"INSERT INTO cupons (cup_nome, cup_valor, cup_ativo, cup_tip_id) 
+                            VALUES (@cupNome, @valorTroca, @ativo, @tipId)
+                            RETURNING cup_id";
+
+                    var cupomId = sqlConn.ExecuteScalar<int>(sql1, new
+                    {
+                        cupNome = cupomNome,
+                        valorTroca,
+                        ativo = true,
+                        tipId = 2
+                    });
+
+                    
+                    string sql2 = @"INSERT INTO clientes_cupons (cli_cup_cli_id, cli_cup_cup_id) 
+                            VALUES (@clienteId, @cupomId)";
+
+                    var pedidos = sqlConn.Execute(sql2, new
+                    {
+                        clienteId,
+                        cupomId
+                    });
+
+                    return cupomNome;
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
+
+
+        public static List<PedidosCalcados> consultarCalcadosDevolucao(int ped_cal_ped_id)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $"\r\nSELECT sta_comp_fase, ped_cal_ped_id, ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var pedidos = sqlCon.Query<PedidosCalcados>(query).ToList();
+                    Console.WriteLine(pedidos);
+                    return pedidos;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<PedidosCalcados>();
+            }
+        }
+
+        static string GenerateUniqueToken()
+        {
+            Guid guid = Guid.NewGuid();
+            string token = guid.ToString("N");
+            token = "CUPOM" + token;
+
+            token = token.ToUpper();
+            return token;
+        }
     }
 }

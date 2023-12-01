@@ -81,7 +81,27 @@ namespace EcommerceBack.Controllers
         {
             try
             {
+                var nomeCupom = string.Empty;
+                decimal valorTroca = 0;
+
+                if (statusId == 7)
+                {
+                    var pedido = PedidoDao.ConsultarPedidoById(pedidoId);
+                    var listaCalcados = PedidoDao.consultarCalcadosDevolucao(pedidoId);
+
+                    foreach (var item in listaCalcados)
+                    {
+                        if (item.sta_comp_fase == "TROCA SOLICITADA")
+                        {
+                            valorTroca += item.cal_valor * item.ped_cal_quant;
+                        }
+                    }
+                    nomeCupom = PedidoDao.incluirCupomTrocaAprovada(valorTroca, pedido.ped_cli_id);
+                }
+
                 PedidoDao.atualizarStatusCompra(statusId, pedidoId);
+
+                return Json(nomeCupom);
             }
             catch(Exception ex)
             {

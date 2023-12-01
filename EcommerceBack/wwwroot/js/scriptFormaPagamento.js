@@ -436,7 +436,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     confirmarPromocional.addEventListener("click", function () {
-        const cupom = document.getElementById("input-pedido").value;;
+        const cupom = document.getElementById("input-pedido").value;
 
         if (cupom === "") {
             modalError.style.display = "block";

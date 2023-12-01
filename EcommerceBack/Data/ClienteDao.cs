@@ -168,7 +168,10 @@ namespace EcommerceBack.Data
         public static List<Cupom> consultarCupomById(int clienteID)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $@"select * from cupons where cup_cli_id = {clienteID}";
+            string query = $@"select cup_id, cup_nome, cup_valor, cup_ativo, cup_tip_id, cli_cup_cli_id as cup_cli_id
+                                from cupons c
+                                inner join clientes_cupons cp on cp.cli_cup_cup_id = c.cup_id
+                                where cp.cli_cup_cli_id = {clienteID}";
 
             try
             {
