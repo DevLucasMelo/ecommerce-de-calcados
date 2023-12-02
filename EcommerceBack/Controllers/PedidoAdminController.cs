@@ -76,6 +76,26 @@ namespace EcommerceBack.Controllers
             return Json(pedido);
         }
 
+        [HttpGet]
+        public IActionResult consultarEnderecoId(int enderecoId)
+        {
+            Endereco endereco = new Endereco();
+
+            try
+            {
+                endereco = EnderecoDao.SelecionarEnderecoById(enderecoId);
+                endereco.pais = EnderecoDao.SelecionarPaisById(endereco.end_pais_id);
+                endereco.estado = EnderecoDao.SelecionarEstadoById(endereco.end_est_id);
+                endereco.cidade = EnderecoDao.SelecionarCidadeById(endereco.end_cid_id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro ao trazer o endereço em questão: " + ex.Message);
+            }
+
+            return Json(endereco);
+        }
+
         [HttpPost]
         public IActionResult atualizarStatusCompra(int statusId, int pedidoId)
         {
