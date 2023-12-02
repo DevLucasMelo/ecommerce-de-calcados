@@ -76,12 +76,52 @@ namespace EcommerceBack.Controllers
             return Json(pedido);
         }
 
+        [HttpGet]
+        public IActionResult consultarEnderecoId(int enderecoId)
+        {
+            Endereco endereco = new Endereco();
+
+            try
+            {
+                endereco = EnderecoDao.SelecionarEnderecoById(enderecoId);
+                endereco.pais = EnderecoDao.SelecionarPaisById(endereco.end_pais_id);
+                endereco.estado = EnderecoDao.SelecionarEstadoById(endereco.end_est_id);
+                endereco.cidade = EnderecoDao.SelecionarCidadeById(endereco.end_cid_id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro ao trazer o endereço em questão: " + ex.Message);
+            }
+
+            return Json(endereco);
+        }
+
         [HttpPost]
         public IActionResult atualizarStatusCompra(int statusId, int pedidoId)
         {
             try
             {
+                var nomeCupom = string.Empty;
+                decimal valorTroca = 0;
+
+                if (statusId == 7)
+                {
+                    var pedido = PedidoDao.ConsultarPedidoById(pedidoId);
+                    var listaCalcados = PedidoDao.consultarCalcadosDevolucao(pedidoId);
+
+                    foreach (var item in listaCalcados)
+                    {
+                        if (item.sta_comp_fase == "TROCA SOLICITADA")
+                        {
+                            valorTroca += item.cal_valor * item.ped_cal_quant;
+                        }
+                    }
+                    nomeCupom = PedidoDao.incluirCupomTrocaAprovada(valorTroca, pedido.ped_cli_id);
+                }
+
                 PedidoDao.atualizarStatusCompra(statusId, pedidoId);
+
+                return Json(nomeCupom);
             }
             catch(Exception ex)
             {

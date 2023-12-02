@@ -323,8 +323,13 @@
 
                 <form>
                     <input type="hidden" id="clientEnderecoId">
-                    @*<input type="hidden" id="bandeiraCartaoId">*@
                     <input type="hidden" id="EnderecoId">
+                    <input type="hidden" id="PaisId">
+                    <input type="hidden" id="CidadeId">
+                    <input type="hidden" id="EstadoId">
+
+                    <div id="editar-endereco-container"></div>
+
                     <div class="mb-3">
                         <label for="logradouro1" class="label-blue">Logradouro:</label>
                         <input type="text" id="logradouro1" class="form-control input-card" required>
@@ -387,6 +392,19 @@
                             <input type="text" id="paisCliente1" class="form-control input-card" required>
                         </div>
                     </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <div>
+                            <label class="label-blue">Endereço de Cobrança:</label>
+                            <input type="checkbox" id="enderecoCobranca" class="form-check-input">
+                        </div>
+                        <div>
+                            <label class="label-blue">Endereço de Entrega:</label>
+                            <input type="checkbox" id="enderecoEntrega" class="form-check-input">
+                        </div>
+                    </div>
+
+                    <button id="confirmar-endereco" class="btn btn-primary">Confirmar</button>
                 </form>
 
                 <div id="enderecosGrid" class="container mt-5">

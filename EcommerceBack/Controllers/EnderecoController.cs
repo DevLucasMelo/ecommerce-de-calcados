@@ -20,15 +20,37 @@ namespace EcommerceBack.Controllers
             long idPais = 0;
             try
             {
-
-                endereco.end_cobranca = true;
-                endereco.end_entrega = true;
                 endereco.end_cid_id = (int)EnderecoDao.InserirCidade(endereco.cidade);
                 endereco.end_est_id = (int)EnderecoDao.InserirEstado(endereco.estado);
                 endereco.end_pais_id = (int)EnderecoDao.InserirPais(endereco.pais);
 
                 idEnd = EnderecoDao.InserirEndereco(endereco);
                 EnderecoDao.InserirEnderecoCliente(idEnd, endereco.ClienteId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult PutEndereco(Endereco endereco)
+        {
+            bool atualizado;
+
+            try
+            {
+                atualizado = EnderecoDao.UpdateCidade(endereco.cidade);
+                atualizado = EnderecoDao.UpdateEstado(endereco.estado);
+                atualizado = EnderecoDao.UpdatePais(endereco.pais);
+
+                endereco.end_cid_id = endereco.cidade.cid_id;
+                endereco.end_est_id = endereco.estado.est_id;
+                endereco.end_pais_id = endereco.pais.pais_id;
+
+                atualizado = EnderecoDao.UpdateEndereco(endereco);
             }
             catch (Exception ex)
             {

@@ -25,6 +25,24 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static bool UpdateEndereco(Endereco endereco)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var id = sqlCon.Update(endereco);
+                    return id;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public static long InserirCidade(Cidade cidade)
         {
             string conn = config().GetConnectionString("Conn");
@@ -40,6 +58,24 @@ namespace EcommerceBack.Data
             catch (Exception ex)
             {
                 return 0;
+            }
+        }
+
+        public static bool UpdateCidade(Cidade cidade)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var id = sqlCon.Update(cidade);
+                    return id;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -61,6 +97,24 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static bool UpdateEstado(Estado estado)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var id = sqlCon.Update(estado);
+                    return id;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public static long InserirPais(Pais pais)
         {
             string conn = config().GetConnectionString("Conn");
@@ -76,6 +130,24 @@ namespace EcommerceBack.Data
             catch (Exception ex)
             {
                 return 0;
+            }
+        }
+
+        public static bool UpdatePais(Pais pais)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var id = sqlCon.Update(pais);
+                    return id;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -103,7 +175,7 @@ namespace EcommerceBack.Data
         {
             string conn = config().GetConnectionString("Conn");
             string query = $@"SELECT e.end_logradouro, e.end_cep, e.end_bairro, e.end_id, 
-                                e.end_numero, e.end_cid_id, e.end_pais_id, e.end_est_id
+                                e.end_numero, e.end_cid_id, e.end_pais_id, e.end_est_id, e.end_entrega, e.end_cobranca, e.end_tip_res_id, e.end_tip_log_id
                                 FROM enderecos e
                                 WHERE e.end_id = {enderecoId} ;";
 
@@ -123,7 +195,7 @@ namespace EcommerceBack.Data
         public static Pais SelecionarPaisById(int paisId)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $@"SELECT pais_nome
+            string query = $@"SELECT pais_nome, pais_id
                                 FROM paises p
                                 WHERE p.pais_id = {paisId} ;";
 
@@ -143,7 +215,7 @@ namespace EcommerceBack.Data
         public static Estado SelecionarEstadoById(int estadoId)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $@"SELECT e.est_nome
+            string query = $@"SELECT e.est_nome, e.est_id
                                 FROM estados e
                                 WHERE e.est_id = {estadoId} ;";
 
@@ -163,7 +235,7 @@ namespace EcommerceBack.Data
         public static Cidade SelecionarCidadeById(int cidadeId)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $@"SELECT e.cid_nome
+            string query = $@"SELECT e.cid_nome, e.cid_id
                                 FROM cidades e
                                 WHERE e.cid_id = {cidadeId} ;";
 
@@ -186,7 +258,7 @@ namespace EcommerceBack.Data
             string query = $@"SELECT e.end_logradouro, e.end_cep, e.end_bairro, e.end_id
                                 FROM enderecos e
                                 INNER JOIN clientes_enderecos ce ON e.end_id = ce.cri_end_end_id
-                                WHERE ce.cri_end_end_id = {ClienteId} ;";
+                                WHERE ce.cri_end_cli_id = {ClienteId} ;";
 
             try
             {

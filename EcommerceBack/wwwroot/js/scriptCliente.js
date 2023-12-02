@@ -11,6 +11,8 @@ const addCupomButton = document.getElementById("meuBotaocliente");
 const confirmarBotao = document.getElementById("confirmar-cliente");
 const modalSuccess = document.getElementById("modalSuccess");
 const modalError = document.getElementById("modalError");
+const confirmarEndereco = document.getElementById("confirmar-endereco");
+
 
 //Cartão
 const overlayCartao = document.getElementById("overlay-cartao");
@@ -22,6 +24,7 @@ const overlayEndereco = document.getElementById("overlay-endereco");
 const popupEndereco = document.getElementById("popup-endereco");
 const closeButtonEndereco = document.getElementById("fechar-endereco");
 
+closeButtonEndereco.addEventListener("click", closeEnderecoPopup);
 
 addCupomButton.addEventListener("click", openCupomPopup);
 
@@ -34,8 +37,35 @@ function openEnderecoPopup() {
 }
 
 function closeEnderecoPopup() {
+    zerarEnderecos();
+    excluirEnderecoEditar();
     overlayEndereco.style.display = "none";
     popupEndereco.style.display = "none";
+}
+
+function zerarEnderecos() {
+
+    document.getElementById("EnderecoId").value = "";
+    document.getElementById("bairroCliente1").value = "";
+    document.getElementById("cidadeCliente1").value = "";
+    document.getElementById("estadoCliente1").value = "";
+    document.getElementById("numeroEndereco1").value = "";
+    document.getElementById("paisCliente1").value = "";
+    document.getElementById("cep1").value = "";
+    document.getElementById("logradouro1").value = "";
+
+    document.getElementById("PaisId").value = "";
+    document.getElementById("CidadeId").value = "";
+    document.getElementById("EstadoId").value = "";
+
+    document.getElementById('enderecoEntrega').checked = false;
+    document.getElementById('enderecoCobranca').checked = false;
+
+    var selectTipoResidencia1 = document.getElementById("tipoResidencia1");
+    selectTipoResidencia1.selectedIndex = 0;
+
+    var selectTipoLogradouro1 = document.getElementById("tipoLogradouro1");
+    selectTipoLogradouro1.selectedIndex = 0;
 }
 
 //Cartão
@@ -155,6 +185,19 @@ function editCartao(cartaoId) {
 
 }
 
+function excluirEnderecoEditar() {
+    var divEditarCartoes = document.getElementById("editar-endereco-container");
+
+    // Seleciona o elemento h2 dentro da div (supondo que seja o único h2)
+    var h2Element = divEditarCartoes.querySelector("h4");
+
+    // Verifica se o h2 foi encontrado antes de tentar removê-lo
+    if (h2Element) {
+        // Remove o h2 da div
+        divEditarCartoes.removeChild(h2Element);
+    }
+}
+
 function excluirCartaoEditar() {
     var divEditarCartoes = document.getElementById("editar-cartoes-container");
 
@@ -226,8 +269,213 @@ function fillEditModalCartao(cartaoId) {
 }
 
 
-function editEndereco(enderecoId) {
+confirmarEndereco.addEventListener("click", function (event) {
+    const EnderecoId = document.getElementById("EnderecoId").value;
+    const ClienteId = document.getElementById("clientEnderecoId").value;
+    
+    const enderecoEntrega = $('#enderecoEntrega').is(':checked');
+    const enderecoCobranca = $('#enderecoCobranca').is(':checked');
 
+    const bairroCliente = document.getElementById("bairroCliente1").value;
+    const cidadeCliente = document.getElementById("cidadeCliente1").value;
+    const estadoCliente = document.getElementById("estadoCliente1").value;
+    const numeroEndereco = document.getElementById("numeroEndereco1").value;
+    const paisCliente = document.getElementById("paisCliente1").value;
+    const cep = document.getElementById("cep1").value;
+    const logradouro = document.getElementById("logradouro1").value;
+
+    const PaisId = document.getElementById("PaisId").value;
+    const CidadeId = document.getElementById("CidadeId").value;
+    const EstadoId = document.getElementById("EstadoId").value;
+
+    const selectTipoResidencia = document.getElementById("tipoResidencia1");
+    var tipoResidencia = selectTipoResidencia.options[selectTipoResidencia.selectedIndex].value;
+    var tipoResInt = parseInt(tipoResidencia, 10);
+
+    const selectTipoLogradouro = document.getElementById("tipoLogradouro1");
+    var tipoLogradouro = selectTipoLogradouro.options[selectTipoLogradouro.selectedIndex].value;
+    var tipoLogInt = parseInt(tipoLogradouro, 10);
+
+    
+
+    if (Number.isInteger(parseInt(EnderecoId))) {
+
+        var endereco = {
+            end_logradouro: logradouro,
+            end_numero: numeroEndereco,
+            end_bairro: bairroCliente,
+            end_cep: cep,
+            end_tip_res_id: tipoResInt,
+            end_tip_log_id: tipoLogInt,
+            end_entrega: enderecoEntrega,
+            end_cobranca: enderecoCobranca,
+            cidade: {
+                cid_nome: cidadeCliente,
+                cid_id: CidadeId
+            },
+            estado: {
+                est_nome: estadoCliente,
+                est_id: EstadoId
+            },
+            pais: {
+                pais_nome: paisCliente,
+                pais_id: PaisId
+            }
+        };
+        
+        endereco.end_id = EnderecoId;
+
+        $.ajax({
+            type: "PUT",
+            url: "/Endereco/PutEndereco",
+            dataType: "json",
+            data: endereco,
+            async: false,
+            success: function (result) {
+
+            },
+            error: function (status) {
+                //alert(status.toString());
+            }
+        });
+
+        excluirEnderecoEditar();
+        selecionarEndereco(parseInt(clienteId));
+
+    } else {
+
+        var endereco = {
+            end_logradouro: logradouro,
+            end_numero: numeroEndereco,
+            end_bairro: bairroCliente,
+            end_cep: cep,
+            end_tip_res_id: tipoResInt,
+            end_tip_log_id: tipoLogInt,
+            end_entrega: enderecoEntrega,
+            end_cobranca: enderecoCobranca,
+            ClienteId: ClienteId,
+            cidade: {
+                cid_nome: cidadeCliente
+            },
+            estado: {
+                est_nome: estadoCliente
+            },
+            pais: {
+                pais_nome: paisCliente
+            }
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Endereco/PostEndereco",
+            dataType: "json",
+            data: endereco,
+            async: false,
+            success: function (result) {
+
+            },
+            error: function (status) {
+                //alert(status.toString());
+            }
+        });
+
+        selecionarEndereco(parseInt(clienteId));
+    }
+
+    document.getElementById("EnderecoId").value = "";
+    document.getElementById("bairroCliente1").value = "";
+    document.getElementById("cidadeCliente1").value = "";
+    document.getElementById("estadoCliente1").value = "";
+    document.getElementById("numeroEndereco1").value = "";
+    document.getElementById("paisCliente1").value = "";
+    document.getElementById("cep1").value = "";
+    document.getElementById("logradouro1").value = "";
+
+    document.getElementById("PaisId").value = "";
+    document.getElementById("CidadeId").value = "";
+    document.getElementById("EstadoId").value = "";
+
+     document.getElementById('enderecoEntrega').checked = false;
+     document.getElementById('enderecoCobranca').checked = false;
+
+    var selectTipoResidencia1 = document.getElementById("tipoResidencia1");
+    selectTipoResidencia1.selectedIndex = 0;
+    
+    var selectTipoLogradouro1 = document.getElementById("tipoLogradouro1");
+    selectTipoLogradouro1.selectedIndex = 0;
+
+
+});
+
+
+function editEndereco(enderecoId) {
+    fillEditModalEndereco(enderecoId);
+    preencherEnderecoEditar(enderecoId);
+}
+
+function fillEditModalEndereco(enderecoId) {
+    var enderecobjeto;
+    var jsonC;
+    $.ajax({
+        type: "GET",
+        url: "/PedidoAdmin/consultarEnderecoId",
+        dataType: "json",
+        data: { enderecoId: parseInt(enderecoId) },
+        async: false,
+        success: function (jsonResult) {
+            enderecobjeto = jsonResult;
+        },
+        error: function (status) {
+            console.log(status)
+        }
+    });
+
+    // Preencher os campos do modal de edição
+    document.getElementById('logradouro1').value = enderecobjeto.end_logradouro;
+    document.getElementById('cidadeCliente1').value = enderecobjeto.cidade.cid_nome;
+    document.getElementById('CidadeId').value = enderecobjeto.cidade.cid_id;
+
+    document.getElementById('bairroCliente1').value = enderecobjeto.end_bairro;
+    document.getElementById('numeroEndereco1').value = enderecobjeto.end_numero;
+    document.getElementById('cep1').value = enderecobjeto.end_cep;
+
+    document.getElementById('estadoCliente1').value = enderecobjeto.estado.est_nome;
+    document.getElementById('EstadoId').value = enderecobjeto.estado.est_id;
+
+    document.getElementById('paisCliente1').value = enderecobjeto.pais.pais_nome;
+    document.getElementById('PaisId').value = enderecobjeto.pais.pais_id;
+
+    document.getElementById('EnderecoId').value = enderecoId;
+
+    document.getElementById('enderecoEntrega').checked = enderecobjeto.end_entrega;
+    document.getElementById('enderecoCobranca').checked = enderecobjeto.end_cobranca;
+
+    setSelectedValue('tipoResidencia1', enderecobjeto.end_tip_res_id);
+    setSelectedValue('tipoLogradouro1', enderecobjeto.end_tip_log_id);
+}
+
+function setSelectedValue(selectId, value) {
+    var selectElement = document.getElementById(selectId);
+    for (var i = 0; i < selectElement.options.length; i++) {
+        if (selectElement.options[i].value == value) {
+            selectElement.options[i].selected = true;
+            break;
+        }
+    }
+}
+
+function preencherEnderecoEditar(cartaoId) {
+    var divEditarCartoes = document.getElementById("editar-endereco-container");
+
+    // Cria um elemento h2
+    var h2Element = document.createElement("h4");
+
+
+    h2Element.innerText = "Editando Endereço: " + cartaoId.toString();
+
+
+
+    divEditarCartoes.appendChild(h2Element);
 }
 
 
@@ -495,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmarBotao = document.getElementById("confirmar-cliente");
     const modalSuccess = document.getElementById("modalSuccess");
     const modalError = document.getElementById("modalError");
-
+    const confirmarEndereco = document.getElementById("confirmar-endereco");
 
 
 

@@ -105,14 +105,42 @@ botaoConfirmar.addEventListener("click", function () {
             pedidoId: parseInt(pedidoId)
         },
         async: false,
-        success: function (jsonResult) {
-            
+        success: function (cupomNome) {
+            // Verifica se o cupom não está vazio
+            if (cupomNome !== null && cupomNome !== undefined && cupomNome !== '') {
+
+                botaoConfirmar.disabled = true;
+
+                var cupomDiv = document.getElementById('cupomDiv');
+                cupomDiv.innerHTML = 'O seu cupom é: <span id="cupomValor">' + cupomNome.toString() + '</span>';
+
+                // Adiciona um botão de cópia
+                var copyButton = document.createElement('button');
+                copyButton.textContent = 'Copiar';
+                alert('Cupom gerado automaticamente clique para copiar seu cupom!!');
+
+                copyButton.addEventListener('click', function () {
+                    var cupomValor = document.getElementById('cupomValor');
+                    var range = document.createRange();
+                    range.selectNode(cupomValor);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand('copy');
+                    window.getSelection().removeAllRanges();
+                    alert('Cupom copiado para a área de transferência!');
+                    closeCupomPedidoPopup();
+                    cupomDiv.innerHTML = '';
+                });
+                cupomDiv.appendChild(copyButton);
+            } else {
+                closeCupomPedidoPopup();
+                //alert('Não há cupom disponível para esta operação.');
+            }
         },
         error: function (status) {
-            console.log(status)
+            console.log(status);
         }
     });
-
-    closeCupomPedidoPopup();
-
 });
+
+
