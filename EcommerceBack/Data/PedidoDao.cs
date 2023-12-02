@@ -38,6 +38,27 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void InserirCartao(Cartao cartao, long pedidoId, decimal valorUtilizado)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    sqlCon.Open();
+
+                    string sql = $@"INSERT INTO pedidos_cartoes (ped_car_car_id, ped_car_ped_id, ped_car_valor_utilizado) VALUES ({cartao.car_id}, {pedidoId}, {valorUtilizado});";
+
+
+                    int novoIdPedido = sqlCon.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
         public static void InserirCupom(Cupom cupom)
         {
             string conn = config().GetConnectionString("Conn");
@@ -48,7 +69,7 @@ namespace EcommerceBack.Data
                 {
                     sqlCon.Open();
 
-                    string sql = $@"INSERT INTO cupons_pedidos (cup_ped_ped_id, cup_ped_cup_id) VALUES ({cupom.pedidoId}, {cupom.cup_id});";
+                    string sql = $@"INSERT INTO cupons_pedidos (cup_ped_ped_id, cup_ped_cup_id, cup_ped_valor_utilizado) VALUES ({cupom.pedidoId}, {cupom.cup_id}, {cupom.cup_valor});";
 
 
                     int novoIdPedido = sqlCon.Execute(sql);

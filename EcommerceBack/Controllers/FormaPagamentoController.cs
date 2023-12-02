@@ -21,6 +21,15 @@ namespace EcommerceBack.Controllers
             try
             {
                 id = PedidoDao.InserirPedido(pedido);
+
+                int qtdCartoes = pedido.CartaoList.Count;
+                decimal valorCartoes = pedido.ped_valor_total / qtdCartoes;
+
+                foreach (var item in pedido.CartaoList)
+                {
+                    PedidoDao.InserirCartao(item, id, valorCartoes);
+                }
+
             }
             catch(Exception ex)
             {

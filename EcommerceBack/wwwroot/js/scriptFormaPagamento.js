@@ -426,6 +426,32 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 });
 
+                var Cupons = {
+                    cupomList: cupons.map(cupom => {
+                        return {
+                            cup_id: cupom.cupId,
+                            pedidoId: numeroPedido,
+                            cup_valor: cupom.cupValor,
+                        };
+                    })
+                };
+
+                if (cupons.length != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/FormaPagamento/InserirCupom",
+                        dataType: "json",
+                        data: Cupons,
+                        async: false,
+                        success: function (result) {
+
+                        },
+                        error: function (status) {
+
+                        }
+                    });
+                }
+
             }
         }
 
