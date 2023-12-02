@@ -217,7 +217,6 @@ function fillEditModalCartao(cartaoId) {
         }
     });
 
-    // Preencher os campos do modal de edição
     document.getElementById('bandeiraCartaoId').value = cartaoObjeto.bandeira.ban_id;
     document.getElementById('CartaoId').value = cartaoObjeto.car_id;
     document.getElementById('numeroCartao1').value = cartaoObjeto.car_num;
@@ -579,7 +578,6 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (nomeCliente === "" || dataNascimento === "" || emailCliente === "" ||
             cpfCliente === "" || telefone === "" || genero === "") {
-            // Exibir modal de erro
             modalError.style.display = "block";
         } else {
 

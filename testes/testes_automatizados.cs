@@ -576,7 +576,7 @@ class TestesAutomatizados
 
         var testes = new TestesAutomatizados(); 
 
-        //testes.InsercaoCliente(driver); 
+        testes.InsercaoCliente(driver); 
         //testes.AlteracaoCliente(driver);
         //testes.ConsultaCliente(driver);
         //testes.ExclusaoCliente(driver);

@@ -20,6 +20,7 @@ namespace EcommerceBack.Controllers
             long idPais = 0;
             try
             {
+
                 endereco.end_cobranca = true;
                 endereco.end_entrega = true;
                 endereco.end_cid_id = (int)EnderecoDao.InserirCidade(endereco.cidade);
