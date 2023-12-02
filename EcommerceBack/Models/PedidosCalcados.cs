@@ -17,6 +17,7 @@ namespace EcommerceBack.Models
         public int ped_cal_tamanho { get; set; }
         public string cal_cor { get; set; }
         public string sta_comp_fase { get; set; }
+        public bool troca_solicitada { get; set; }
 
     }
 }

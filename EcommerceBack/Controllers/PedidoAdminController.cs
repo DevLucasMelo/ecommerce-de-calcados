@@ -111,7 +111,7 @@ namespace EcommerceBack.Controllers
 
                     foreach (var item in listaCalcados)
                     {
-                        if (item.sta_comp_fase == "TROCA SOLICITADA")
+                        if (item.troca_solicitada)
                         {
                             valorTroca += item.cal_valor * item.ped_cal_quant;
                         }
