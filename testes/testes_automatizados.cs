@@ -281,7 +281,7 @@ class TestesAutomatizados
 
         //System.Threading.Thread.Sleep(5000);
 
-         int scrollAmount = 10;
+        int scrollAmount = 10;
         int scrollTotal = 1600;  
 
         IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -379,19 +379,42 @@ class TestesAutomatizados
 
     void conducaoPedido(IWebDriver driver)
     {
-        System.Threading.Thread.Sleep(2000); 
+        
+        System.Threading.Thread.Sleep(3000); 
+
+        int scrollAmount = 20;
+        int scrollTotal = 500;  
+
+        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+        System.Threading.Thread.Sleep(1000); 
 
         driver.FindElement(By.Id("1")).Click();
 
+        scrollAmount = 10;
+        scrollTotal = 200;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
         System.Threading.Thread.Sleep(2000); 
 
-        //driver.FindElement(By.Id("cor")).Click();
+        driver.FindElement(By.Id("cor")).Click();
 
-        //System.Threading.Thread.Sleep(2000); 
+        System.Threading.Thread.Sleep(2000); 
 
-        //driver.FindElement(By.Id("tam_34")).Click();
+        driver.FindElement(By.Id("tam_34")).Click();
 
-        //System.Threading.Thread.Sleep(2000); 
+        System.Threading.Thread.Sleep(2000); 
 
         driver.FindElement(By.Id("btn-comprar")).Click();
 
@@ -405,23 +428,41 @@ class TestesAutomatizados
 
         optionQuantidade.Click();
 
-        System.Threading.Thread.Sleep(2000);
+        System.Threading.Thread.Sleep(3000);
 
         driver.FindElement(By.Id("meuBotao")).Click();
 
-        System.Threading.Thread.Sleep(2000); 
+        scrollAmount = 10;
+        scrollTotal = 500;  
 
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+        System.Threading.Thread.Sleep(2000); 
+        
         driver.FindElement(By.Id("2")).Click();
 
+        scrollAmount = 10;
+        scrollTotal = 200;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
         System.Threading.Thread.Sleep(2000); 
 
-        //driver.FindElement(By.Id("cor")).Click();
+        driver.FindElement(By.Id("cor")).Click();
 
-        //System.Threading.Thread.Sleep(2000); 
+        System.Threading.Thread.Sleep(2000); 
 
-        //driver.FindElement(By.Id("tam_34")).Click();
+        driver.FindElement(By.Id("tam_37")).Click();
 
-        //System.Threading.Thread.Sleep(2000); 
+        System.Threading.Thread.Sleep(2000); 
 
         driver.FindElement(By.Id("btn-comprar")).Click();
 
@@ -431,7 +472,7 @@ class TestesAutomatizados
 
         quantidadeSelect2.Click(); 
 
-        IWebElement optionQuantidade2 = driver.FindElement(By.CssSelector("#select-quantidade2 option[value='2']"));
+        IWebElement optionQuantidade2 = driver.FindElement(By.CssSelector("#select-quantidade2 option[value='3']"));
 
         optionQuantidade2.Click();
 
@@ -439,15 +480,50 @@ class TestesAutomatizados
 
         driver.FindElement(By.Id("meuBotao")).Click();
 
+        scrollAmount = 10;
+        scrollTotal = 500;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
         System.Threading.Thread.Sleep(2000); 
 
         driver.FindElement(By.Id("6")).Click();
+
+        scrollAmount = 10;
+        scrollTotal = 200;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("cor")).Click();
+
+        System.Threading.Thread.Sleep(2000); 
+
+        driver.FindElement(By.Id("tam_36")).Click();
 
         System.Threading.Thread.Sleep(2000); 
 
         driver.FindElement(By.Id("btn-comprar")).Click();
 
         System.Threading.Thread.Sleep(2000); 
+
+        scrollAmount = 10;
+        scrollTotal = 320;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
 
         IWebElement quantidadeSelect3 = driver.FindElement(By.Id("select-quantidade3"));
 
@@ -456,8 +532,8 @@ class TestesAutomatizados
         IWebElement optionQuantidade3 = driver.FindElement(By.CssSelector("#select-quantidade3 option[value='4']"));
 
         optionQuantidade3.Click();
-
-        System.Threading.Thread.Sleep(2000); 
+        
+        System.Threading.Thread.Sleep(4000); 
 
         driver.FindElement(By.Id("btn-endereco")).Click();
 
@@ -468,15 +544,98 @@ class TestesAutomatizados
 
         alert.Accept();
 
-        System.Threading.Thread.Sleep(3000); 
+        System.Threading.Thread.Sleep(5000); 
 
         driver.FindElement(By.Id("pagamento")).Click();
 
-        System.Threading.Thread.Sleep(3000); 
+        System.Threading.Thread.Sleep(2000); 
 
         alert.Accept();
-        
+
+        scrollAmount = 10;
+        scrollTotal = 220;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }
+
         System.Threading.Thread.Sleep(3000); 
+        
+        driver.FindElement(By.Id("meuBotaoCartao")).Click();
+
+        driver.FindElement(By.Id("numero")).SendKeys("4521.2314.6573.1253");
+        System.Threading.Thread.Sleep(1000);
+        driver.FindElement(By.Id("cvv")).SendKeys("367");
+        System.Threading.Thread.Sleep(1000);
+        driver.FindElement(By.Id("titular")).SendKeys("Paulo S de Oliveira");
+        System.Threading.Thread.Sleep(1000);
+        driver.FindElement(By.Id("bandeira")).SendKeys("MasterCard");
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("confirmar")).Click();
+
+        System.Threading.Thread.Sleep(1000);
+
+        driver.FindElement(By.Id("fechar")).Click(); 
+
+        scrollAmount = 10;
+        scrollTotal = 150;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }       
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("meuBotaoCupom")).Click();
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("cupom")).SendKeys("CUPOMFC15A397E835406F9E5937677D2A4A82");
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("confirmar-cupom")).Click(); 
+
+        System.Threading.Thread.Sleep(1000); 
+
+        driver.FindElement(By.Id("fechar")).Click();  
+
+        scrollAmount = 10;
+        scrollTotal = 250;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }             
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("input-pedido")).SendKeys("CASUAL10");
+
+        System.Threading.Thread.Sleep(3000); 
+
+        driver.FindElement(By.Id("botaoPromocional")).Click();
+
+        System.Threading.Thread.Sleep(1000); 
+
+        driver.FindElement(By.Id("fechar")).Click();   
+
+        scrollAmount = 10;
+        scrollTotal = 350;  
+
+        for (int i = 0; i < scrollTotal; i += scrollAmount)
+        {
+            js.ExecuteScript($"window.scrollBy(0, {scrollAmount});");
+            System.Threading.Thread.Sleep(50); 
+        }                  
+        
+        System.Threading.Thread.Sleep(8000); 
 
         driver.FindElement(By.Id("finaliza-pedido")).Click();
 
@@ -509,7 +668,7 @@ class TestesAutomatizados
         driver.FindElement(By.Id("consultarPedidos")).Click();
 
         System.Threading.Thread.Sleep(4000);
-
+        
         driver.FindElement(By.Id("consultar-pedido")).Click();
 
         System.Threading.Thread.Sleep(6000);
@@ -518,7 +677,7 @@ class TestesAutomatizados
 
         faseCompraSelect.Click(); 
 
-        IWebElement optionFase = driver.FindElement(By.CssSelector("#faseCompra option[value='3']"));
+        IWebElement optionFase = driver.FindElement(By.CssSelector("#faseCompra option[value='5']"));
 
         optionFase.Click();
 
@@ -558,6 +717,51 @@ class TestesAutomatizados
 
         System.Threading.Thread.Sleep(2000);
 
+        driver.Url = "http://localhost:7247/PedidoAdmin/PedidoAdmin";
+
+         System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("termoPesquisa")).SendKeys("1");
+
+        System.Threading.Thread.Sleep(3000);
+
+        driver.FindElement(By.Id("consultarPedidos")).Click();
+
+        System.Threading.Thread.Sleep(4000);
+        
+        driver.FindElement(By.Id("consultar-pedido")).Click();
+
+        System.Threading.Thread.Sleep(6000);
+
+        faseCompraSelect = driver.FindElement(By.Id("faseCompra"));
+
+        faseCompraSelect.Click(); 
+
+        optionFase = driver.FindElement(By.CssSelector("#faseCompra option[value='7']"));
+
+        optionFase.Click();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.FindElement(By.Id("confirmar")).Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+        alert.Accept();
+
+        System.Threading.Thread.Sleep(2000);
+
+        driver.FindElement(By.Id("copiar")).Click();
+
+        System.Threading.Thread.Sleep(2000);
+
+        alert.Accept();
+
+        System.Threading.Thread.Sleep(4000);
+
+        driver.Url = "http://localhost:7247/PedidoAdmin/PedidoAdmin";
+
+
     }
 
     static void Main(string[] args)
@@ -585,7 +789,7 @@ class TestesAutomatizados
         
         driver.Url = "http://localhost:7247/PaginaInicial/PaginaInicial";
 
-        //testes.conducaoPedido(driver);
+        testes.conducaoPedido(driver);
 
     }
 }

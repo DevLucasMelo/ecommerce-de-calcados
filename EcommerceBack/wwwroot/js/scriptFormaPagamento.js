@@ -54,7 +54,7 @@ confirmarPedido.addEventListener("click", function() {
         cupons.forEach(function (cupom, index) {
 
             const cupomBlock = document.createElement("div");
-            cupomBlock.className = "cartao-block";
+            cupomBlock.className = "cartao-block-troca";
 
             const cupId = document.createElement("input");
             cupId.type = "hidden";
@@ -159,7 +159,7 @@ confirmarPedido.addEventListener("click", function() {
     }
 
     // Função para adicionar cartão à lista
-    function adicionarCartao(cartaoId, bandeiraImg, numero,cvv, nome, bandeira) {
+    function adicionarCartao(cartaoId, bandeiraImg, numero, cvv, nome, bandeira) {
         cartoes.push({ cartaoId, bandeiraImg, numero, cvv, nome, bandeira });
         var cartoesJSON = localStorage.getItem("cartoes");
 
@@ -590,8 +590,8 @@ function carregarValorCupomTroca() {
         totalCupPromoValor = 0;
     }
 
-    var valorFormatadoCupTroca = (totalCupValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    var valorFormatadoCupPromo = (totalCupPromoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    var valorFormatadoCupTroca = "-" + (totalCupValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    var valorFormatadoCupPromo = "-" + (totalCupPromoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     document.querySelector("#valorCodPromo").textContent = valorFormatadoCupPromo;
     document.querySelector("#cupomTroca").textContent = valorFormatadoCupTroca;
@@ -621,8 +621,8 @@ function carregarValorFrete() {
 function calcularValorTotalFormaPagamento() {
     var valorElemento1 = parseFloat(localStorage.getItem("valorProdutos"));
     var valorElemento2 = parseFloat(localStorage.getItem("valorFrete"));
-    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace("R$", "").trim());
-    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace("R$", "").trim());
+    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace(/[-R$]/g, "").trim());
+    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace(/[-R$]/g, "").trim());
 
     var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });

@@ -117,6 +117,7 @@ botaoConfirmar.addEventListener("click", function () {
                 // Adiciona um botão de cópia
                 var copyButton = document.createElement('button');
                 copyButton.textContent = 'Copiar';
+                copyButton.id = 'copiar';
                 alert('Cupom gerado automaticamente clique para copiar seu cupom!!');
 
                 copyButton.addEventListener('click', function () {
