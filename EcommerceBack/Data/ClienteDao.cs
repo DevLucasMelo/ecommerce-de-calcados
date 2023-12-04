@@ -73,7 +73,7 @@ namespace EcommerceBack.Data
         public static List<Cliente> SelecionarClientes()
         {
             string conn = config().GetConnectionString("Conn");
-            string query = "SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, cli_tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id order by cli_id asc";
+            string query = "SELECT cli_id, cli_nome, cli_dt_nascimento, cli_email, cli_cpf, cli_gen_id, cli_tip_tel_id, cli_status FROM clientes LEFT JOIN generos ON gen_id = cli_gen_id order by cli_id desc";
             try
             {
                 using (var sqlCon = new NpgsqlConnection(conn))

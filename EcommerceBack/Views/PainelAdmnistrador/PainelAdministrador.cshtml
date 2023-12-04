@@ -1,9 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Login";
-}
-
-<body>
-
+﻿<body onload="carregarValorCarrinho()">
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
         <div class="container">
             <ul class="navbar-nav">
@@ -31,29 +26,16 @@
         </div>
     </nav>
 
-    <h2>Login</h2>
+    <h2>Painel do Administrador</h2>
 
-    <div class="container-login">
-        <div id="login-form">
-            <form>
-                <label class="login" for="nome"><strong>Usuário</strong></label>
-                <br>
-                <input class="input-login" type="text" id="nome" name="nome" placeholder="email">
-                <br>
-                <label class="login" for="nome"><strong>Senha</strong></label>
-                <br>
-                <input class="input-login" type="text" id="nome" name="nome" placeholder="senha">
-            </form>
-        </div>
-
-        <div class="botao-login">
-            <a href="index.html">
-                <button class="btn-azul-login" id="meuBotao">Login</button>
-            </a>
+    <div class="container-painelAdm">
+        <div class="painelAdm">
+            <a href=""><button class="btn-azul-adm" onclick="">Gerenciar clientes</button></a>
+            <a href=""><button class="btn-azul-adm" onclick="">Gerenciar pedidos</button></a>
+            <a href=""><button class="btn-azul-adm" onclick="">Analisar vendas</button></a>
         </div>
     </div>
 
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/js/script.js"></script>
-
 </body>
