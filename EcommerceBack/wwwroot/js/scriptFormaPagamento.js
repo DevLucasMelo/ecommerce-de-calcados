@@ -295,12 +295,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
 
-        
+        var valorCodPromo1 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+        var valorCupomTroca1 = parseFloat(document.querySelector("#cupomTroca").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+        var valorTotalPromo = valorCodPromo1 + valorCupomTroca1;
+
+        var valorTotal1 = parseFloat(extrairValor('td-direita-pedido').replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+
+        if (valorTotal1 < 0)
+        {
+            valorGerarCupomTroca = Math.abs(valorTotal1);
+        }
+        else
+        {
+            valorGerarCupomTroca = 0;
+        }
 
         var Pedido = {
             ped_sta_comp_id: 1,
             ped_cli_id: 1,
-            ped_valor_total: extrairValor('td-direita-pedido'),
+            ped_valor_total: valorTotal1,
             ped_valor_produtos: extrairValor('valorProduto'),
             ped_valor_frete: extrairValor('valorFrete'),
             ped_valor_cod_promo: extrairValor('valorCodPromo'),
@@ -309,10 +322,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     car_id: cartao.cartaoId,
                     car_num: cartao.numero,
                     car_nome: cartao.nome,
-                    car_cod_seguranca: cartao.cvv
+                    car_cod_seguranca: cartao.cvv,
+                    ClienteId: 1,
+                    Bandeira: {
+                        ban_nome: cartao.bandeira,
+                    },
                 };
             })
         };
+
+        if (Pedido.ped_valor_total < 0)
+        {
+            Pedido.ped_valor_total = 0;
+        }
 
         var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
         if (enderecoArmazenado || localStorage.getItem("EnderecoId") !== null) {
@@ -340,7 +362,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     cupomList: cupons.map(cupom => {
                         return {
                             cup_id: cupom.cupId,
-                            pedidoId: numeroPedido
+                            pedidoId: numeroPedido,
+                            cup_valor: cupom.cupValor,
                         };
                     })
                 };
@@ -453,6 +476,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
             }
+        }
+
+        if (valorGerarCupomTroca > 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "/FormaPagamento/gerarCupomPedido",
+                dataType: "json",
+                data: {
+                    valorTroca: valorGerarCupomTroca,
+                    cliId: parseInt(1)
+                },
+                async: false,
+                success: function (result) {
+                    alert('O valor dos cupons superou o valor dos pedidos, foi criado cupom para que use em outras oportunidades! ' + result.toString());
+                },
+                error: function (status) {
+
+                }
+            });
         }
 
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
@@ -621,10 +664,13 @@ function carregarValorFrete() {
 function calcularValorTotalFormaPagamento() {
     var valorElemento1 = parseFloat(localStorage.getItem("valorProdutos"));
     var valorElemento2 = parseFloat(localStorage.getItem("valorFrete"));
-    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace(/[-R$]/g, "").trim());
-    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace(/[-R$]/g, "").trim());
+    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+
 
     var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
+    
+
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;

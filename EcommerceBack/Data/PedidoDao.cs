@@ -48,10 +48,11 @@ namespace EcommerceBack.Data
                 {
                     sqlCon.Open();
 
-                    string sql = $@"INSERT INTO pedidos_cartoes (ped_car_car_id, ped_car_ped_id, ped_car_valor_utilizado) VALUES ({cartao.car_id}, {pedidoId}, {valorUtilizado});";
+                    string sql = @"INSERT INTO pedidos_cartoes (ped_car_car_id, ped_car_ped_id, ped_car_valor_utilizado) 
+                                    VALUES (@car_id, @pedidoId, @valorUtilizado);";
 
+                    int novoIdPedido = sqlCon.Execute(sql, new { car_id = cartao.car_id, pedidoId, valorUtilizado });
 
-                    int novoIdPedido = sqlCon.Execute(sql);
                 }
             }
             catch (Exception ex)
@@ -73,6 +74,27 @@ namespace EcommerceBack.Data
 
 
                     int novoIdPedido = sqlCon.Execute(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public static void StatusCupom(Cupom cupom)
+        {
+            string conn = config().GetConnectionString("Conn");
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    sqlCon.Open();
+
+                    string sql = $@"update cupons set cup_ativo = {false} where cup_id = {cupom.cup_id};";
+
+                    int novoIdPedido = sqlCon.Execute(sql);
+
                 }
             }
             catch (Exception ex)
@@ -292,6 +314,34 @@ namespace EcommerceBack.Data
 
                     string updateSql = "UPDATE estoque SET estq_quantidade = @novaQuantidade WHERE estq_cal_id = @ped_cal_cal_id AND estq_tamanho = CAST(@ped_cal_tamanho AS VARCHAR)";
                     
+                    dbConnection.Execute(updateSql, new { novaQuantidade, pedidoCalcado.ped_cal_cal_id, pedidoCalcado.ped_cal_tamanho });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao inserir pedido de calçado: " + ex.Message);
+                throw;
+            }
+        }
+
+        public static void AdicionarEstoque(PedidosCalcados pedidoCalcado)
+        {
+            Console.WriteLine("Entrou");
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var dbConnection = new NpgsqlConnection(conn))
+                {
+                    dbConnection.Open();
+
+                    string selectSql = "SELECT estq_quantidade FROM estoque WHERE estq_cal_id = @ped_cal_cal_id AND estq_tamanho = CAST(@ped_cal_tamanho AS VARCHAR)";
+
+                    int quantidadeNoEstoque = dbConnection.ExecuteScalar<int>(selectSql, pedidoCalcado);
+
+                    int novaQuantidade = quantidadeNoEstoque + pedidoCalcado.ped_cal_quant;
+
+                    string updateSql = "UPDATE estoque SET estq_quantidade = @novaQuantidade WHERE estq_cal_id = @ped_cal_cal_id AND estq_tamanho = CAST(@ped_cal_tamanho AS VARCHAR)";
+
                     dbConnection.Execute(updateSql, new { novaQuantidade, pedidoCalcado.ped_cal_cal_id, pedidoCalcado.ped_cal_tamanho });
                 }
             }
