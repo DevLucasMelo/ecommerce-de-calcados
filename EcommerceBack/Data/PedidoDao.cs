@@ -91,7 +91,7 @@ namespace EcommerceBack.Data
                 {
                     sqlCon.Open();
 
-                    string sql = $@"update cupons set cup_ativo where cup_id = {cupom.cup_id};";
+                    string sql = $@"update cupons set cup_ativo = {false} where cup_id = {cupom.cup_id};";
 
                     int novoIdPedido = sqlCon.Execute(sql);
 

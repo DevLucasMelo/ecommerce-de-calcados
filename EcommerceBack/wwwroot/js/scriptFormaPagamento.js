@@ -295,14 +295,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
 
-        var valorCodPromo1 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace("R$", "").trim());
-        var valorCupomTroca1 = parseFloat(document.querySelector("#cupomTroca").textContent.replace("R$", "").trim());
-
+        var valorCodPromo1 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+        var valorCupomTroca1 = parseFloat(document.querySelector("#cupomTroca").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
         var valorTotalPromo = valorCodPromo1 + valorCupomTroca1;
 
-        if (valorTotalPromo > parseFloat(extrairValor('td-direita-pedido')))
+        var valorTotal1 = parseFloat(extrairValor('td-direita-pedido').replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+
+        if (valorTotal1 < 0)
         {
-            valorGerarCupomTroca = valorTotalPromo - parseFloat(extrairValor('td-direita-pedido'));
+            valorGerarCupomTroca = Math.abs(valorTotal1);
         }
         else
         {
@@ -312,7 +313,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var Pedido = {
             ped_sta_comp_id: 1,
             ped_cli_id: 1,
-            ped_valor_total: extrairValor('td-direita-pedido'),
+            ped_valor_total: valorTotal1,
             ped_valor_produtos: extrairValor('valorProduto'),
             ped_valor_frete: extrairValor('valorFrete'),
             ped_valor_cod_promo: extrairValor('valorCodPromo'),
@@ -663,15 +664,12 @@ function carregarValorFrete() {
 function calcularValorTotalFormaPagamento() {
     var valorElemento1 = parseFloat(localStorage.getItem("valorProdutos"));
     var valorElemento2 = parseFloat(localStorage.getItem("valorFrete"));
-    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace(/[-R$]/g, "").trim());
-    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace(/[-R$]/g, "").trim());
+    var valorElemento3 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+    var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace('-R$', '').replace(/\./g, '').replace(',', '.'));
+
 
     var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
-
-    if (valorTotal < 0)
-    {
-        valorTotal = 0;
-    }
+    
 
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
