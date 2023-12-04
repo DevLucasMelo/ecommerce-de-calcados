@@ -1194,5 +1194,74 @@ nav#menu a:hover {
     font-weight: 400;
     line-height: normal;
     display: block;
-    margin: 20px
+    margin: 20px;
+    text_decoration: none;
+}
+.btn-cinza-adm {
+    width: 289px;
+    height: 39px;
+    flex-shrink: 0;
+    border-radius: 4.138px;
+    border: 0.696px solid #294DAA;
+    background: #333333;
+    color: #FFF;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: block;
+    margin: 20px;
+    text_decoration: none;
+}
+
+.ancora-adm {
+    text-decoration: none;
+}
+
+.btn-verde-adm {
+    width: 289px;
+    height: 39px;
+    flex-shrink: 0;
+    border-radius: 4.138px;
+    border: 0.696px solid #294DAA;
+    background: #006400;
+    color: #FFF;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: block;
+    margin: 20px;
+    text_decoration: none;
+}
+
+.painelAdm {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    color: #15368A;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.container-painelAdm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Posiciona o conteúdo no lado direito */
+    padding: 20px; /* Espaçamento para separar da borda da tela */
+    margin: auto;
+    padding: 20px;
+    width: 600px;
+    height: 350px;
+    border-radius: 11.296px;
+    background: #FFF;
+    box-shadow: 0px 4.650578022003174px 6.743337631225586px 0px rgba(0, 0, 0, 0.02), 0px 12.858253479003906px 18.644466400146484px 0px rgba(0, 0, 0, 0.03), 0px 30.957719802856445px 44.888694763183594px 0px rgba(0, 0, 0, 0.03), 0px 102.68897247314453px 148.89901733398438px 0px rgba(0, 0, 0, 0.05);
 }

@@ -247,6 +247,33 @@ namespace EcommerceBack.Data
                 throw;
             }
         }
+
+        public static void InserirTransacoes(PedidosCalcados pedidoCalcado)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var dbConnection = new NpgsqlConnection(conn))
+                {
+                    dbConnection.Open();
+
+                    int tra_cli_id = 1;
+
+                    string tra_data_hora = DateTime.Now.Date.ToString("yyyy-MM-dd");
+
+                    string sql = "INSERT INTO transacoes (tra_data_hora, tra_cli_id, tra_ped_id) " +
+                                 $"VALUES ('{tra_data_hora}'::date, {tra_cli_id}, @ped_cal_ped_id)";
+
+                    dbConnection.Execute(sql, new { tra_cli_id, pedidoCalcado.ped_cal_ped_id });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao inserir pedido de calçado: " + ex.Message);
+                throw;
+            }
+        }
         public static void BaixarEstoque(PedidosCalcados pedidoCalcado)
         {
             Console.WriteLine("Entrou");
