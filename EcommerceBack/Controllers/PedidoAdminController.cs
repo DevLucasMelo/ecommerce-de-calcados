@@ -114,6 +114,7 @@ namespace EcommerceBack.Controllers
                         if (item.troca_solicitada)
                         {
                             valorTroca += item.cal_valor * item.ped_cal_quant;
+                            PedidoDao.AdicionarEstoque(item);
                         }
                     }
                     nomeCupom = PedidoDao.incluirCupomTrocaAprovada(valorTroca, pedido.ped_cli_id);

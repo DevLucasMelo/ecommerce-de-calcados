@@ -27,6 +27,13 @@ namespace EcommerceBack.Controllers
 
                 foreach (var item in pedido.CartaoList)
                 {
+                    if(item.car_id == 0)
+                    {
+                        item.car_ban_id = (int)CartaoDao.InserirBandeira(item.Bandeira);
+                        item.car_id = (int)CartaoDao.InserirCartao(item);
+
+                        CartaoDao.InserirCartaoCliente(item.car_id, pedido.ped_cli_id);
+                    }
                     PedidoDao.InserirCartao(item, id, valorCartoes);
                 }
 
@@ -81,6 +88,7 @@ namespace EcommerceBack.Controllers
                 foreach(var item in cupons.cupomList)
                 {
                     PedidoDao.InserirCupom(item);
+                    PedidoDao.StatusCupom(item);
                 }
             }
             catch (Exception ex)
@@ -88,6 +96,24 @@ namespace EcommerceBack.Controllers
                 return BadRequest(ex.Message);
             }
 
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult gerarCupomPedido(decimal valorTroca, int cliId)
+        {
+            try
+            {
+                var nomeCupom = string.Empty;
+                
+                nomeCupom = PedidoDao.incluirCupomTrocaAprovada(valorTroca, cliId);
+
+                return Json(nomeCupom);
+            }
+            catch (Exception ex)
+            {
+
+            }
             return Ok();
         }
     }

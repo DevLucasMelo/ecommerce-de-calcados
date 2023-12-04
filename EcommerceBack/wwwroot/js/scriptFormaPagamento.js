@@ -295,7 +295,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var cartoes1 = cartoesJSON ? JSON.parse(cartoesJSON) : [];
 
-        
+        var valorCodPromo1 = parseFloat(document.querySelector("#valorCodPromo").textContent.replace("R$", "").trim());
+        var valorCupomTroca1 = parseFloat(document.querySelector("#cupomTroca").textContent.replace("R$", "").trim());
+
+        var valorTotalPromo = valorCodPromo1 + valorCupomTroca1;
+
+        if (valorTotalPromo > parseFloat(extrairValor('td-direita-pedido')))
+        {
+            valorGerarCupomTroca = valorTotalPromo - parseFloat(extrairValor('td-direita-pedido'));
+        }
+        else
+        {
+            valorGerarCupomTroca = 0;
+        }
 
         var Pedido = {
             ped_sta_comp_id: 1,
@@ -309,10 +321,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     car_id: cartao.cartaoId,
                     car_num: cartao.numero,
                     car_nome: cartao.nome,
-                    car_cod_seguranca: cartao.cvv
+                    car_cod_seguranca: cartao.cvv,
+                    ClienteId: 1,
+                    Bandeira: {
+                        ban_nome: cartao.bandeira,
+                    },
                 };
             })
         };
+
+        if (Pedido.ped_valor_total < 0)
+        {
+            Pedido.ped_valor_total = 0;
+        }
 
         var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
         if (enderecoArmazenado || localStorage.getItem("EnderecoId") !== null) {
@@ -340,7 +361,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     cupomList: cupons.map(cupom => {
                         return {
                             cup_id: cupom.cupId,
-                            pedidoId: numeroPedido
+                            pedidoId: numeroPedido,
+                            cup_valor: cupom.cupValor,
                         };
                     })
                 };
@@ -453,6 +475,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
             }
+        }
+
+        if (valorGerarCupomTroca > 0)
+        {
+            $.ajax({
+                type: "POST",
+                url: "/FormaPagamento/gerarCupomPedido",
+                dataType: "json",
+                data: {
+                    valorTroca: valorGerarCupomTroca,
+                    cliId: parseInt(1)
+                },
+                async: false,
+                success: function (result) {
+                    alert('O valor dos cupons superou o valor dos pedidos, foi criado cupom para que use em outras oportunidades! ' + result.toString());
+                },
+                error: function (status) {
+
+                }
+            });
         }
 
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
@@ -625,6 +667,12 @@ function calcularValorTotalFormaPagamento() {
     var valorElemento4 = parseFloat(document.querySelector("#cupomTroca").textContent.replace("R$", "").trim());
 
     var valorTotal = valorElemento1 + valorElemento2 - valorElemento3 - valorElemento4;
+
+    if (valorTotal < 0)
+    {
+        valorTotal = 0;
+    }
+
     var valorFormatado = (valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     document.querySelector("#td-direita-pedido").textContent = valorFormatado;
