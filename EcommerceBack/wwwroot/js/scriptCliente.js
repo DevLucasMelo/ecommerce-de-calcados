@@ -542,6 +542,7 @@ function fillEditModal(id) {
     const tipoTelefone = clienteObjeto.cli_tip_tel_id;
     const genero = clienteObjeto.cli_gen_id;
     const status_cliente = clienteObjeto.cli_status;
+    const senha = clienteObjeto.cli_senha;
 
     var selectElementGenero = document.getElementById('genero');
     var selectElementTipoTelefone = document.getElementById('tipoTelefone');
@@ -553,6 +554,8 @@ function fillEditModal(id) {
     document.getElementById('cpfCliente').value = cpf;
     document.getElementById('statusCliente').checked = status_cliente;
     document.getElementById('telefone').value = telefone;
+    document.getElementById('senha').value = senha;
+    document.getElementById('confirmarSenha').value = senha;
 
     selectElementGenero.value = genero.toString();
     selectElementTipoTelefone.value = tipoTelefone.toString();
@@ -746,6 +749,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const cpfCliente = parseInt(document.getElementById("cpfCliente").value);
         const statusCliente = document.getElementById("statusCliente").checked;
         const telefone = parseInt(document.getElementById("telefone").value);
+        const senha = document.getElementById("senha").value;
+        const confirmarSenha = document.getElementById("confirmarSenha").value;
+
+        if (nomeCliente === "" || dataNascimento === "" || emailCliente === "" ||
+            cpfCliente === "" || telefone === "" || genero === "" || senha === "" || confirmarSenha === "") {
+            alert("Por favor digite todas as informações!");
+            return false;
+        }
+
+        if (senha !== confirmarSenha)
+        {
+            alert("As senhas não coincidem. Por favor, digite novamente.");
+            
+            return false;
+        }
 
         const selectTipoTelefone = document.getElementById("tipoTelefone");
         var tipoTelefone = selectTipoTelefone.options[selectTipoTelefone.selectedIndex].value;
@@ -766,12 +784,14 @@ document.addEventListener("DOMContentLoaded", function () {
             cli_telefone: telefone,
             cli_email: emailCliente,
             cli_tip_tel_id: tipoTelInt,
+            cli_senha: senha,
         };
 
         
         if (nomeCliente === "" || dataNascimento === "" || emailCliente === "" ||
-            cpfCliente === "" || telefone === "" || genero === "") {
-            modalError.style.display = "block";
+            cpfCliente === "" || telefone === "" || genero === "" || senha === "" || confirmarSenha === "") {
+            alert("Por favor digite todas as informações!");
+            return false;
         } else {
 
             if (Number.isInteger(parseInt(clienteId)))
@@ -790,6 +810,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cli_telefone: telefone,
                     cli_email: emailCliente,
                     cli_tip_tel_id: tipoTelInt,
+                    cli_senha: senha,
                 };
 
                 $.ajax({
