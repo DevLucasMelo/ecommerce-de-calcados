@@ -109,7 +109,7 @@ namespace EcommerceBack.Data
              "FROM pedidos ped " +
              "JOIN pedidos_calcados ped_cal ON ped.ped_id = ped_cal.ped_cal_ped_id " +
              "JOIN calcados cal ON cal.cal_id = ped_cal.ped_cal_cal_id " +
-             "WHERE ped.ped_cli_id = 1";
+             "WHERE ped.ped_cli_id = 1 order by ped_id desc";
 
             try
             {
