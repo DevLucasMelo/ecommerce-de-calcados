@@ -15,7 +15,6 @@ var cupons = [];
 
 
 confirmarPedido.addEventListener("click", function() {
-    // Exibir modal de sucesso
     modalSuccess.style.display = "block";
     //closeCupomPopup();
 });
@@ -46,9 +45,9 @@ confirmarPedido.addEventListener("click", function() {
         listaCupons.innerHTML = "";
 
         if (cupons.length > 0) {
-            listaCupons.style.marginTop = "20px"; // Aplica a margem superior
+            listaCupons.style.marginTop = "20px"; 
         } else {
-            listaCupons.style.marginTop = "0"; // Remove a margem superior
+            listaCupons.style.marginTop = "0";
         }
 
         cupons.forEach(function (cupom, index) {
@@ -68,7 +67,7 @@ confirmarPedido.addEventListener("click", function() {
 
             const deleteCupomButton = document.createElement("span");
             deleteCupomButton.className = "delete-button";
-            deleteCupomButton.innerHTML = '<i class="fas fa-times"></i>'; // Ícone X do Font Awesome
+            deleteCupomButton.innerHTML = '<i class="fas fa-times"></i>'; 
 
             deleteCupomButton.addEventListener("click", function () {
                 cupons.splice(index, 1); 
@@ -89,15 +88,14 @@ confirmarPedido.addEventListener("click", function() {
 
     function renderizarListaCartoes() {
         const listaCartoes = document.getElementById("listaCartoes");
-        listaCartoes.innerHTML = ""; // Limpa a lista
+        listaCartoes.innerHTML = ""; 
 
         if (cartoes.length > 0) {
-            listaCartoes.style.marginTop = "20px"; // Aplica a margem superior
+            listaCartoes.style.marginTop = "20px"; 
         } else {
-            listaCartoes.style.marginTop = "0"; // Remove a margem superior
+            listaCartoes.style.marginTop = "0"; 
         }
 
-        // Itera pelos cartões e cria um bloco para cada um
         cartoes.forEach(function (cartao, index) {
 
             const numeroCartao1 = document.createElement("input");
@@ -131,7 +129,7 @@ confirmarPedido.addEventListener("click", function() {
             if (cartao.numero && typeof cartao.numero === 'string') {
                 numero.textContent = "Número: **** **** **** " + cartao.numero.slice(-2);
             } else {
-                // Lidar com o caso em que cartao.numero não está definido ou não é uma string
+                
             }
 
             const nome = document.createElement("p");
@@ -139,12 +137,11 @@ confirmarPedido.addEventListener("click", function() {
 
             const deleteButton = document.createElement("span");
             deleteButton.className = "delete-button";
-            deleteButton.innerHTML = '<i class="fas fa-times"></i>'; // Ícone X do Font Awesome
+            deleteButton.innerHTML = '<i class="fas fa-times"></i>';
 
-            // Adiciona um evento de clique para excluir o cartão
             deleteButton.addEventListener("click", function () {
-                cartoes.splice(index, 1); // Remove o cartão do array
-                renderizarListaCartoes(); // Renderiza novamente a lista
+                cartoes.splice(index, 1); 
+                renderizarListaCartoes(); 
             });
 
             bandeira.appendChild(bandeiraImg);
@@ -158,7 +155,6 @@ confirmarPedido.addEventListener("click", function() {
         });
     }
 
-    // Função para adicionar cartão à lista
     function adicionarCartao(cartaoId, bandeiraImg, numero, cvv, nome, bandeira) {
         cartoes.push({ cartaoId, bandeiraImg, numero, cvv, nome, bandeira });
         var cartoesJSON = localStorage.getItem("cartoes");
@@ -182,7 +178,6 @@ confirmarPedido.addEventListener("click", function() {
     }
 
 
-    // Fechar o modal ao clicar no botão "x"
     const closeButtons = document.querySelectorAll(".modal .close");
     closeButtons.forEach(function(button) {
         button.addEventListener("click", function() {
@@ -191,32 +186,26 @@ confirmarPedido.addEventListener("click", function() {
         });
     });
 
-    // Função para abrir o popup
     function openPopup() {
         overlay.style.display = "flex";
         popup.style.display = "block";
     }
-    
-    // Função para fechar o popup
+
     function closePopup() {
         overlay.style.display = "none";
         popup.style.display = "none";
     }
     
-    // Abrir o popup ao clicar no botão Adicionar Cartão
     addButton.addEventListener("click", openPopup);
     
-    // Fechar o popup ao clicar no botão Fechar
     closeButton.addEventListener("click", closePopup);
     
-    // Fechar o popup ao clicar fora do popup
     overlay.addEventListener("click", function(event) {
         if (event.target === overlay) {
             closePopup();
         }
     });
-    
-    // Validar campos e exibir modais ao clicar em Confirmar
+
     confirmButton.addEventListener("click", function() {
         const numero = document.getElementById("numero").value;
         const cvv = document.getElementById("cvv").value;
@@ -224,13 +213,10 @@ confirmarPedido.addEventListener("click", function() {
         const bandeira = document.getElementById("bandeira").value;
         
         if (numero === "" || cvv === "" || titular === "") {
-            // Exibir modal de erro
             modalError.style.display = "block";
         } else {
-            // Adicionar cartão à lista
             adicionarCartao(0, "/imagens/image7.png", numero, cvv, titular, bandeira);
             
-            // Exibir modal de sucesso
             modalSuccess.style.display = "block";
             document.getElementById("numero").value = '';
             document.getElementById("cvv").value = '';
@@ -251,26 +237,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const confirmarPedido = document.getElementById("finaliza-pedido");
     const confirmarPromocional = document.getElementById("botaoPromocional");
 
-
-    // Função para abrir o modal de cupom
     function openCupomPopup() {
         overlayCupom.style.display = "flex";
         popupCupom.style.display = "block";
     }
 
-    // Função para fechar o modal de cupom
     function closeCupomPopup() {
         overlayCupom.style.display = "none";
         popupCupom.style.display = "none";
     }
 
-    // Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
     addCupomButton.addEventListener("click", openCupomPopup);
 
-    // Fechar o modal de cupom ao clicar no botão Fechar
     closeButtonCupom.addEventListener("click", closeCupomPopup);
 
-    // Fechar o modal de cupom ao clicar fora do modal
     overlayCupom.addEventListener("click", function (event) {
         if (event.target === overlayCupom) {
             closeCupomPopup();

@@ -144,7 +144,7 @@ namespace EcommerceBack.Data
             }
         }
 
-        public static void InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo, string quantidadeSelecionada)
+        public static void InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo, int quantidadeSelecionada)
         {
             string conn = config().GetConnectionString("Conn");
             string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_cal_id = {ped_cal_cal_id} and ped_cal_ped_id = {ped_cal_ped_id};";
@@ -169,8 +169,6 @@ namespace EcommerceBack.Data
 
         public static void InserirMotivoDevolucaoPedidos(int ped_cal_ped_id, string motivo)
         {
-            Console.WriteLine(motivo);
-            Console.WriteLine(ped_cal_ped_id);
             string conn = config().GetConnectionString("Conn");
             string query_motivo = $"update pedidos_calcados set motivo_devolucao = '{motivo}'\r\nWHERE ped_cal_ped_id = {ped_cal_ped_id};";
             string query_troca = $"update pedidos_calcados set troca_solicitada = true \r\nWHERE ped_cal_ped_id = {ped_cal_ped_id};";
@@ -219,7 +217,6 @@ namespace EcommerceBack.Data
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     var pedidos = sqlCon.Query<PedidosCalcados>(query).ToList();
-                    Console.WriteLine(pedidos);
                     return pedidos;
                 }
             }
@@ -270,7 +267,7 @@ namespace EcommerceBack.Data
             }
         }
 
-        public static void InserirTransacoes(PedidosCalcados pedidoCalcado)
+        public static void InserirTransacoes(Pedido pedido)
         {
             string conn = config().GetConnectionString("Conn");
             try
@@ -284,9 +281,9 @@ namespace EcommerceBack.Data
                     string tra_data_hora = DateTime.Now.Date.ToString("yyyy-MM-dd");
 
                     string sql = "INSERT INTO transacoes (tra_data_hora, tra_cli_id, tra_ped_id) " +
-                                 $"VALUES ('{tra_data_hora}'::date, {tra_cli_id}, @ped_cal_ped_id)";
+                                 $"VALUES ('{tra_data_hora}'::date, {tra_cli_id}, @ped_id)";
 
-                    dbConnection.Execute(sql, new { tra_cli_id, pedidoCalcado.ped_cal_ped_id });
+                    dbConnection.Execute(sql, new { tra_cli_id, pedido.ped_id });
 
                 }
             }
@@ -298,7 +295,6 @@ namespace EcommerceBack.Data
         }
         public static void BaixarEstoque(PedidosCalcados pedidoCalcado)
         {
-            Console.WriteLine("Entrou");
             string conn = config().GetConnectionString("Conn");
             try
             {
@@ -326,7 +322,6 @@ namespace EcommerceBack.Data
 
         public static void AdicionarEstoque(PedidosCalcados pedidoCalcado)
         {
-            Console.WriteLine("Entrou");
             string conn = config().GetConnectionString("Conn");
             try
             {

@@ -54,7 +54,7 @@ namespace EcommerceBack.Controllers
         }
 
         [HttpPost]
-        public ActionResult InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo, string quantidadeSelecionada)
+        public ActionResult InserirMotivoDevolucao(int ped_cal_cal_id, int ped_cal_ped_id, string motivo, int quantidadeSelecionada)
         {
             try
             {

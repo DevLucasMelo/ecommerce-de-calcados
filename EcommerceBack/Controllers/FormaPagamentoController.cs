@@ -16,11 +16,12 @@ namespace EcommerceBack.Controllers
         [HttpPost]
         public IActionResult InserirPedido(Pedido pedido)
         {
-            Console.WriteLine(pedido);
             long id;
             try
             {
                 id = PedidoDao.InserirPedido(pedido);
+
+                PedidoDao.InserirTransacoes(pedido);
 
                 int qtdCartoes = pedido.CartaoList.Count;
                 decimal valorCartoes = pedido.ped_valor_total / qtdCartoes;
@@ -53,8 +54,6 @@ namespace EcommerceBack.Controllers
             try
             {
                 PedidoDao.InserirPedidoCalcado(pedidoCalcado);
-
-                PedidoDao.InserirTransacoes(pedidoCalcado);
 
                 PedidoDao.BaixarEstoque(pedidoCalcado);
             }

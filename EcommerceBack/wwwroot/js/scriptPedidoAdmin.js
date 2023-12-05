@@ -106,7 +106,6 @@ botaoConfirmar.addEventListener("click", function () {
         },
         async: false,
         success: function (cupomNome) {
-            // Verifica se o cupom não está vazio
             if (cupomNome !== null && cupomNome !== undefined && cupomNome !== '') {
 
                 botaoConfirmar.disabled = true;
@@ -114,7 +113,6 @@ botaoConfirmar.addEventListener("click", function () {
                 var cupomDiv = document.getElementById('cupomDiv');
                 cupomDiv.innerHTML = 'O seu cupom é: <span id="cupomValor">' + cupomNome.toString() + '</span>';
 
-                // Adiciona um botão de cópia
                 var copyButton = document.createElement('button');
                 copyButton.textContent = 'Copiar';
                 copyButton.id = 'copiar';
@@ -135,7 +133,6 @@ botaoConfirmar.addEventListener("click", function () {
                 cupomDiv.appendChild(copyButton);
             } else {
                 closeCupomPedidoPopup();
-                //alert('Não há cupom disponível para esta operação.');
             }
         },
         error: function (status) {
