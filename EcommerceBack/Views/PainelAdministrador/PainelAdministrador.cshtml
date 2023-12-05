@@ -1,13 +1,8 @@
-﻿@model List<Transacoes>
-
-
-@{
-    ViewData["Title"] = "AnaliseVendas";
+﻿@{
+    ViewData["Title"] = "PainelAdministrador";
 }
 
-
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light custom-navbar justify-content-between">
         <div class="container">
             <ul class="navbar-nav">
@@ -41,37 +36,16 @@
         </div>
     </nav>
 
-    <h2>Análise de Vendas</h2>
+    <h2>Painel do Administrador</h2>
 
-    <div class="container-analise">
-
-        <div class="container">
-            <label for="data-inicio" class="label">Data de Início:</label>
-            <input type="date" id="data-inicio" class="input-date">
+    <div class="container-painelAdm">
+        <div class="painelAdm">
+            <a class="ancora-adm" href="@Url.Action("Cliente", "Cliente")"><button class="btn-azul-adm" id="gerencia-clientes" onclick="">Gerenciar Clientes</button></a>
+            <a class="ancora-adm" href="@Url.Action("PedidoAdmin", "PedidoAdmin")"><button class="btn-verde-adm" id="gerencia-pedidos" onclick="">Gerenciar Pedidos</button></a>
+            <a class="ancora-adm" href="@Url.Action("AnaliseVendas", "AnaliseVendas")"><button class="btn-cinza-adm" id="analisa-vendas" onclick="">Analisar Vendas</button></a>
         </div>
-        <div class="container">
-            <label for="data-fim" class="label">Data de Fim:</label>
-            <input type="date" id="data-fim" class="input-date">
-        </div>
-        <div class="container">
-            <button id="analise-vendas" class="btn-azul">Analisar vendas</button>
-        </div>
-
-        <div class="container">
-            <canvas id="meuGrafico" class="chart-canvas"></canvas>
-        </div>
-
     </div>
 
     <link rel="stylesheet" href="~/css/style.css">
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
-
-    <script src="~/js/scriptAnalise.js"></script>
-
+    <script src="~/js/script.js"></script>
 </body>

@@ -49,12 +49,12 @@ namespace EcommerceBack.Controllers
         [HttpPost]
         public IActionResult InserirPedidoCalcados(PedidosCalcados pedidoCalcado)
         {
-            Console.WriteLine(pedidoCalcado);
-
             long id;
             try
             {
                 PedidoDao.InserirPedidoCalcado(pedidoCalcado);
+
+                PedidoDao.InserirTransacoes(pedidoCalcado);
 
                 PedidoDao.BaixarEstoque(pedidoCalcado);
             }

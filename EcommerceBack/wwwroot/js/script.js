@@ -104,6 +104,7 @@ function verificarAdicionarEndereco() {
         var resposta = window.confirm("Você gostaria de utilizar o endereço de entrega já cadastrado?");
         if (!resposta) {
             openPopupAdicionarEndereco();
+
         } else {
 
             $.ajax({
@@ -115,6 +116,8 @@ function verificarAdicionarEndereco() {
                 success: function (id) {
                     localStorage.setItem("EnderecoId", id);
                     alterarAposAdicionarEndereco();
+                    calcularValorFrete();
+                    calcularValorTotal();
                 },
                 error: function (status) {
                     //alert(status.toString());
@@ -225,7 +228,6 @@ function removerProduto(elemento, cal_id) {
     console.log(items.length)
 
     if (items.length === 0) {
-        console.log('entrou')
         localStorage.clear()
     } 
 
@@ -605,6 +607,7 @@ function preencherItemDiv(itens) {
                 var aRemover = document.createElement("a");
                 aRemover.href = "#";
                 aRemover.classList.add("btn-remove");
+                aRemover.id = "remover" + contadorIdProduto;
                 aRemover.textContent = "Remover";
                 aRemover.addEventListener("click", function () {
                     removerProduto(this, item.dados[0].cal_id);
@@ -705,7 +708,6 @@ function alteraStatusPedido(pedidos) {
 
     pedidos.forEach(function (pedido, index) {
         statusFase = pedido.sta_comp_fase;
-
     });
 
     var lineElement = document.querySelector('#linha-status');
@@ -759,7 +761,7 @@ function alteraStatusPedido(pedidos) {
         elipse4.setAttribute('fill', '#15368A');
         elipse5.setAttribute('fill', '#E5E5E5');
 
-    } else if (statusFase === 'TROCA REALIZADA') {
+    } else if (statusFase === 'TROCA REALIZADA' || statusFase === 'TROCA APROVADA') {
         pedidoAprovadoText.style.display = 'block';
         emTrocaText.style.display = 'block';
         trocaRealizadaText.style.display = 'block';

@@ -4,7 +4,7 @@ namespace EcommerceBack.Controllers
 {
     public class PainelAdministradorController : Controller
     {
-        public IActionResult Index()
+        public IActionResult PainelAdministrador()
         {
             return View();
         }

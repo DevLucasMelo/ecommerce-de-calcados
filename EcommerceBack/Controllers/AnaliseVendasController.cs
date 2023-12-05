@@ -30,7 +30,6 @@ namespace EcommerceBack.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao obter dados de análise de vendas: {ex.Message}");
                 return StatusCode(500, "Erro ao processar a solicitação.");
             }
         }

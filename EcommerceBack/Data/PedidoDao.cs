@@ -109,7 +109,7 @@ namespace EcommerceBack.Data
              "FROM pedidos ped " +
              "JOIN pedidos_calcados ped_cal ON ped.ped_id = ped_cal.ped_cal_ped_id " +
              "JOIN calcados cal ON cal.cal_id = ped_cal.ped_cal_cal_id " +
-             "WHERE ped.ped_cli_id = 1";
+             "WHERE ped.ped_cli_id = 1 order by ped_id desc";
 
             try
             {
@@ -261,6 +261,33 @@ namespace EcommerceBack.Data
                                  "VALUES (@ped_cal_ped_id, @ped_cal_cal_id, @ped_cal_quant, @ped_cal_tamanho)";
 
                     dbConnection.Execute(sql, pedidoCalcado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Erro ao inserir pedido de calçado: " + ex.Message);
+                throw;
+            }
+        }
+
+        public static void InserirTransacoes(PedidosCalcados pedidoCalcado)
+        {
+            string conn = config().GetConnectionString("Conn");
+            try
+            {
+                using (var dbConnection = new NpgsqlConnection(conn))
+                {
+                    dbConnection.Open();
+
+                    int tra_cli_id = 1;
+
+                    string tra_data_hora = DateTime.Now.Date.ToString("yyyy-MM-dd");
+
+                    string sql = "INSERT INTO transacoes (tra_data_hora, tra_cli_id, tra_ped_id) " +
+                                 $"VALUES ('{tra_data_hora}'::date, {tra_cli_id}, @ped_cal_ped_id)";
+
+                    dbConnection.Execute(sql, new { tra_cli_id, pedidoCalcado.ped_cal_ped_id });
+
                 }
             }
             catch (Exception ex)
