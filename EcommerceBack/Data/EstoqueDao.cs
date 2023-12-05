@@ -11,7 +11,6 @@ namespace EcommerceBack.Data
         public static List<Estoque> SelecionarEstoqueCalcadoId(int id)
         {
             string conn = config().GetConnectionString("Conn");
-            Console.WriteLine(id);
             string query = $"SELECT * FROM estoque where estq_cal_id = {id}";
 
             try

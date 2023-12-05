@@ -3,7 +3,7 @@
         .then(response => response.json())
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisa');
-            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+            resultadoPesquisa.innerHTML = '';
 
             data.forEach(cupom => {
                 var ativo;

@@ -58,8 +58,6 @@ namespace EcommerceBack.Data
                 using (var sqlCon = new NpgsqlConnection(conn))
                 {
                     var calcados = sqlCon.Query<Calcados>(query).ToList();
-                    Console.Write(calcados);
-
                     var dataObject = new { dados = calcados };
 
                     return JsonConvert.SerializeObject(dataObject);

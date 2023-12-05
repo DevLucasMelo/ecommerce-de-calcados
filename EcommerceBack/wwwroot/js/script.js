@@ -650,7 +650,7 @@ function solicitarDevolucao(ped_cal_cal_id, ped_cal_ped_id) {
 
     var quantidadeSelecionada = quantElemento.textContent;
 
-
+    var quantidadeSelecionada = parseInt(quantidadeSelecionada.replace(/\D/g, ''), 10);
 
     if (!motivo) {
         alert("Por favor, informe o motivo antes de solicitar a devolução.");

@@ -146,7 +146,7 @@ function selecionarClientes() {
         .then(response => response.json())
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisa');
-            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+            resultadoPesquisa.innerHTML = ''; 
 
             data.forEach(cliente => {
                 const status = cliente.cli_status ? "Ativo" : "Inativo";
@@ -180,7 +180,7 @@ function selecionarClientes() {
 }
 
 function editCartao(cartaoId) {
-    fillEditModalCartao(cartaoId); // Abrir o modal de edição
+    fillEditModalCartao(cartaoId); 
     preencherCartaoEditar(cartaoId);
 
 }
@@ -188,12 +188,9 @@ function editCartao(cartaoId) {
 function excluirEnderecoEditar() {
     var divEditarCartoes = document.getElementById("editar-endereco-container");
 
-    // Seleciona o elemento h2 dentro da div (supondo que seja o único h2)
     var h2Element = divEditarCartoes.querySelector("h4");
 
-    // Verifica se o h2 foi encontrado antes de tentar removê-lo
     if (h2Element) {
-        // Remove o h2 da div
         divEditarCartoes.removeChild(h2Element);
     }
 }
@@ -201,12 +198,9 @@ function excluirEnderecoEditar() {
 function excluirCartaoEditar() {
     var divEditarCartoes = document.getElementById("editar-cartoes-container");
 
-    // Seleciona o elemento h2 dentro da div (supondo que seja o único h2)
     var h2Element = divEditarCartoes.querySelector("h4");
 
-    // Verifica se o h2 foi encontrado antes de tentar removê-lo
     if (h2Element) {
-        // Remove o h2 da div
         divEditarCartoes.removeChild(h2Element);
     }
 }
@@ -214,7 +208,6 @@ function excluirCartaoEditar() {
 function preencherCartaoEditar(cartaoId) {
     var divEditarCartoes = document.getElementById("editar-cartoes-container");
 
-    // Cria um elemento h2
     var h2Element = document.createElement("h4");
 
     
@@ -335,7 +328,6 @@ confirmarEndereco.addEventListener("click", function (event) {
 
             },
             error: function (status) {
-                //alert(status.toString());
             }
         });
 
@@ -375,7 +367,6 @@ confirmarEndereco.addEventListener("click", function (event) {
 
             },
             error: function (status) {
-                //alert(status.toString());
             }
         });
 
@@ -430,7 +421,6 @@ function fillEditModalEndereco(enderecoId) {
         }
     });
 
-    // Preencher os campos do modal de edição
     document.getElementById('logradouro1').value = enderecobjeto.end_logradouro;
     document.getElementById('cidadeCliente1').value = enderecobjeto.cidade.cid_nome;
     document.getElementById('CidadeId').value = enderecobjeto.cidade.cid_id;
@@ -467,7 +457,6 @@ function setSelectedValue(selectId, value) {
 function preencherEnderecoEditar(cartaoId) {
     var divEditarCartoes = document.getElementById("editar-endereco-container");
 
-    // Cria um elemento h2
     var h2Element = document.createElement("h4");
 
 
@@ -482,7 +471,7 @@ function preencherEnderecoEditar(cartaoId) {
 function editClient(clientId) {
     fillEditModal(clientId);
     
-    openClienteEditarPopup(); // Abrir o modal de edição
+    openClienteEditarPopup();
 
 
     var clienteId = clientId.toString();
@@ -539,7 +528,6 @@ function fillEditModal(id) {
     var selectElementGenero = document.getElementById('genero');
     var selectElementTipoTelefone = document.getElementById('tipoTelefone');
 
-    // Preencher os campos do modal de edição
     document.getElementById('clientEditId').value = id;
     document.getElementById('nomeCliente').value = nome;
     document.getElementById('dataNascimento').value = dataNascimento;
@@ -553,7 +541,6 @@ function fillEditModal(id) {
 
 }
 
-// Função para abrir o modal de cupom
 function openCupomPopup() {
     overlayCupom.style.display = "flex";
     popupCupom.style.display = "block";
@@ -565,35 +552,25 @@ function openClienteEditarPopup() {
     divInclusao.style.display = "none";
 }
 
-// Função para fechar o modal de cupom
 function closeCupomPopup() {
     overlayCupom.style.display = "none";
     popupCupom.style.display = "none";
 }
 
-// Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
 addCupomButton.addEventListener("click", openCupomPopup);
 
-// Fechar o modal de cupom ao clicar no botão Fechar
 closeButtonCupom.addEventListener("click", closeCupomPopup);
-
-// Fechar o modal de cupom ao clicar fora do modal
-//overlayCupom.addEventListener("click", function (event) {
-//if (event.target === overlayCupom) {
-//closeCupomPopup();
-//}
-//});
 
 
 function generateClientId() {
     const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 1000); // Número aleatório entre 0 e 999
+    const random = Math.floor(Math.random() * 1000); 
     return `${timestamp}_${random}`;
 }
 
 function generateCartaoId() {
     const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 10000); // Número aleatório entre 0 e 999
+    const random = Math.floor(Math.random() * 10000); 
     return `${timestamp}_${random}`;
 }
 
@@ -606,35 +583,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const confirmarCartao = document.getElementById("confirmar-cartao");
     const overlayCupom = document.getElementById("overlay-cliente");
     const popupCupom = document.getElementById("popup-cliente");
-    //var addClienteCartao = document.getElementById("gerenciar-cartoes");
 
-    // Função para abrir o modal de cupom
     function openCartaoPopup() {
         overlay.style.display = "flex";
         popup.style.display = "block";
     }
 
-    // Função para fechar o modal de cupom
     function closeCartaoPopup() {
         overlay.style.display = "none";
         popup.style.display = "none";
     }
 
-
-    //addClienteCartao.addEventListener("click", openCupomPopup);
-
-    // Fechar o modal de cupom ao clicar no botão Fechar
     closeButtonCartao.addEventListener("click", closeCupomPopup);
 
-    // Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
-    //addClienteCartao.addEventListener("click", function (event) {
-    //    openCartaoPopup();
-    //    event.preventDefault();
-    //});
-
-    // Fechar o modal de cupom ao clicar no botão Fechar
-    //closeButtonCartao.addEventListener("click", closeCartaoPopup);
-
+   
 
     confirmarCartao.addEventListener("click", function (event) {
         event.preventDefault();
@@ -722,7 +684,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             event.preventDefault();
             
-            // Limpar os campos do formulário
             document.getElementById("bandeiraCartaoId").value = "";
             document.getElementById("CartaoId").value = "";
             document.getElementById("numeroCartao1").value = "";
@@ -732,7 +693,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    //event.preventDefault();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -745,47 +705,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalError = document.getElementById("modalError");
     const confirmarEndereco = document.getElementById("confirmar-endereco");
 
-
-
-    // Função para excluir um cliente
-
-
-
-    // Função para editar um cliente
-
-
-    //const closeButtons = document.querySelectorAll(".modal .close-button");
-    //closeButtons.forEach(function(button) {
-    //button.addEventListener("click", function() {
-    //modalSuccess.style.display = "none";
-    //modalError.style.display = "none";
-    //});
-    //});
-
-    // Função para abrir o modal de cupom
     function openCupomPopup() {
         overlayCupom.style.display = "flex";
         popupCupom.style.display = "block";
     }
 
-    // Função para fechar o modal de cupom
     function closeCupomPopup() {
         overlayCupom.style.display = "none";
         popupCupom.style.display = "none";
     }
 
-    // Abrir o modal de cupom ao clicar no botão "Adicionar cupom de troca"
     addCupomButton.addEventListener("click", openCupomPopup);
 
-    // Fechar o modal de cupom ao clicar no botão Fechar
     closeButtonCupom.addEventListener("click", closeCupomPopup);
-
-    // Fechar o modal de cupom ao clicar fora do modal
-    //overlayCupom.addEventListener("click", function (event) {
-    //if (event.target === overlayCupom) {
-    //   closeCupomPopup();
-    //}
-    //});
 
     confirmarBotao.addEventListener("click", function (event) {
         event.preventDefault();
@@ -795,11 +727,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const emailCliente = document.getElementById("emailCliente").value;
         const cpfCliente = parseInt(document.getElementById("cpfCliente").value);
         const statusCliente = document.getElementById("statusCliente").checked;
-        //const ruaCliente = document.getElementById("ruaCliente").value;
-        //const bairroCliente = document.getElementById("bairroCliente").value;
-        //const cidadeCliente = document.getElementById("cidadeCliente").value;
-        //const estadoCliente = document.getElementById("estadoCliente").value;
-        //const paisCliente = document.getElementById("paisCliente").value;
         const telefone = parseInt(document.getElementById("telefone").value);
 
         const selectTipoTelefone = document.getElementById("tipoTelefone");
@@ -974,27 +901,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
             
-
-        //     //Adicionar o cliente ao grid
-        //    const clientGrid = document.getElementById("clientGrid");
-        //    const newRow = document.createElement("div");
-        //    const clientId = id; // Função para gerar um ID único (implemente esta função)
-        //    newRow.setAttribute("id", `clientRow_${clientId}`); // Definir o ID da linha
-        //    newRow.classList.add("row");
-        //    newRow.innerHTML = `
-        //    <div class="col">${nomeCliente}</div>
-        //    <div class="col">${dataNascimento}</div>
-        //    <div class="col">${emailCliente}</div>
-        //    <div class="col">${cpfCliente}</div>
-        //    <div class="col">${genero}</div>
-        //    <div class="col">
-        //        <button class="btn btn-primary btn-sm" onclick="editClient('${clientId}')">Editar</button>
-        //        <button class="btn btn-danger btn-sm" onclick="deleteClient('${clientId}')">Excluir</button>
-        //    </div>
-        //`;
-        //    clientGrid.appendChild(newRow);
-
-            // Limpar os campos do formulário
             document.getElementById("nomeCliente").value = "";
             document.getElementById("dataNascimento").value = "";
             document.getElementById("emailCliente").value = "";
@@ -1004,12 +910,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("telefone").value = "";
             document.getElementById("clientEditId").value = "";
             location.reload();
-        //    //document.getElementById("telefone").value = "";
-        //    //document.getElementById("ruaCliente").value = "";
-        //    //document.getElementById("bairroCliente").value = "";
-        //    //document.getElementById("cidadeCliente").value = "";
-        //    //document.getElementById("estadoCliente").value = "";
-        //    //document.getElementById("paisCliente").value = "";
 
         }
     });
