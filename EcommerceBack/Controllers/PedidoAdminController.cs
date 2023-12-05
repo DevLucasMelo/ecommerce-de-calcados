@@ -113,7 +113,7 @@ namespace EcommerceBack.Controllers
                     {
                         if (item.troca_solicitada)
                         {
-                            valorTroca += item.cal_valor * item.ped_cal_quant;
+                            valorTroca += item.cal_valor * item.ped_cal_quant_devolucao;
                             PedidoDao.AdicionarEstoque(item);
                         }
                     }
