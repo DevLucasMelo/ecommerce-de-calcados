@@ -495,7 +495,7 @@ namespace EcommerceBack.Data
         public static List<PedidosCalcados> consultarCalcadosDevolucao(int ped_cal_ped_id)
         {
             string conn = config().GetConnectionString("Conn");
-            string query = $"\r\nSELECT troca_solicitada, sta_comp_fase, ped_cal_ped_id, ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
+            string query = $"\r\nSELECT ped_cal_quant_devolucao, troca_solicitada, sta_comp_fase, ped_cal_ped_id, ped_cal_cal_id, cal_titulo, cal_marca, cal_modelo, cal_valor, ped_cal_quant, \r\nped_cal_tamanho, cal_cor \r\nFROM pedidos\r\nJOIN pedidos_calcados ped_cal ON ped_id = ped_cal_ped_id\r\nJOIN calcados cal ON cal_id = ped_cal_cal_id\r\nJOIN status_compra ON ped_sta_comp_id = sta_comp_id\r\nWHERE ped_cli_id = 1 and ped_cal_ped_id = {ped_cal_ped_id}";
 
             try
             {
