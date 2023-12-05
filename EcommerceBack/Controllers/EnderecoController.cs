@@ -131,5 +131,19 @@ namespace EcommerceBack.Controllers
             }
         }
 
+        [HttpDelete]
+        public IActionResult DeleteEndereco(int enderecoId)
+        {
+            try
+            {
+                EnderecoDao.DeleteEndereco(enderecoId);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest("Erro");
+            }
+        }
+
     }
 }

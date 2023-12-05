@@ -323,5 +323,25 @@ namespace EcommerceBack.Data
             }
         }
 
+        public static void DeleteEndereco(int enderecoId)
+        {
+            string conn = config().GetConnectionString("Conn");
+            string query = $@"delete from clientes_enderecos where cri_end_end_id = {enderecoId}";
+            string query2 = $@"delete from enderecos where end_id = {enderecoId}";
+
+            try
+            {
+                using (var sqlCon = new NpgsqlConnection(conn))
+                {
+                    var delete = sqlCon.Execute(query);
+                    var delete2 = sqlCon.Execute(query2);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

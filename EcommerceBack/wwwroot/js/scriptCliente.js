@@ -225,6 +225,24 @@ function preencherCartaoEditar(cartaoId) {
     divEditarCartoes.appendChild(h2Element);
 }
 
+function deletEndereco(enderecoId) {
+    $.ajax({
+        type: "DELETE",
+        url: "/Endereco/DeleteEndereco",
+        dataType: "json",
+        data: { enderecoId: parseInt(enderecoId) },
+        async: false,
+        success: function (jsonResult) {
+
+        },
+        error: function (status) {
+            console.log(status)
+        }
+    });
+    var clienteId = document.getElementById("clientEnderecoId").value;
+    selecionarEndereco(clienteId);
+}
+
 function deletCartao(cartaoId) {
     $.ajax({
         type: "DELETE",

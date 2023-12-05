@@ -1,17 +1,34 @@
 $(document).ready(function () {
     var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
-    if (enderecoArmazenado || localStorage.getItem("EnderecoId") !== null) {
-        var enderecoObjeto = JSON.parse(enderecoArmazenado);
-        var enderecoId = localStorage.getItem("EnderecoId");
 
-        if (enderecoId !== null && enderecoId !== "") {
-            alterarAposAdicionarEndereco();
+    if (enderecoArmazenado == '[object Object]')
+    {
+        if (localStorage.getItem("EnderecoId") !== null) {
+            var enderecoId = localStorage.getItem("EnderecoId");
+
+            if (enderecoId !== null && enderecoId !== "") {
+                alterarAposAdicionarEndereco();
+                calcularValorFrete();
+            }
         }
-        else if (Object.keys(enderecoObjeto).length > 0) {
-            alterarAposAdicionarEndereco();
+    } else
+    {
+        if (enderecoArmazenado !== null || localStorage.getItem("EnderecoId") !== null) {
+            var enderecoObjeto = JSON.parse(enderecoArmazenado);
+            var enderecoId = localStorage.getItem("EnderecoId");
+
+            if (enderecoId !== null && enderecoId !== "") {
+                alterarAposAdicionarEndereco();
+                calcularValorFrete();
+            }
+            else if (Object.keys(enderecoObjeto).length > 0) {
+                alterarAposAdicionarEndereco();
+                calcularValorFrete();
+            }
         }
     }
 });
+
 
 
 var circuloSelecionado = null;
@@ -21,6 +38,12 @@ const adicionarEndereco = document.getElementById("adicionar-endereco");
 const overlay = document.getElementById("overlay-endereco");
 const popup = document.getElementById("popup-endereco");
 const closeButton = document.getElementById("fechar-endereco");
+
+closeButton.addEventListener("click", closeCupomEnderecoPopup);
+function closeCupomEnderecoPopup() {
+    overlay.style.display = "none";
+    popup.style.display = "none";
+}
 
 confirmarEndereco.addEventListener("click", function () {
 
@@ -58,7 +81,9 @@ confirmarEndereco.addEventListener("click", function () {
         }
     };
 
-    localStorage.setItem("EnderecoEntrega", endereco);
+    localStorage.setItem("EnderecoEntrega", JSON.stringify(endereco));
+
+    closeCupomEnderecoPopup();
 
     alterarAposAdicionarEndereco();
 });

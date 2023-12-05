@@ -419,7 +419,30 @@ document.addEventListener("DOMContentLoaded", function() {
             else if (Object.keys(enderecoObjeto).length > 0) {
                 var enderecoArmazenado = localStorage.getItem("EnderecoEntrega");
 
-                enderecoArmazenado.ClienteId = 1;
+                
+                var endereco = JSON.parse(enderecoArmazenado);
+                endereco.ClienteId = 1;
+
+                //var endereco = {
+                //    end_logradouro: endereco1.end_logradouro,
+                //    end_numero: endereco1.end_numero,
+                //    end_bairro: endereco1.end_bairro,
+                //    end_cep: endereco1.end_cep,
+                //    end_tip_res_id: endereco1.end_tip_res_id,
+                //    end_tip_log_id: endereco1.end_tip_log_id,
+                //    end_entrega: endereco1.end_entrega,
+                //    end_cobranca: endereco1.end_cobranca,
+                //    ClienteId: endereco1.ClienteId,
+                //    cidade: {
+                //        cid_nome: endereco1.cidade.cid_nome
+                //    },
+                //    estado: {
+                //        est_nome: endereco1.estado.est_nome
+                //    },
+                //    pais: {
+                //        pais_nome: endereco1.pais.pais_nome
+                //    }
+                //};
 
                 $.ajax({
                     type: "POST",
@@ -475,6 +498,34 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                 }
 
+                const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+
+                if (carrinho[0] && carrinho[0].dados) {
+                    carrinho.forEach(function (carrinhoItem) {
+                        carrinhoItem.dados.forEach(function (item) {
+                            const pedidoCalcado = {
+                                ped_cal_ped_id: numeroPedido,
+                                ped_cal_cal_id: item.cal_id,
+                                ped_cal_quant: item.quantidade,
+                                ped_cal_tamanho: parseInt(item.tamanho),
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/FormaPagamento/InserirPedidoCalcados",
+                                dataType: "json",
+                                data: pedidoCalcado,
+                                async: false,
+                                success: function (result) {
+                                    numeroPedido = parseInt(result);
+                                },
+                                error: function (status) {
+
+                                }
+                            });
+                        });
+                    });
+                }
             }
         }
 
@@ -500,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         alert(`Seu pedido foi inserido e seu número de pedido é: ${numeroPedido}`);
 
-        localStorage.clear()
+        localStorage.clear();
 
     });
 
