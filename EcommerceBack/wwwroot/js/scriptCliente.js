@@ -100,7 +100,7 @@ function selecionarEndereco(clienteId) {
         .then(response => response.json())
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisaEndereco');
-            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+            resultadoPesquisa.innerHTML = ''; 
 
             data.forEach(endereco => {
 
@@ -123,7 +123,7 @@ function selecionarCartao(clienteId) {
         .then(response => response.json())
         .then(data => {
             var resultadoPesquisa = document.getElementById('resultadoPesquisaCartao');
-            resultadoPesquisa.innerHTML = ''; // Limpe os resultados anteriores.
+            resultadoPesquisa.innerHTML = '';
 
             data.forEach(cartao => {
 
