@@ -16,9 +16,13 @@ Criação dos diagramas: Astah
 Como executar o projeto?
 
 Passo 1: Instalar o postgreSQL 15.4
+
 Passo 2: Instalar o pgAdmin 4
+
 Passo 3: Instalar o Visual Studio 2022 ou utilizar o vs code com a extensão para c# e dotnet
+
 Passo 4: Realizar um clone deste repositório, acessar a pasta ecommerce-calcados e abrir o arquivo EcommerceBack.sln com Microsoft Visual Studio 2022
+
 Passo 5: 
 
 
