@@ -27,11 +27,24 @@ Passo 5: Abrir o projeto ecommerce-de-calcados no VS Code e pelo terminal acessa
 
 Passo 6: Após acessar a pasta, execute o comando: dotnet run
 
-Passo 7: Acessar a URL no navegador: http://localhost:7247
+Passo 7: Abra o pgAdmin 4
 
-Passo 8: Abra o pgAdmin 4 e execute o arquivo para inicializar a criação do banco de dados
+Passo 8: Clique com o botão direito em Databases -> Selecione a opção: Create -> Selecione a opção: Database
 
-Passo 9: Navegue pelo ecommerce e teste as funcionalidades!
+Passo 9: No campo Database, coloque o nome ecommerce1
+
+Passo 10: Clique em save
+
+Passo 11: Clique com o botão direito em ecommerce1 -> Selecione a opção: Restore
+
+Passo 12: Em Filename escolha o arquivo init.sql que está na pasta "Criar banco de dados" que está nesse repositório
+
+Passo 13: Clique em Restore
+
+Passo 14: Banco de dados deve ter sido criado com sucesso
+
+Passo 15: Acessar a URL no navegador: http://localhost:7247
+
 
 
 Para executar os testes automatizados:
