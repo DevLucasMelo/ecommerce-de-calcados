@@ -1,19 +1,25 @@
-Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de gerenciar calçados em estoque, gerenciar pedidos na visão do cliente e do administrador, 
-no gerenciamento de cliente e no gerenciamento de devolução na visão do cliente e na visão do administrador.
+Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:
+
+• Gerenciar calçados em estoque 
+• Gerenciar pedidos na visão do cliente e do administrador, 
+• Gerenciar clientes 
+• Realizar devolução de produtos na visão do cliente e gerenciar tais devoluções na visão do administrador.
+• Gerenciar cupons promocionais e de devolução
+• Cadastro de usuários e Login
 
 Os requisitos funcionais, não-funcionais e regras de negócio foram especificados e fornecidos pelo professor da disciplina, é possível acessar todos os requisitos e 
-regras no documento DRS.docx que consta neste repositório.
+regras na pasta "Documentação do projeto", acessando o documento "Documentação de requisitos.docx" que consta neste repositório.
 
 Tecnologias do projeto:
 
-Linguagens: C#, HTML, CSS, JavaScript
-Frameworks:  Bootstrap, dapper (micro ORM) e Razor. 
-Banco de Dados: PostgreSQL e pgAdmin 4
-Modelagem do banco de dados: Oracle SQL Developer DataModeler
-Gerenciamento de tarefas: Trello
-Criação dos diagramas: Astah
+• Linguagens: C#, HTML, CSS, JavaScript
+• Frameworks:  Bootstrap, dapper (micro ORM) e Razor. 
+• Banco de Dados: PostgreSQL e pgAdmin 4
+• Modelagem do banco de dados: Oracle SQL Developer DataModeler
+• Gerenciamento de tarefas: Trello
+• Criação dos diagramas: Astah
 
-Como executar o projeto?
+⭢ Como executar o projeto?
 
 Passo 1: Instalar o postgreSQL 15.4
 
@@ -46,8 +52,7 @@ Passo 14: Banco de dados deve ter sido criado com sucesso
 Passo 15: Acessar a URL no navegador: http://localhost:7247
 
 
-
-Para executar os testes automatizados:
+⭢ Para executar os testes automatizados:
 
 Passo 1: Para executar os testes, entre na pasta testes pelo terminal
 
