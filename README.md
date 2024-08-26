@@ -1,4 +1,4 @@
-                  **Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:**
+ **Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:**
 
 • Gerenciar calçados em estoque 
 
