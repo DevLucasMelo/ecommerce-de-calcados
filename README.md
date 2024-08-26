@@ -1,10 +1,15 @@
 Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:
 
 • Gerenciar calçados em estoque 
+
 • Gerenciar pedidos na visão do cliente e do administrador, 
+
 • Gerenciar clientes 
+
 • Realizar devolução de produtos na visão do cliente e gerenciar tais devoluções na visão do administrador.
+
 • Gerenciar cupons promocionais e de devolução
+
 • Cadastro de usuários e Login
 
 Os requisitos funcionais, não-funcionais e regras de negócio foram especificados e fornecidos pelo professor da disciplina, é possível acessar todos os requisitos e 
@@ -13,10 +18,15 @@ regras na pasta "Documentação do projeto", acessando o documento "Documentaç�
 Tecnologias do projeto:
 
 • Linguagens: C#, HTML, CSS, JavaScript
+
 • Frameworks:  Bootstrap, dapper (micro ORM) e Razor. 
+
 • Banco de Dados: PostgreSQL e pgAdmin 4
+
 • Modelagem do banco de dados: Oracle SQL Developer DataModeler
+
 • Gerenciamento de tarefas: Trello
+
 • Criação dos diagramas: Astah
 
 ⭢ Como executar o projeto?
