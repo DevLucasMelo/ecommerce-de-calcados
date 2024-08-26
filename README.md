@@ -1,12 +1,12 @@
-Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:
+                  **Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse capaz de:**
 
 • Gerenciar calçados em estoque 
 
-• Gerenciar pedidos na visão do cliente e do administrador, 
+• Gerenciar pedidos na visão do cliente e do administrador
 
 • Gerenciar clientes 
 
-• Realizar devolução de produtos na visão do cliente e gerenciar tais devoluções na visão do administrador.
+• Realizar devolução de produtos na visão do cliente e gerenciar tais devoluções na visão do administrador
 
 • Gerenciar cupons promocionais e de devolução
 
@@ -15,7 +15,7 @@ Este projeto foi realizado para o desenvolvimento de um e-commerce que fosse cap
 Os requisitos funcionais, não-funcionais e regras de negócio foram especificados e fornecidos pelo professor da disciplina, é possível acessar todos os requisitos e 
 regras na pasta "Documentação do projeto", acessando o documento "Documentação de requisitos.docx" que consta neste repositório.
 
-Tecnologias do projeto:
+⭢ **Tecnologias do projeto:**
 
 • Linguagens: C#, HTML, CSS, JavaScript
 
